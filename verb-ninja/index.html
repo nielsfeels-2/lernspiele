@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Verb Ninja – Simple Present Dojo</title>
+<style>
+  :root {
+    --bg1: #0f1226;
+    --bg2: #241b3d;
+    --accent: #ff5da2;
+    --accent2: #4ce0d2;
+    --gold: #ffd23f;
+    --card: rgba(255,255,255,0.06);
+    --card-border: rgba(255,255,255,0.14);
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: radial-gradient(1200px 800px at 50% -10%, #3a2a5c 0%, var(--bg1) 55%, var(--bg2) 100%);
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    overscroll-behavior: none;
+    touch-action: manipulation;
+  }
+  #app { min-height: 100%; display: flex; flex-direction: column; align-items: center; padding: env(safe-area-inset-top, 16px) 16px 24px; }
+  .topbar {
+    width: 100%; max-width: 640px; display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 4px; gap: 8px; flex-wrap: wrap;
+  }
+  .pill {
+    background: var(--card); border: 1px solid var(--card-border); border-radius: 999px;
+    padding: 8px 14px; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 6px;
+    backdrop-filter: blur(6px);
+  }
+  .belt-bar-wrap { width: 100%; max-width: 640px; background: var(--card); border: 1px solid var(--card-border); border-radius: 999px; height: 14px; overflow: hidden; margin: 6px 0 2px; }
+  .belt-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent2), var(--accent)); width: 0%; transition: width .5s ease; }
+  .belt-label { font-size: 12px; opacity: .8; margin-bottom: 10px; text-align: center; }
+
+  .card {
+    width: 100%; max-width: 640px; background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 22px; padding: 26px 20px; margin-top: 14px; text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    position: relative; overflow: hidden;
+  }
+  .timerbar-wrap { width: 100%; height: 8px; background: rgba(255,255,255,.12); border-radius: 999px; overflow: hidden; margin-bottom: 18px; }
+  .timerbar { height: 100%; width: 100%; background: linear-gradient(90deg, var(--accent2), var(--gold)); transition: width .1s linear; }
+
+  .sensei { font-size: 44px; margin-bottom: 6px; }
+  .sentence { font-size: 22px; font-weight: 700; line-height: 1.5; margin: 10px 0 20px; min-height: 90px; display: flex; align-items: center; justify-content: center; }
+  .sentence .blank { display: inline-block; min-width: 90px; border-bottom: 3px dashed var(--gold); margin: 0 4px; }
+
+  .choices { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .choice-btn {
+    flex: 1 1 130px; max-width: 220px; min-height: 80px; border-radius: 18px; border: none;
+    font-size: 22px; font-weight: 800; color: #14102a; cursor: pointer;
+    background: linear-gradient(180deg, #fff, #e7e7ff);
+    box-shadow: 0 6px 0 rgba(0,0,0,.25), 0 10px 20px rgba(0,0,0,.25);
+    transition: transform .08s ease;
+    padding: 10px;
+  }
+  .choice-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.25); }
+  .choice-btn.correct { background: linear-gradient(180deg, #b8ffcf, #6ee89b); }
+  .choice-btn.wrong { background: linear-gradient(180deg, #ffc2c2, #ff8b8b); }
+
+  .feedback { min-height: 30px; font-size: 17px; font-weight: 700; margin-top: 14px; }
+  .feedback.good { color: var(--accent2); }
+  .feedback.bad { color: #ffb3b3; }
+  .feedback.crit { color: var(--gold); }
+
+  .progress-dots { display: flex; gap: 6px; justify-content: center; margin-bottom: 12px; }
+  .progress-dots span { width: 9px; height: 9px; border-radius: 999px; background: rgba(255,255,255,.2); }
+  .progress-dots span.done { background: var(--accent2); }
+  .progress-dots span.current { background: var(--gold); }
+
+  .start-screen, .chest-screen, .share-screen, .cap-screen, .level-select-screen, .level-complete-screen {
+    width: 100%; max-width: 640px; text-align: center; margin-top: 30px;
+  }
+  .start-screen h1 { font-size: 34px; margin-bottom: 6px; }
+  .start-screen p { opacity: .85; font-size: 16px; line-height: 1.5; }
+  .big-btn {
+    margin-top: 22px; padding: 18px 34px; font-size: 20px; font-weight: 800; border: none; border-radius: 18px;
+    background: linear-gradient(180deg, var(--accent2), #29b7ab); color: #06231f; cursor: pointer;
+    box-shadow: 0 6px 0 rgba(0,0,0,.3), 0 10px 24px rgba(0,0,0,.3); min-height: 80px; min-width: 220px;
+  }
+  .big-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.3); }
+  .big-btn.secondary { background: linear-gradient(180deg, #eee, #ccc); color: #222; }
+
+  .chest { font-size: 90px; margin: 10px 0; animation: pop .5s ease; }
+  @keyframes pop { 0% { transform: scale(0);} 60% { transform: scale(1.2);} 100% { transform: scale(1);} }
+  .loot-row { font-size: 26px; font-weight: 800; margin: 14px 0; }
+  .legendary { color: var(--gold); text-shadow: 0 0 14px var(--gold); }
+
+  .belt-emoji { font-size: 54px; }
+  .share-card {
+    background: linear-gradient(160deg, #2a1f4d, #170f2e); border: 2px solid var(--gold); border-radius: 20px;
+    padding: 22px; margin: 16px auto; max-width: 420px;
+  }
+  .streak-badge { position: absolute; top: 14px; right: 16px; font-size: 14px; background: rgba(255,210,63,.15); border: 1px solid var(--gold); color: var(--gold); padding: 4px 10px; border-radius: 999px; font-weight: 800; }
+
+  .footer-note { margin-top: 26px; font-size: 12px; opacity: .55; max-width: 480px; text-align: center; }
+  .hidden { display: none !important; }
+
+  @keyframes shake { 10%,90% { transform: translateX(-2px);} 20%,80% { transform: translateX(4px);} 30%,50%,70% { transform: translateX(-8px);} 40%,60% { transform: translateX(8px);} }
+  .shake { animation: shake .5s; }
+
+  /* Level select */
+  .level-grid { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
+  .level-card {
+    background: var(--card); border: 1px solid var(--card-border); border-radius: 18px; padding: 18px 20px;
+    display: flex; align-items: center; gap: 16px; cursor: pointer; text-align: left; min-height: 80px;
+  }
+  .level-card.locked { opacity: .45; cursor: default; }
+  .level-card .emoji { font-size: 40px; flex: 0 0 auto; }
+  .level-card .info { flex: 1; }
+  .level-card .info .name { font-weight: 800; font-size: 18px; }
+  .level-card .info .desc { font-size: 13px; opacity: .8; margin-top: 2px; }
+  .level-card .stars { font-size: 18px; flex: 0 0 auto; letter-spacing: 2px; }
+  .lock-icon { font-size: 26px; flex: 0 0 auto; }
+
+  .stars-big { font-size: 46px; letter-spacing: 6px; margin: 16px 0; }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <div class="topbar" id="topbar">
+    <div class="pill">🥋 <span id="beltName">Weißgurt</span></div>
+    <div class="pill">💰 <span id="coinCount">0</span></div>
+    <div class="pill">🔥 <span id="streakCount">0</span></div>
+  </div>
+  <div class="belt-bar-wrap" id="beltBarWrap"><div class="belt-bar" id="beltBar"></div></div>
+  <div class="belt-label" id="beltLabel">0 / 50 XP bis zum nächsten Gürtel</div>
+
+  <!-- START SCREEN -->
+  <div class="start-screen" id="startScreen">
+    <div style="font-size:64px;">🥷</div>
+    <h1>Verb Ninja</h1>
+    <p>Simple-Present-Dojo · Englisch Jg. 7<br>Schlag die richtige Verbform, bevor die Zeit abläuft. Schnell + richtig = Krit-Treffer!</p>
+    <button class="big-btn" id="startBtn">▶️ Ins Dojo</button>
+  </div>
+
+  <!-- LEVEL SELECT -->
+  <div class="level-select-screen hidden" id="levelSelectScreen">
+    <h1 style="font-size:26px;">Wähle deine Prüfung</h1>
+    <div class="level-grid" id="levelGrid"></div>
+  </div>
+
+  <!-- GAME CARD -->
+  <div class="card hidden" id="gameCard">
+    <div class="streak-badge hidden" id="streakBadge">🔥 <span id="streakBadgeNum">0</span></div>
+    <div class="progress-dots" id="progressDots"></div>
+    <div class="timerbar-wrap"><div class="timerbar" id="timerbar"></div></div>
+    <div class="sensei" id="senseiEmoji">🥷</div>
+    <div class="sentence" id="sentenceEl"></div>
+    <div class="choices" id="choicesEl"></div>
+    <div class="feedback" id="feedbackEl"></div>
+  </div>
+
+  <!-- CHEST SCREEN -->
+  <div class="chest-screen hidden" id="chestScreen">
+    <div class="chest">🎁</div>
+    <div id="chestTitle" style="font-size:22px; font-weight:800;">Truhe geöffnet!</div>
+    <div class="loot-row" id="lootRow"></div>
+    <button class="big-btn" id="chestContinueBtn">Weiter →</button>
+  </div>
+
+  <!-- SHARE SCREEN -->
+  <div class="share-screen hidden" id="shareScreen">
+    <div class="share-card">
+      <div class="belt-emoji" id="shareBeltEmoji">🥋</div>
+      <div style="font-size:20px; font-weight:800; margin-top:8px;" id="shareBeltText">Gelbgurt-Ninja</div>
+      <div style="opacity:.8; margin-top:6px;" id="shareStatsText">0 Punkte · Bester Streak: 0</div>
+    </div>
+    <p style="opacity:.8; font-size:15px;">🏆 Zeig dein Ergebnis deiner Sitznachbarin / deinem Sitznachbarn!</p>
+    <button class="big-btn" id="shareContinueBtn">Weiter trainieren →</button>
+  </div>
+
+  <!-- LEVEL COMPLETE -->
+  <div class="level-complete-screen hidden" id="levelCompleteScreen">
+    <div style="font-size:60px;" id="levelCompleteEmoji">🏆</div>
+    <h1 style="font-size:26px;" id="levelCompleteTitle">Level gemeistert!</h1>
+    <div class="stars-big" id="levelCompleteStars">⭐⭐⭐</div>
+    <div id="levelCompleteSub" style="opacity:.85;"></div>
+    <button class="big-btn" id="levelCompleteContinueBtn">Weiter →</button>
+    <button class="big-btn secondary" id="levelCompleteMenuBtn">Zur Levelauswahl</button>
+  </div>
+
+  <!-- SESSION CAP SCREEN -->
+  <div class="cap-screen hidden" id="capScreen">
+    <div style="font-size:60px;">🌙</div>
+    <h1 style="font-size:26px;">Super für heute, Ninja!</h1>
+    <p>Du hast diese Sitzung schon viel trainiert. Eine Pause hilft dem Gehirn, die Verbformen zu festigen.</p>
+    <button class="big-btn" id="capContinueBtn">Trotzdem weitermachen</button>
+  </div>
+
+  <div class="footer-note">Kein Login, keine Daten verlassen dieses Gerät. Fortschritt wird nur lokal gespeichert.</div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var STORE_KEY = "verbNinja_simplePresent_v2";
+  var SESSION_CAP = 15;
+  var CRIT_THRESHOLD_MS = 3000;
+
+  // ---------- Level content (Unit 1: school rules vocab, he/she/it -s focus) ----------
+  var LEVELS = [
+    {
+      id: 1, name: "Level 1 · Aussagen", emoji: "🟢", timeLimit: 9000,
+      desc: "he/she/it + s in einfachen Aussagesätzen",
+      questions: [
+        { pre: "He always", post: " the school rules.", options: ["follow", "follows"], correct: "follows" },
+        { pre: "I", post: " my uniform every day.", options: ["wear", "wears"], correct: "wear" },
+        { pre: "She", post: " other students.", options: ["help", "helps"], correct: "helps" },
+        { pre: "We", post: " our teachers.", options: ["respect", "respects"], correct: "respect" },
+        { pre: "The caretaker", post: " the playground.", options: ["clean", "cleans"], correct: "cleans" },
+        { pre: "You", post: " on time every morning.", options: ["arrive", "arrives"], correct: "arrive" },
+        { pre: "My teacher", post: " our homework.", options: ["check", "checks"], correct: "checks" },
+        { pre: "They", post: " football at break.", options: ["play", "plays"], correct: "play" }
+      ]
+    },
+    {
+      id: 2, name: "Level 2 · Verneinung", emoji: "🟡", timeLimit: 9000,
+      desc: "don't oder doesn't?",
+      questions: [
+        { pre: "He", post: " break the rules.", options: ["don't", "doesn't"], correct: "doesn't" },
+        { pre: "I", post: " like being late.", options: ["don't", "doesn't"], correct: "don't" },
+        { pre: "We", post: " accept bullying.", options: ["don't", "doesn't"], correct: "don't" },
+        { pre: "She", post: " forget her homework.", options: ["don't", "doesn't"], correct: "doesn't" },
+        { pre: "The teacher", post: " allow phones in class.", options: ["don't", "doesn't"], correct: "doesn't" },
+        { pre: "They", post: " wear uniforms at home.", options: ["don't", "doesn't"], correct: "don't" }
+      ]
+    },
+    {
+      id: 3, name: "Level 3 · Fragen", emoji: "🟠", timeLimit: 8000,
+      desc: "Do oder Does?",
+      questions: [
+        { pre: "", post: " he always help others?", options: ["Do", "Does"], correct: "Does" },
+        { pre: "", post: " you follow the rules?", options: ["Do", "Does"], correct: "Do" },
+        { pre: "", post: " she like her school?", options: ["Do", "Does"], correct: "Does" },
+        { pre: "", post: " they know the rules?", options: ["Do", "Does"], correct: "Do" },
+        { pre: "", post: " we need a new rule?", options: ["Do", "Does"], correct: "Do" },
+        { pre: "", post: " the caretaker clean every day?", options: ["Do", "Does"], correct: "Does" }
+      ]
+    },
+    {
+      id: 4, name: "Level 4 · Endgegner", emoji: "🐉", timeLimit: 6500,
+      desc: "Rechtschreibung (-es, y→ies) + alles gemischt",
+      questions: [
+        { pre: "She always", post: " hard for tests.", options: ["study", "studies"], correct: "studies" },
+        { pre: "He", post: " the door every morning.", options: ["watch", "watches"], correct: "watches" },
+        { pre: "The bell", post: " at 3:15.", options: ["go", "goes"], correct: "goes" },
+        { pre: "My sister", post: " her school uniform.", options: ["wash", "washes"], correct: "washes" },
+        { pre: "He never", post: " to school, obviously.", options: ["fly", "flies"], correct: "flies" },
+        { pre: "The caretaker", post: " the broken door.", options: ["fix", "fixes"], correct: "fixes" },
+        { pre: "She", post: " break the rules.", options: ["don't", "doesn't"], correct: "doesn't" },
+        { pre: "", post: " they know the rules?", options: ["Do", "Does"], correct: "Do" },
+        { pre: "We", post: " our teachers.", options: ["respect", "respects"], correct: "respect" },
+        { pre: "", post: " she like her school?", options: ["Do", "Does"], correct: "Does" }
+      ]
+    }
+  ];
+
+  var BELTS = [
+    { name: "Weißgurt", emoji: "🥋", xp: 0 },
+    { name: "Gelbgurt", emoji: "🟡", xp: 50 },
+    { name: "Orangegurt", emoji: "🟠", xp: 120 },
+    { name: "Grüngurt", emoji: "🟢", xp: 220 },
+    { name: "Blaugurt", emoji: "🔵", xp: 350 },
+    { name: "Braungurt", emoji: "🟤", xp: 500 },
+    { name: "Schwarzgurt", emoji: "⚫️", xp: 700 }
+  ];
+
+  // ---------- State ----------
+  var state = loadState();
+  var order = [];
+  var idx = 0;
+  var timerInterval = null;
+  var timerStart = 0;
+  var answered = false;
+  var sessionAnswered = 0;
+  var activeLevel = null;
+  var levelCorrectCount = 0;
+  var levelWrongCount = 0;
+  var lastKnownBelt = 0;
+
+  function loadState() {
+    try {
+      var raw = localStorage.getItem(STORE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (e) {}
+    return { coins: 0, xp: 0, totalCorrect: 0, bestStreak: 0, currentStreak: 0, lastPlayed: null, levelStars: {} };
+  }
+  function saveState() {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function isLevelUnlocked(levelIndex) {
+    if (levelIndex === 0) return true;
+    var prevId = LEVELS[levelIndex - 1].id;
+    return (state.levelStars[prevId] || 0) >= 1;
+  }
+
+  function currentBeltIndex() {
+    var i = 0;
+    for (var b = 0; b < BELTS.length; b++) { if (state.xp >= BELTS[b].xp) i = b; }
+    return i;
+  }
+
+  function renderTop() {
+    var bi = currentBeltIndex();
+    var belt = BELTS[bi];
+    var next = BELTS[bi + 1];
+    document.getElementById("beltName").textContent = belt.name;
+    document.getElementById("coinCount").textContent = state.coins;
+    document.getElementById("streakCount").textContent = state.currentStreak;
+    if (next) {
+      var span = state.xp - belt.xp;
+      var need = next.xp - belt.xp;
+      document.getElementById("beltBar").style.width = Math.min(100, (span / need) * 100) + "%";
+      document.getElementById("beltLabel").textContent = span + " / " + need + " XP bis " + next.name;
+    } else {
+      document.getElementById("beltBar").style.width = "100%";
+      document.getElementById("beltLabel").textContent = "Höchster Rang erreicht! 🏆";
+    }
+  }
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function show(id) {
+    ["startScreen", "levelSelectScreen", "gameCard", "chestScreen", "shareScreen", "levelCompleteScreen", "capScreen"].forEach(function (s) {
+      document.getElementById(s).classList.toggle("hidden", s !== id);
+    });
+  }
+
+  function starsFor(total, wrong) {
+    if (wrong === 0) return 3;
+    if (wrong <= Math.ceil(total * 0.3)) return 2;
+    return 1;
+  }
+
+  function renderLevelSelect() {
+    var grid = document.getElementById("levelGrid");
+    grid.innerHTML = "";
+    LEVELS.forEach(function (lvl, i) {
+      var unlocked = isLevelUnlocked(i);
+      var stars = state.levelStars[lvl.id] || 0;
+      var card = document.createElement("div");
+      card.className = "level-card" + (unlocked ? "" : " locked");
+      var starsHtml = unlocked ? "★".repeat(stars) + "☆".repeat(3 - stars) : "";
+      card.innerHTML =
+        '<div class="emoji">' + lvl.emoji + '</div>' +
+        '<div class="info"><div class="name">' + lvl.name + '</div><div class="desc">' + lvl.desc + '</div></div>' +
+        (unlocked ? '<div class="stars">' + starsHtml + '</div>' : '<div class="lock-icon">🔒</div>');
+      if (unlocked) {
+        card.onclick = function () { startLevel(i); };
+      }
+      grid.appendChild(card);
+    });
+  }
+
+  function startLevel(levelIndex) {
+    activeLevel = LEVELS[levelIndex];
+    order = shuffle(activeLevel.questions.map(function (_, i) { return i; }));
+    idx = 0;
+    levelCorrectCount = 0;
+    levelWrongCount = 0;
+    sessionAnswered = 0;
+    show("gameCard");
+    nextQuestion();
+  }
+
+  function renderProgressDots() {
+    var wrap = document.getElementById("progressDots");
+    wrap.innerHTML = "";
+    activeLevel.questions.forEach(function (_, i) {
+      var dot = document.createElement("span");
+      if (i < idx - 1) dot.className = "done";
+      else if (i === idx - 1) dot.className = "current";
+      wrap.appendChild(dot);
+    });
+  }
+
+  function nextQuestion() {
+    if (sessionAnswered > 0 && sessionAnswered % SESSION_CAP === 0) {
+      show("capScreen");
+      return;
+    }
+    if (idx >= order.length) {
+      finishLevel();
+      return;
+    }
+    var q = activeLevel.questions[order[idx]];
+    idx++;
+    answered = false;
+    renderProgressDots();
+    document.getElementById("feedbackEl").textContent = "";
+    document.getElementById("feedbackEl").className = "feedback";
+    document.getElementById("senseiEmoji").textContent = "🥷";
+
+    var sentEl = document.getElementById("sentenceEl");
+    sentEl.innerHTML = (q.pre ? q.pre + " " : "") + '<span class="blank">___</span>' + q.post;
+
+    var choicesEl = document.getElementById("choicesEl");
+    choicesEl.innerHTML = "";
+    var opts = shuffle(q.options);
+    opts.forEach(function (opt) {
+      var btn = document.createElement("button");
+      btn.className = "choice-btn";
+      btn.textContent = opt;
+      btn.onclick = function () { onAnswer(opt, q, btn, choicesEl); };
+      choicesEl.appendChild(btn);
+    });
+
+    startTimer();
+  }
+
+  function startTimer() {
+    clearInterval(timerInterval);
+    timerStart = Date.now();
+    var bar = document.getElementById("timerbar");
+    bar.style.width = "100%";
+    var limit = activeLevel.timeLimit;
+    timerInterval = setInterval(function () {
+      var elapsed = Date.now() - timerStart;
+      var pct = Math.max(0, 100 - (elapsed / limit) * 100);
+      bar.style.width = pct + "%";
+      if (elapsed >= limit && !answered) {
+        clearInterval(timerInterval);
+        onTimeout();
+      }
+    }, 80);
+  }
+
+  function onTimeout() {
+    if (answered) return;
+    answered = true;
+    document.getElementById("senseiEmoji").textContent = "😅";
+    var fb = document.getElementById("feedbackEl");
+    fb.textContent = "Zeit um! Nächstes Mal schneller schlagen.";
+    fb.className = "feedback bad";
+    state.currentStreak = 0;
+    levelWrongCount++;
+    saveState(); renderTop();
+    setTimeout(function () { sessionAnswered++; nextQuestion(); }, 1400);
+  }
+
+  function onAnswer(opt, q, btn, choicesEl) {
+    if (answered) return;
+    answered = true;
+    clearInterval(timerInterval);
+    var elapsed = Date.now() - timerStart;
+    var correct = opt === q.correct;
+    var allBtns = choicesEl.querySelectorAll("button");
+    allBtns.forEach(function (b) {
+      b.disabled = true;
+      if (b.textContent === q.correct) b.classList.add("correct");
+      else if (b === btn) b.classList.add("wrong");
+    });
+
+    var fb = document.getElementById("feedbackEl");
+    if (correct) {
+      var crit = elapsed < CRIT_THRESHOLD_MS;
+      var coinGain = crit ? (Math.floor(Math.random() * 3) + 3) : (Math.floor(Math.random() * 2) + 1);
+      var xpGain = crit ? 12 : 6;
+      state.coins += coinGain;
+      state.xp += xpGain;
+      state.totalCorrect += 1;
+      state.currentStreak += 1;
+      levelCorrectCount++;
+      if (state.currentStreak > state.bestStreak) state.bestStreak = state.currentStreak;
+      document.getElementById("senseiEmoji").textContent = crit ? "🤩" : "😊";
+      fb.textContent = (crit ? "⚡ KRITISCHER TREFFER! +" : "Richtig! +") + coinGain + " 💰 +" + xpGain + " XP";
+      fb.className = "feedback " + (crit ? "crit" : "good");
+      document.getElementById("streakBadgeNum").textContent = state.currentStreak;
+      document.getElementById("streakBadge").classList.toggle("hidden", state.currentStreak < 2);
+    } else {
+      document.getElementById("senseiEmoji").textContent = "🛡️";
+      fb.textContent = "Nicht ganz. Richtig wäre: " + q.correct;
+      fb.className = "feedback bad";
+      state.currentStreak = 0;
+      levelWrongCount++;
+      document.getElementById("gameCard").classList.add("shake");
+      setTimeout(function () { document.getElementById("gameCard").classList.remove("shake"); }, 500);
+    }
+    saveState();
+    renderTop();
+
+    sessionAnswered++;
+
+    setTimeout(function () {
+      if (correct && state.totalCorrect % 5 === 0) {
+        openChest();
+      } else if (correct && currentBeltIndex() !== lastKnownBelt) {
+        showShare();
+      } else {
+        nextQuestion();
+      }
+    }, correct ? 1100 : 1700);
+  }
+
+  function finishLevel() {
+    var total = activeLevel.questions.length;
+    var stars = starsFor(total, levelWrongCount);
+    var prevStars = state.levelStars[activeLevel.id] || 0;
+    if (stars > prevStars) state.levelStars[activeLevel.id] = stars;
+    var bonusCoins = stars * 3;
+    state.coins += bonusCoins;
+    saveState(); renderTop();
+
+    document.getElementById("levelCompleteEmoji").textContent = stars === 3 ? "🏆" : (stars === 2 ? "🥈" : "🥉");
+    document.getElementById("levelCompleteTitle").textContent = activeLevel.name + " geschafft!";
+    document.getElementById("levelCompleteStars").textContent = "★".repeat(stars) + "☆".repeat(3 - stars);
+    document.getElementById("levelCompleteSub").textContent =
+      levelCorrectCount + " von " + total + " richtig · +" + bonusCoins + " 💰 Bonus";
+    show("levelCompleteScreen");
+  }
+
+  function openChest() {
+    show("chestScreen");
+    var coinGain = Math.floor(Math.random() * 5) + 1;
+    var legendary = Math.random() < 0.05;
+    if (legendary) coinGain += 10;
+    state.coins += coinGain;
+    saveState(); renderTop();
+    document.getElementById("lootRow").innerHTML = legendary
+      ? '<span class="legendary">🌟 GOLDENER SHURIKEN! +' + coinGain + ' 💰</span>'
+      : "+" + coinGain + " 💰";
+  }
+
+  function showShare() {
+    var bi = currentBeltIndex();
+    lastKnownBelt = bi;
+    document.getElementById("shareBeltEmoji").textContent = BELTS[bi].emoji;
+    document.getElementById("shareBeltText").textContent = BELTS[bi].name + "-Ninja!";
+    document.getElementById("shareStatsText").textContent =
+      state.totalCorrect + " richtige Antworten · Bester Streak: " + state.bestStreak;
+    show("shareScreen");
+  }
+
+  document.getElementById("startBtn").onclick = function () {
+    state.lastPlayed = new Date().toISOString();
+    saveState();
+    renderLevelSelect();
+    show("levelSelectScreen");
+  };
+  document.getElementById("chestContinueBtn").onclick = function () { nextQuestion(); };
+  document.getElementById("shareContinueBtn").onclick = function () { nextQuestion(); };
+  document.getElementById("capContinueBtn").onclick = function () { sessionAnswered = 0; nextQuestion(); };
+  document.getElementById("levelCompleteContinueBtn").onclick = function () {
+    var idxNow = LEVELS.indexOf(activeLevel);
+    if (idxNow + 1 < LEVELS.length && isLevelUnlocked(idxNow + 1)) {
+      startLevel(idxNow + 1);
+    } else {
+      renderLevelSelect();
+      show("levelSelectScreen");
+    }
+  };
+  document.getElementById("levelCompleteMenuBtn").onclick = function () {
+    renderLevelSelect();
+    show("levelSelectScreen");
+  };
+
+  lastKnownBelt = currentBeltIndex();
+  renderTop();
+  show("startScreen");
+})();
+</script>
+</body>
+</html>

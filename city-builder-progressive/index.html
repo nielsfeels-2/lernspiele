@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>City Builder – Present Progressive</title>
+<style>
+  :root {
+    --sky1: #ffb56b; --sky2: #6a4cff; --card: rgba(255,255,255,0.08); --card-border: rgba(255,255,255,0.18);
+    --accent: #ffcf4d; --good: #57e0a0; --bad: #ff8b8b;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: linear-gradient(180deg, var(--sky1) 0%, var(--sky2) 65%, #241a4a 100%);
+    color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    overscroll-behavior: none; touch-action: manipulation;
+  }
+  #app { min-height: 100%; display: flex; flex-direction: column; align-items: center; padding: env(safe-area-inset-top, 14px) 14px 24px; }
+
+  .topbar { width: 100%; max-width: 640px; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+  .pill { background: rgba(0,0,0,.25); border: 1px solid var(--card-border); border-radius: 999px; padding: 8px 14px; font-size: 15px; font-weight: 700; }
+
+  .skyline-wrap {
+    width: 100%; max-width: 640px; height: 96px; background: rgba(0,0,0,.2); border-radius: 16px;
+    border: 1px solid var(--card-border); margin: 10px 0 4px; display: flex; align-items: flex-end;
+    padding: 6px 8px; overflow-x: auto; gap: 4px;
+  }
+  .skyline-wrap span { font-size: 34px; line-height: 1; flex: 0 0 auto; }
+  .skyline-label { font-size: 12px; opacity: .75; margin-bottom: 10px; }
+
+  .card {
+    width: 100%; max-width: 640px; background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 22px; padding: 26px 20px; margin-top: 10px; text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,.35); position: relative;
+  }
+  .scene { font-size: 50px; margin-bottom: 8px; }
+  .sentence { font-size: 22px; font-weight: 700; line-height: 1.5; margin: 8px 0 20px; min-height: 90px; display: flex; align-items: center; justify-content: center; }
+  .sentence .blank { display: inline-block; min-width: 90px; border-bottom: 3px dashed var(--accent); margin: 0 4px; }
+
+  .choices { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .choice-btn {
+    flex: 1 1 150px; max-width: 260px; min-height: 80px; border-radius: 18px; border: none;
+    font-size: 19px; font-weight: 800; color: #16224a; cursor: pointer;
+    background: linear-gradient(180deg, #fff, #dfeaff);
+    box-shadow: 0 6px 0 rgba(0,0,0,.25), 0 10px 20px rgba(0,0,0,.25);
+    padding: 10px 8px;
+  }
+  .choice-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.25); }
+  .choice-btn.correct { background: linear-gradient(180deg, #b8ffcf, #6ee89b); }
+  .choice-btn.wrong { background: linear-gradient(180deg, #ffc2c2, #ff8b8b); }
+
+  .feedback { min-height: 30px; font-size: 17px; font-weight: 700; margin-top: 14px; }
+  .feedback.good { color: var(--good); }
+  .feedback.bad { color: var(--bad); }
+  .feedback.rare { color: var(--accent); }
+
+  .progress-dots { display: flex; gap: 6px; justify-content: center; margin-bottom: 12px; }
+  .progress-dots span { width: 9px; height: 9px; border-radius: 999px; background: rgba(255,255,255,.25); }
+  .progress-dots span.done { background: var(--good); }
+  .progress-dots span.current { background: var(--accent); }
+
+  .start-screen, .newbuild-screen, .share-screen, .cap-screen, .level-select-screen, .level-complete-screen { width: 100%; max-width: 640px; text-align: center; margin-top: 26px; }
+  .start-screen h1 { font-size: 32px; margin-bottom: 6px; }
+  .start-screen p { opacity: .9; font-size: 16px; line-height: 1.5; }
+  .big-btn {
+    margin-top: 22px; padding: 18px 34px; font-size: 20px; font-weight: 800; border: none; border-radius: 18px;
+    background: linear-gradient(180deg, var(--accent), #e0a020); color: #2a1c00; cursor: pointer;
+    box-shadow: 0 6px 0 rgba(0,0,0,.3), 0 10px 24px rgba(0,0,0,.3); min-height: 80px; min-width: 220px;
+  }
+  .big-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.3); }
+  .big-btn.secondary { background: linear-gradient(180deg, #eee, #ccc); color: #222; }
+
+  .newbuild-emoji { font-size: 90px; animation: pop .5s ease; }
+  @keyframes pop { 0% { transform: scale(0) rotate(-10deg);} 60% { transform: scale(1.2);} 100% { transform: scale(1);} }
+
+  .share-card { background: linear-gradient(160deg, #2a3a6b, #16204a); border: 2px solid var(--accent); border-radius: 20px; padding: 20px; margin: 16px auto; max-width: 460px; }
+  .share-skyline { font-size: 30px; letter-spacing: 2px; margin-top: 8px; word-break: break-all; }
+
+  .level-badge { position: absolute; top: 14px; right: 16px; font-size: 13px; background: rgba(255,207,77,.18); border: 1px solid var(--accent); color: var(--accent); padding: 4px 10px; border-radius: 999px; font-weight: 800; }
+  .footer-note { margin-top: 24px; font-size: 12px; opacity: .6; max-width: 480px; text-align: center; }
+  .hidden { display: none !important; }
+
+  @keyframes shake { 10%,90% { transform: translateX(-2px);} 20%,80% { transform: translateX(4px);} 30%,50%,70% { transform: translateX(-8px);} 40%,60% { transform: translateX(8px);} }
+  .shake { animation: shake .5s; }
+
+  .level-grid { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
+  .level-card {
+    background: rgba(0,0,0,.2); border: 1px solid var(--card-border); border-radius: 18px; padding: 18px 20px;
+    display: flex; align-items: center; gap: 16px; cursor: pointer; text-align: left; min-height: 80px;
+  }
+  .level-card.locked { opacity: .45; cursor: default; }
+  .level-card .emoji { font-size: 40px; flex: 0 0 auto; }
+  .level-card .info { flex: 1; }
+  .level-card .info .name { font-weight: 800; font-size: 18px; }
+  .level-card .info .desc { font-size: 13px; opacity: .85; margin-top: 2px; }
+  .level-card .stars { font-size: 18px; flex: 0 0 auto; letter-spacing: 2px; }
+  .lock-icon { font-size: 26px; flex: 0 0 auto; }
+
+  .stars-big { font-size: 46px; letter-spacing: 6px; margin: 16px 0; }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <div class="topbar">
+    <div class="pill">🏙️ Stadtplaner-Level <span id="levelNum">1</span></div>
+    <div class="pill">💰 <span id="coinCount">0</span></div>
+  </div>
+  <div class="skyline-wrap" id="skylineWrap"></div>
+  <div class="skyline-label">Deine Stadt wächst mit jeder richtigen Antwort</div>
+
+  <!-- START -->
+  <div class="start-screen" id="startScreen">
+    <div style="font-size:60px;">🏗️</div>
+    <h1>City Builder</h1>
+    <p>Present Progressive · Englisch Jg. 7, „Our changing cities"<br>Vervollständige die Sätze mit „am/is/are + -ing" und lass deine eigene Stadt wachsen!</p>
+    <button class="big-btn" id="startBtn">▶️ Zur Baustelle</button>
+  </div>
+
+  <!-- LEVEL SELECT -->
+  <div class="level-select-screen hidden" id="levelSelectScreen">
+    <h1 style="font-size:26px;">Wähle dein Bauprojekt</h1>
+    <div class="level-grid" id="levelGrid"></div>
+  </div>
+
+  <!-- GAME -->
+  <div class="card hidden" id="gameCard">
+    <div class="level-badge">Lv. <span id="levelBadgeNum">1</span></div>
+    <div class="progress-dots" id="progressDots"></div>
+    <div class="scene" id="sceneEmoji">🚧</div>
+    <div class="sentence" id="sentenceEl"></div>
+    <div class="choices" id="choicesEl"></div>
+    <div class="feedback" id="feedbackEl"></div>
+  </div>
+
+  <!-- NEW BUILDING -->
+  <div class="newbuild-screen hidden" id="newbuildScreen">
+    <div class="newbuild-emoji" id="newBuildEmoji">🏠</div>
+    <div id="newBuildTitle" style="font-size:22px; font-weight:800;">Neues Gebäude!</div>
+    <div id="newBuildSub" style="opacity:.85; margin-top:6px;"></div>
+    <button class="big-btn" id="newbuildContinueBtn">Weiterbauen →</button>
+  </div>
+
+  <!-- SHARE -->
+  <div class="share-screen hidden" id="shareScreen">
+    <div class="share-card">
+      <div style="font-size:20px; font-weight:800;">🏙️ Deine Stadt, Level <span id="shareLevel">1</span></div>
+      <div class="share-skyline" id="shareSkyline"></div>
+      <div style="opacity:.8; margin-top:10px;" id="shareStats">0 richtige Sätze</div>
+    </div>
+    <p style="opacity:.85; font-size:15px;">🏆 Zeig deine Stadt deiner Klasse!</p>
+    <button class="big-btn" id="shareContinueBtn">Weiterbauen →</button>
+  </div>
+
+  <!-- LEVEL COMPLETE -->
+  <div class="level-complete-screen hidden" id="levelCompleteScreen">
+    <div style="font-size:60px;" id="levelCompleteEmoji">🏆</div>
+    <h1 style="font-size:26px;" id="levelCompleteTitle">Bauprojekt fertig!</h1>
+    <div class="stars-big" id="levelCompleteStars">⭐⭐⭐</div>
+    <div id="levelCompleteSub" style="opacity:.85;"></div>
+    <button class="big-btn" id="levelCompleteContinueBtn">Weiter →</button>
+    <button class="big-btn secondary" id="levelCompleteMenuBtn">Zur Projektauswahl</button>
+  </div>
+
+  <!-- CAP -->
+  <div class="cap-screen hidden" id="capScreen">
+    <div style="font-size:56px;">🌆</div>
+    <h1 style="font-size:26px;">Feierabend auf der Baustelle!</h1>
+    <p>Für heute reicht's – deine Stadt bleibt gespeichert. Morgen geht's weiter.</p>
+    <button class="big-btn" id="capContinueBtn">Trotzdem weiterbauen</button>
+  </div>
+
+  <div class="footer-note">Kein Login, keine Daten verlassen dieses Gerät. Fortschritt wird nur lokal gespeichert.</div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var STORE_KEY = "cityBuilder_presentProgressive_v2";
+  var SESSION_CAP = 15;
+
+  // ---------- Level content (Unit 1: "Our changing cities" vocab, be + -ing) ----------
+  var LEVELS = [
+    {
+      id: 1, name: "Level 1 · Aussagen", emoji: "🟢",
+      desc: "am/is/are + -ing in einfachen Sätzen",
+      questions: [
+        { pre: "They", post: " a hole in the street.", options: ["are digging", "is digging", "digging"], correct: "are digging", building: "🕳️" },
+        { pre: "He", post: " a new house.", options: ["is building", "are building", "build"], correct: "is building", building: "🏠" },
+        { pre: "We", post: " trees in the park.", options: ["are planting", "is planting", "plant"], correct: "are planting", building: "🌳" },
+        { pre: "The workers", post: " a new cycle lane.", options: ["are adding", "is adding", "adds"], correct: "are adding", building: "🚲" },
+        { pre: "She", post: " that old building.", options: ["is tearing down", "are tearing down", "tear down"], correct: "is tearing down", building: "🧱" },
+        { pre: "I", post: " a new shopping centre.", options: ["am planning", "is planning", "plan"], correct: "am planning", building: "🏬" },
+        { pre: "They", post: " the canals right now.", options: ["are renovating", "is renovating", "renovate"], correct: "are renovating", building: "🌉" },
+        { pre: "He", post: " a new youth club.", options: ["is opening", "are opening", "open"], correct: "is opening", building: "🏛️" }
+      ]
+    },
+    {
+      id: 2, name: "Level 2 · Verneinung", emoji: "🟡",
+      desc: "isn't / aren't / am not",
+      questions: [
+        { pre: "We", post: " a hole in our street. (Verneinung)", options: ["aren't digging", "isn't digging", "don't dig"], correct: "aren't digging", building: "🌳" },
+        { pre: "She", post: " a new building. (Verneinung)", options: ["isn't building", "aren't building", "doesn't build"], correct: "isn't building", building: "🏠" },
+        { pre: "I", post: " trees today. (Verneinung)", options: ["am not planting", "isn't planting", "don't plant"], correct: "am not planting", building: "🌳" },
+        { pre: "They", post: " the old library. (Verneinung)", options: ["aren't renovating", "isn't renovating", "don't renovate"], correct: "aren't renovating", building: "🏛️" },
+        { pre: "He", post: " a new library. (Verneinung)", options: ["isn't building", "aren't building", "doesn't build"], correct: "isn't building", building: "🏢" },
+        { pre: "You", post: " a hole today. (Verneinung)", options: ["aren't digging", "isn't digging", "don't dig"], correct: "aren't digging", building: "🕳️" }
+      ]
+    },
+    {
+      id: 3, name: "Level 3 · Fragen", emoji: "🟠",
+      desc: "Is oder Are?",
+      questions: [
+        { pre: "___ you", post: " a new road here? (Frage)", options: ["Are", "Is", "Do"], correct: "Are", building: "🚧" },
+        { pre: "___ he", post: " a new digital media centre? (Frage)", options: ["Is", "Are", "Does"], correct: "Is", building: "🏢" },
+        { pre: "___ they", post: " the canals now? (Frage)", options: ["Are", "Is", "Do"], correct: "Are", building: "🌉" },
+        { pre: "Why ___ she", post: " that building? (Frage)", options: ["is", "are", "does"], correct: "is", building: "🧱" },
+        { pre: "___ we", post: " a cycle lane? (Frage)", options: ["Are", "Is", "Do"], correct: "Are", building: "🚲" },
+        { pre: "___ it", post: " getting better? (Frage)", options: ["Is", "Are", "Does"], correct: "Is", building: "🏬" }
+      ]
+    },
+    {
+      id: 4, name: "Level 4 · Endgegner", emoji: "🐉",
+      desc: "Rechtschreibung (Doppelkonsonant, -e weg) + gemischt",
+      questions: [
+        { pre: "They", post: " a new campaign for clean streets.", options: ["running", "runing"], correct: "running", building: "🏃" },
+        { pre: "She", post: " a big party for the opening.", options: ["planning", "planing"], correct: "planning", building: "🎉" },
+        { pre: "We", post: " our street safer.", options: ["making", "makeing"], correct: "making", building: "🛠️" },
+        { pre: "He", post: " a report about the changes.", options: ["writing", "writeing"], correct: "writing", building: "📄" },
+        { pre: "They", post: " for new furniture for the youth club.", options: ["shopping", "shoping"], correct: "shopping", building: "🛍️" },
+        { pre: "He", post: " a new house.", options: ["is building", "are building", "build"], correct: "is building", building: "🏠" },
+        { pre: "___ they", post: " the canals now?", options: ["Are", "Is", "Do"], correct: "Are", building: "🌉" },
+        { pre: "We", post: " a hole in our street. (Verneinung)", options: ["aren't digging", "isn't digging", "don't dig"], correct: "aren't digging", building: "🌳" }
+      ]
+    }
+  ];
+
+  var state = loadState();
+  var order = [];
+  var idx = 0;
+  var answered = false;
+  var sessionAnswered = 0;
+  var activeLevel = null;
+  var levelCorrectCount = 0;
+  var levelWrongCount = 0;
+
+  function loadState() {
+    try {
+      var raw = localStorage.getItem(STORE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (e) {}
+    return { coins: 0, totalCorrect: 0, skyline: [], lastPlayed: null, levelStars: {} };
+  }
+  function saveState() {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function isLevelUnlocked(levelIndex) {
+    if (levelIndex === 0) return true;
+    var prevId = LEVELS[levelIndex - 1].id;
+    return (state.levelStars[prevId] || 0) >= 1;
+  }
+
+  var LEVEL_STEP = 4; // buildings per skyline-level display (meta progress, independent of LEVELS array)
+
+  function metaLevel() { return Math.floor(state.skyline.length / LEVEL_STEP) + 1; }
+
+  function starsFor(total, wrong) {
+    if (wrong === 0) return 3;
+    if (wrong <= Math.ceil(total * 0.3)) return 2;
+    return 1;
+  }
+
+  function renderTop() {
+    document.getElementById("coinCount").textContent = state.coins;
+    document.getElementById("levelNum").textContent = metaLevel();
+    document.getElementById("levelBadgeNum").textContent = metaLevel();
+    var wrap = document.getElementById("skylineWrap");
+    wrap.innerHTML = "";
+    if (state.skyline.length === 0) {
+      var placeholder = document.createElement("span");
+      placeholder.style.opacity = ".4";
+      placeholder.style.fontSize = "16px";
+      placeholder.textContent = "Noch keine Gebäude – leg los!";
+      wrap.appendChild(placeholder);
+    } else {
+      state.skyline.forEach(function (emoji) {
+        var s = document.createElement("span");
+        s.textContent = emoji;
+        wrap.appendChild(s);
+      });
+      wrap.scrollLeft = wrap.scrollWidth;
+    }
+  }
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function show(id) {
+    ["startScreen", "levelSelectScreen", "gameCard", "newbuildScreen", "shareScreen", "levelCompleteScreen", "capScreen"].forEach(function (s) {
+      document.getElementById(s).classList.toggle("hidden", s !== id);
+    });
+  }
+
+  function renderLevelSelect() {
+    var grid = document.getElementById("levelGrid");
+    grid.innerHTML = "";
+    LEVELS.forEach(function (lvl, i) {
+      var unlocked = isLevelUnlocked(i);
+      var stars = state.levelStars[lvl.id] || 0;
+      var card = document.createElement("div");
+      card.className = "level-card" + (unlocked ? "" : " locked");
+      var starsHtml = unlocked ? "★".repeat(stars) + "☆".repeat(3 - stars) : "";
+      card.innerHTML =
+        '<div class="emoji">' + lvl.emoji + '</div>' +
+        '<div class="info"><div class="name">' + lvl.name + '</div><div class="desc">' + lvl.desc + '</div></div>' +
+        (unlocked ? '<div class="stars">' + starsHtml + '</div>' : '<div class="lock-icon">🔒</div>');
+      if (unlocked) {
+        card.onclick = function () { startLevel(i); };
+      }
+      grid.appendChild(card);
+    });
+  }
+
+  function startLevel(levelIndex) {
+    activeLevel = LEVELS[levelIndex];
+    order = shuffle(activeLevel.questions.map(function (_, i) { return i; }));
+    idx = 0;
+    levelCorrectCount = 0;
+    levelWrongCount = 0;
+    sessionAnswered = 0;
+    show("gameCard");
+    nextQuestion();
+  }
+
+  function renderProgressDots() {
+    var wrap = document.getElementById("progressDots");
+    wrap.innerHTML = "";
+    activeLevel.questions.forEach(function (_, i) {
+      var dot = document.createElement("span");
+      if (i < idx - 1) dot.className = "done";
+      else if (i === idx - 1) dot.className = "current";
+      wrap.appendChild(dot);
+    });
+  }
+
+  function nextQuestion() {
+    if (sessionAnswered > 0 && sessionAnswered % SESSION_CAP === 0) {
+      show("capScreen");
+      return;
+    }
+    if (idx >= order.length) {
+      finishLevel();
+      return;
+    }
+    var q = activeLevel.questions[order[idx]];
+    idx++;
+    answered = false;
+    renderProgressDots();
+    document.getElementById("feedbackEl").textContent = "";
+    document.getElementById("feedbackEl").className = "feedback";
+    document.getElementById("sceneEmoji").textContent = "🚧";
+
+    document.getElementById("sentenceEl").innerHTML =
+      (q.pre ? q.pre + " " : "") + '<span class="blank">___</span>' + q.post;
+
+    var choicesEl = document.getElementById("choicesEl");
+    choicesEl.innerHTML = "";
+    var opts = shuffle(q.options);
+    opts.forEach(function (opt) {
+      var btn = document.createElement("button");
+      btn.className = "choice-btn";
+      btn.textContent = opt;
+      btn.onclick = function () { onAnswer(opt, q, btn, choicesEl); };
+      choicesEl.appendChild(btn);
+    });
+  }
+
+  function onAnswer(opt, q, btn, choicesEl) {
+    if (answered) return;
+    answered = true;
+    var correct = opt === q.correct;
+    var allBtns = choicesEl.querySelectorAll("button");
+    allBtns.forEach(function (b) {
+      b.disabled = true;
+      if (b.textContent === q.correct) b.classList.add("correct");
+      else if (b === btn) b.classList.add("wrong");
+    });
+
+    var fb = document.getElementById("feedbackEl");
+    var levelBefore = metaLevel();
+    var wasBuilding = false;
+
+    if (correct) {
+      var coinGain = Math.floor(Math.random() * 3) + 1;
+      var rare = Math.random() < 0.08;
+      state.coins += coinGain;
+      state.totalCorrect += 1;
+      levelCorrectCount++;
+      var emoji = rare ? ["🎡", "🗼", "🏟️", "⛲"][Math.floor(Math.random() * 4)] : q.building;
+      state.skyline.push(emoji);
+      wasBuilding = true;
+      document.getElementById("sceneEmoji").textContent = "✅";
+      fb.textContent = (rare ? "✨ SELTENES GEBÄUDE! " : "Richtig! ") + "+" + coinGain + " 💰";
+      fb.className = "feedback " + (rare ? "rare" : "good");
+    } else {
+      document.getElementById("sceneEmoji").textContent = "🚫";
+      fb.textContent = "Nicht ganz. Richtig wäre: " + q.correct;
+      fb.className = "feedback bad";
+      levelWrongCount++;
+      document.getElementById("gameCard").classList.add("shake");
+      setTimeout(function () { document.getElementById("gameCard").classList.remove("shake"); }, 500);
+    }
+    saveState();
+    renderTop();
+    sessionAnswered++;
+
+    var leveledUp = wasBuilding && metaLevel() > levelBefore;
+
+    setTimeout(function () {
+      if (wasBuilding && leveledUp) {
+        showNewBuildLevelUp();
+      } else if (wasBuilding && state.totalCorrect % 6 === 0) {
+        showShare();
+      } else {
+        nextQuestion();
+      }
+    }, correct ? 1100 : 1700);
+  }
+
+  function finishLevel() {
+    var total = activeLevel.questions.length;
+    var stars = starsFor(total, levelWrongCount);
+    var prevStars = state.levelStars[activeLevel.id] || 0;
+    if (stars > prevStars) state.levelStars[activeLevel.id] = stars;
+    var bonusCoins = stars * 3;
+    state.coins += bonusCoins;
+    saveState(); renderTop();
+
+    document.getElementById("levelCompleteEmoji").textContent = stars === 3 ? "🏆" : (stars === 2 ? "🥈" : "🥉");
+    document.getElementById("levelCompleteTitle").textContent = activeLevel.name + " fertig!";
+    document.getElementById("levelCompleteStars").textContent = "★".repeat(stars) + "☆".repeat(3 - stars);
+    document.getElementById("levelCompleteSub").textContent =
+      levelCorrectCount + " von " + total + " richtig · +" + bonusCoins + " 💰 Bonus";
+    show("levelCompleteScreen");
+  }
+
+  function showNewBuildLevelUp() {
+    var lastEmoji = state.skyline[state.skyline.length - 1];
+    document.getElementById("newBuildEmoji").textContent = lastEmoji;
+    document.getElementById("newBuildTitle").textContent = "Stadtplaner-Level " + metaLevel() + " erreicht!";
+    document.getElementById("newBuildSub").textContent = "Deine Stadt hat jetzt " + state.skyline.length + " Gebäude.";
+    show("newbuildScreen");
+  }
+
+  function showShare() {
+    document.getElementById("shareLevel").textContent = metaLevel();
+    document.getElementById("shareSkyline").textContent = state.skyline.join(" ");
+    document.getElementById("shareStats").textContent = state.totalCorrect + " richtige Sätze im Present progressive";
+    show("shareScreen");
+  }
+
+  document.getElementById("startBtn").onclick = function () {
+    state.lastPlayed = new Date().toISOString();
+    saveState();
+    renderLevelSelect();
+    show("levelSelectScreen");
+  };
+  document.getElementById("newbuildContinueBtn").onclick = function () { nextQuestion(); };
+  document.getElementById("shareContinueBtn").onclick = function () { nextQuestion(); };
+  document.getElementById("capContinueBtn").onclick = function () { sessionAnswered = 0; nextQuestion(); };
+  document.getElementById("levelCompleteContinueBtn").onclick = function () {
+    var idxNow = LEVELS.indexOf(activeLevel);
+    if (idxNow + 1 < LEVELS.length && isLevelUnlocked(idxNow + 1)) {
+      startLevel(idxNow + 1);
+    } else {
+      renderLevelSelect();
+      show("levelSelectScreen");
+    }
+  };
+  document.getElementById("levelCompleteMenuBtn").onclick = function () {
+    renderLevelSelect();
+    show("levelSelectScreen");
+  };
+
+  renderTop();
+  show("startScreen");
+})();
+</script>
+</body>
+</html>
