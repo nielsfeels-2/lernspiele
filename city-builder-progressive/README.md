@@ -2,7 +2,9 @@
 
 Eigenständiges Lernspiel (Weg A) zum Present progressive, passend zu Orange Line 3, Unit 1 „People in England" (Station 2, G2, Wortfeld „Our changing cities"). Offline lauffähig, anonym, ohne Anmeldung – optimiert fürs iPad.
 
-**▶️ Lokal spielen:** `index.html` direkt im Browser öffnen (Doppelklick oder AirDrop aufs iPad). QR-Code/Live-Link analog WortWelt, sobald ein Repo/Hosting feststeht.
+**▶️ Live spielen:** https://nielsfeels-2.github.io/lernspiele/city-builder-progressive/
+
+![QR-Code](qr-city-builder-progressive.png)
 
 ## Lernziel & Spielprinzip
 
@@ -42,4 +44,4 @@ Keine Accounts, kein Tracking. Fortschritt ausschließlich lokal (`localStorage`
 ## Weiterentwicklung / offene Punkte
 
 - Aktuell 28 Aufgaben über 4 Level – bei Bedarf leicht erweiterbar (Array `LEVELS` in `index.html`).
-- Deployment/QR-Code: eigenes Sammel-Repo für alle Lernspiele geplant (GitHub CLI wird dafür eingerichtet) – Link/QR folgt, sobald das Repo steht.
+- Repo: `nielsfeels-2/lernspiele` (Sammel-Repo für alle Lernspiele aller Jahrgänge/Themen).
