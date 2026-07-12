@@ -9,14 +9,14 @@
     --bg1: #0b1a14; --bg2: #142a1f; --accent: #ffb238; --accent2: #4ce07a;
     --card: rgba(255,255,255,0.06); --card-border: rgba(255,255,255,0.14); --bad: #ff8b8b;
   }
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body {
     margin: 0; padding: 0; height: 100%;
     background: radial-gradient(1100px 700px at 50% -10%, #1d3a2a 0%, var(--bg1) 55%, var(--bg2) 100%);
     color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
     overscroll-behavior: none; touch-action: manipulation;
   }
-  #app { min-height: 100%; display: flex; flex-direction: column; align-items: center; padding: env(safe-area-inset-top, 16px) 16px 24px; }
+  #app { min-height: 100%; display: flex; flex-direction: column; align-items: center; padding: env(safe-area-inset-top, 16px) 16px 24px; user-select: none; }
 
   .locks-row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 640px; margin: 6px 0 4px; }
   .locks-row span { font-size: 20px; opacity: .5; }
@@ -33,15 +33,22 @@
   .qtype { font-size: 13px; opacity: .7; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
   .question { font-size: 24px; font-weight: 800; line-height: 1.4; margin: 6px 0 22px; min-height: 70px; display: flex; align-items: center; justify-content: center; }
 
-  .choices { display: flex; flex-direction: column; gap: 12px; }
-  .choice-btn {
-    min-height: 64px; border-radius: 16px; border: none; font-size: 19px; font-weight: 700; color: #0d1f16;
-    cursor: pointer; background: linear-gradient(180deg, #fff, #e4f5ea);
+  .answer-form { display: flex; flex-direction: column; gap: 12px; }
+  .answer-input {
+    width: 100%; min-height: 60px; border-radius: 16px; border: 2px solid rgba(255,255,255,.25);
+    font-size: 22px; font-weight: 700; text-align: center; padding: 10px 16px; color: #0d1f16;
+    background: linear-gradient(180deg, #fff, #e4f5ea); font-family: inherit;
+  }
+  .answer-input:focus { outline: none; border-color: var(--accent); }
+  .answer-input.correct { background: linear-gradient(180deg, #b8ffcf, #59e087); }
+  .answer-input.wrong { background: linear-gradient(180deg, #ffc2c2, #ff8b8b); }
+  .submit-btn {
+    min-height: 60px; border-radius: 16px; border: none; font-size: 19px; font-weight: 800; color: #241800;
+    cursor: pointer; background: linear-gradient(180deg, var(--accent), #c8860a);
     box-shadow: 0 6px 0 rgba(0,0,0,.25), 0 10px 18px rgba(0,0,0,.25); padding: 10px 16px;
   }
-  .choice-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.25); }
-  .choice-btn.correct { background: linear-gradient(180deg, #b8ffcf, #59e087); }
-  .choice-btn.wrong { background: linear-gradient(180deg, #ffc2c2, #ff8b8b); }
+  .submit-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.25); }
+  .submit-btn:disabled { opacity: .5; }
 
   .feedback { min-height: 30px; font-size: 16px; font-weight: 700; margin-top: 16px; }
   .feedback.good { color: var(--accent2); }
@@ -81,8 +88,17 @@
 
   <!-- ============================================================
        VOKABELTEST-INHALT – HIER FÜR JEDEN NEUEN TEST ANPASSEN
+       POOL enthält ALLE Vokabeln des Testabschnitts (nicht nur die Testgröße!).
+       Jedes Mal, wenn der Test gestartet wird, werden TEST_SIZE zufällige
+       Items in zufälliger Reihenfolge gezogen - jede Person (und jeder neue
+       Versuch) bekommt eine andere Auswahl. Das verhindert Abschreiben und
+       gibt gleichzeitig eine "zweite Chance" mit anderen Wörtern.
        Jedes Item: { type: "de-en"|"en-de"|"sentence", q: Frage/Satz mit ___,
-                     options: [...], correct: "..." }
+                     correct: ["akzeptierte Schreibweise 1", "..."] }
+       WICHTIG: Freitext-Eingabe, KEIN Multiple-Choice - die SuS sollen das
+       Wort wirklich schreiben (siehe leistungsbewertung_standard.md).
+       Vergleich ist case-insensitive (Groß-/Kleinschreibung egal), aber
+       Tippfehler zählen als falsch - Rechtschreibung ist Testgegenstand.
        Notenschlüssel weiter unten im Script anpassbar.
      ============================================================ -->
 
@@ -92,9 +108,10 @@
     <h1>Vokabeltest: Escape Room</h1>
     <p style="opacity:.75; font-size:15px; margin-top:-6px;">Unit 6 – A changing world</p>
     <p>Unit 6 – A changing world – Check-in + Grammatik + Medien<br>
-    Du bist im Klassenzimmer eingeschlossen. Jede richtige Antwort öffnet ein Schloss.
+    Du bist im Klassenzimmer eingeschlossen. Jede richtig <b>geschriebene</b> Antwort öffnet ein Schloss.
     Am Ende gibt's deine Note – zeig sie deiner Lehrkraft!</p>
-    <p style="font-size:13px; opacity:.7;">13 Fragen · jede Frage nur eine Antwort möglich, kein Zurück</p>
+    <p style="font-size:13px; opacity:.7;" id="poolInfo">13 von 22 möglichen Fragen · du tippst die Antwort selbst · jede Frage nur ein Versuch, kein Zurück</p>
+    <p style="font-size:12px; opacity:.6;">🎲 Bei jedem Versuch eine andere Auswahl aus dem gesamten Wortschatz - lohnt sich, wirklich alles zu lernen!</p>
     <button class="big-btn" id="startBtn">🔓 Test starten</button>
   </div>
 
@@ -105,7 +122,11 @@
       <div class="room-emoji" id="roomEmoji">🚪</div>
       <div class="qtype" id="qType">Deutsch → Englisch</div>
       <div class="question" id="questionEl"></div>
-      <div class="choices" id="choicesEl"></div>
+      <form class="answer-form" id="answerForm" autocomplete="off">
+        <input class="answer-input" id="answerInput" type="text" autocomplete="off" autocapitalize="off"
+               autocorrect="off" spellcheck="false" placeholder="Antwort eingeben …">
+        <button class="submit-btn" id="submitBtn" type="submit">Prüfen</button>
+      </form>
       <div class="feedback" id="feedbackEl"></div>
     </div>
   </div>
@@ -132,21 +153,33 @@
   "use strict";
 
   // ---------- Vokabeltest-Inhalt (Unit 6 – A changing world – Check-in + Grammatik + Medien) ----------
-  var ITEMS = [
-    { type: "de-en", q: "die Vermutung/Vorhersage", options: ["prediction", "plan", "decision"], correct: "prediction" },
-    { type: "de-en", q: "das Ger\u00e4t", options: ["appliance", "machine", "tool"], correct: "appliance" },
-    { type: "de-en", q: "viel (z\u00e4hlbar)", options: ["many", "much", "a lot"], correct: "many" },
-    { type: "de-en", q: "viel (unz\u00e4hlbar)", options: ["much", "many", "few"], correct: "much" },
-    { type: "de-en", q: "die Quelle", options: ["source", "fact", "information"], correct: "source" },
-    { type: "en-de", q: "a lot of", options: ["viel/viele (allgemein)", "wenig", "ein bisschen"], correct: "viel/viele (allgemein)" },
-    { type: "en-de", q: "a few/a little", options: ["ein paar/ein bisschen", "viele/viel", "keine/nichts"], correct: "ein paar/ein bisschen" },
-    { type: "en-de", q: "appliance", options: ["das Ger\u00e4t", "das Werkzeug", "die Maschine (gro\u00df)"], correct: "das Ger\u00e4t" },
-    { type: "en-de", q: "source", options: ["die Quelle", "die Tatsache", "die Meinung"], correct: "die Quelle" },
-    { type: "en-de", q: "prediction", options: ["die Vorhersage", "der Plan", "die Entscheidung"], correct: "die Vorhersage" },
-    { type: "sentence", q: "In 2050, robots ___ do our housework.", options: ["will", "are going to", "can"], correct: "will" },
-    { type: "sentence", q: "How ___ apps do you use every day?", options: ["many", "much", "a lot"], correct: "many" },
-    { type: "sentence", q: "How ___ time do you spend online?", options: ["much", "many", "few"], correct: "much" }
+  // POOL = ALLE Vokabeln dieses Testabschnitts. TEST_SIZE = wie viele davon
+  // pro Durchlauf zufällig abgefragt werden.
+  var POOL = [
+    { type: "de-en", q: "die Vermutung/Vorhersage", correct: ["prediction"] },
+    { type: "de-en", q: "das Ger\u00e4t", correct: ["appliance"] },
+    { type: "de-en", q: "viel (z\u00e4hlbar)", correct: ["many"] },
+    { type: "de-en", q: "viel (unz\u00e4hlbar)", correct: ["much"] },
+    { type: "de-en", q: "die Quelle", correct: ["source"] },
+    { type: "de-en", q: "die Zukunft", correct: ["future"] },
+    { type: "de-en", q: "das Werkzeug", correct: ["tool"] },
+    { type: "de-en", q: "das Medium/die Medien", correct: ["media"] },
+    { type: "de-en", q: "der \u00f6ffentliche Ort", correct: ["public place"] },
+    { type: "de-en", q: "wenige/ein paar", correct: ["a few", "few"] },
+    { type: "en-de", q: "a lot of", correct: ["viel", "viele"] },
+    { type: "en-de", q: "a few/a little", correct: ["ein paar", "ein bisschen"] },
+    { type: "en-de", q: "appliance", correct: ["das ger\u00e4t", "ger\u00e4t"] },
+    { type: "en-de", q: "source", correct: ["die quelle", "quelle"] },
+    { type: "en-de", q: "prediction", correct: ["die vorhersage", "vorhersage"] },
+    { type: "en-de", q: "future", correct: ["die zukunft", "zukunft"] },
+    { type: "en-de", q: "device", correct: ["das ger\u00e4t", "ger\u00e4t"] },
+    { type: "en-de", q: "research", correct: ["recherchieren", "die recherche"] },
+    { type: "sentence", q: "In 2050, robots ___ (will) do our housework.", correct: ["will"] },
+    { type: "sentence", q: "How ___ apps do you use every day?", correct: ["many"] },
+    { type: "sentence", q: "How ___ time do you spend online?", correct: ["much"] },
+    { type: "sentence", q: "People ___ (won't) use cash anymore.", correct: ["won't", "wont"] }
   ];
+  var TEST_SIZE = Math.min(13, POOL.length);
 
   var TYPE_LABELS = { "de-en": "Deutsch → Englisch", "en-de": "Englisch → Deutsch", "sentence": "Lückensatz / Übersetzung" };
 
@@ -167,6 +200,11 @@
     return "6";
   }
 
+  function normalize(str) {
+    return String(str || "").trim().replace(/\s+/g, " ").toLowerCase();
+  }
+
+  var ITEMS = [];
   var idx = 0;
   var correctCount = 0;
   var answered = false;
@@ -179,6 +217,10 @@
       var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
     }
     return a;
+  }
+
+  function pickItems() {
+    return shuffle(POOL).slice(0, TEST_SIZE);
   }
 
   function show(id) {
@@ -201,6 +243,7 @@
   }
 
   function startTest() {
+    ITEMS = pickItems();
     idx = 0;
     correctCount = 0;
     results = [];
@@ -222,46 +265,45 @@
     document.getElementById("feedbackEl").className = "feedback";
     document.getElementById("roomEmoji").textContent = "🚪";
 
-    var choicesEl = document.getElementById("choicesEl");
-    choicesEl.innerHTML = "";
-    shuffle(item.options).forEach(function (opt) {
-      var btn = document.createElement("button");
-      btn.className = "choice-btn";
-      btn.textContent = opt;
-      btn.onclick = function () { onAnswer(opt, item, btn, choicesEl); };
-      choicesEl.appendChild(btn);
-    });
+    var input = document.getElementById("answerInput");
+    input.value = "";
+    input.className = "answer-input";
+    input.disabled = false;
+    document.getElementById("submitBtn").disabled = false;
+    setTimeout(function () { input.focus(); }, 50);
   }
 
-  function onAnswer(opt, item, btn, choicesEl) {
+  function onAnswer(item) {
     if (answered) return;
     answered = true;
-    var correct = opt === item.correct;
-    var allBtns = choicesEl.querySelectorAll("button");
-    allBtns.forEach(function (b) {
-      b.disabled = true;
-      if (b.textContent === item.correct) b.classList.add("correct");
-      else if (b === btn) b.classList.add("wrong");
-    });
+    var input = document.getElementById("answerInput");
+    var given = normalize(input.value);
+    var accepted = item.correct.map(normalize);
+    var correct = given.length > 0 && accepted.indexOf(given) !== -1;
+
+    input.disabled = true;
+    document.getElementById("submitBtn").disabled = true;
 
     var fb = document.getElementById("feedbackEl");
     var card = document.querySelector(".card");
     if (correct) {
       correctCount++;
       results[idx] = "correct";
+      input.className = "answer-input correct";
       document.getElementById("roomEmoji").textContent = "🔓";
       fb.textContent = "Schloss geöffnet!";
       fb.className = "feedback good";
     } else {
       results[idx] = "wrong";
+      input.className = "answer-input wrong";
       document.getElementById("roomEmoji").textContent = "🔒";
-      fb.textContent = "Schloss bleibt zu. Richtig wäre: " + item.correct;
+      fb.textContent = "Schloss bleibt zu. Richtig wäre: " + item.correct[0];
       fb.className = "feedback bad";
       card.classList.add("shake");
       setTimeout(function () { card.classList.remove("shake"); }, 500);
     }
     renderLocksRow();
-    setTimeout(function () { idx++; nextQuestion(); }, correct ? 1100 : 1900);
+    setTimeout(function () { idx++; nextQuestion(); }, correct ? 1100 : 2200);
   }
 
   function finishTest() {
@@ -275,6 +317,10 @@
 
   document.getElementById("startBtn").onclick = startTest;
   document.getElementById("restartBtn").onclick = function () { show("startScreen"); };
+  document.getElementById("answerForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    onAnswer(ITEMS[idx]);
+  });
 
   show("startScreen");
 })();
