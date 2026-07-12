@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Vokabeltest – Unit 1 – Looking back</title>
+<style>
+  :root {
+    --bg1: #0b1a14; --bg2: #142a1f; --accent: #ffb238; --accent2: #4ce07a;
+    --card: rgba(255,255,255,0.06); --card-border: rgba(255,255,255,0.14); --bad: #ff8b8b;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: radial-gradient(1100px 700px at 50% -10%, #1d3a2a 0%, var(--bg1) 55%, var(--bg2) 100%);
+    color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    overscroll-behavior: none; touch-action: manipulation;
+  }
+  #app { min-height: 100%; display: flex; flex-direction: column; align-items: center; padding: env(safe-area-inset-top, 16px) 16px 24px; }
+
+  .locks-row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 640px; margin: 6px 0 4px; }
+  .locks-row span { font-size: 20px; opacity: .5; }
+  .locks-row span.correct { opacity: 1; }
+  .locks-row span.wrong { opacity: 1; }
+  .locks-row span.current { opacity: 1; filter: drop-shadow(0 0 6px var(--accent)); }
+
+  .card {
+    width: 100%; max-width: 640px; background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 22px; padding: 28px 22px; margin-top: 12px; text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,.4);
+  }
+  .room-emoji { font-size: 48px; margin-bottom: 8px; }
+  .qtype { font-size: 13px; opacity: .7; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .question { font-size: 24px; font-weight: 800; line-height: 1.4; margin: 6px 0 22px; min-height: 70px; display: flex; align-items: center; justify-content: center; }
+
+  .choices { display: flex; flex-direction: column; gap: 12px; }
+  .choice-btn {
+    min-height: 64px; border-radius: 16px; border: none; font-size: 19px; font-weight: 700; color: #0d1f16;
+    cursor: pointer; background: linear-gradient(180deg, #fff, #e4f5ea);
+    box-shadow: 0 6px 0 rgba(0,0,0,.25), 0 10px 18px rgba(0,0,0,.25); padding: 10px 16px;
+  }
+  .choice-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.25); }
+  .choice-btn.correct { background: linear-gradient(180deg, #b8ffcf, #59e087); }
+  .choice-btn.wrong { background: linear-gradient(180deg, #ffc2c2, #ff8b8b); }
+
+  .feedback { min-height: 30px; font-size: 16px; font-weight: 700; margin-top: 16px; }
+  .feedback.good { color: var(--accent2); }
+  .feedback.bad { color: var(--bad); }
+
+  .start-screen, .result-screen { width: 100%; max-width: 640px; text-align: center; margin-top: 30px; }
+  .start-screen h1 { font-size: 32px; margin-bottom: 8px; }
+  .start-screen p { opacity: .85; font-size: 16px; line-height: 1.55; }
+  .big-btn {
+    margin-top: 22px; padding: 18px 34px; font-size: 20px; font-weight: 800; border: none; border-radius: 18px;
+    background: linear-gradient(180deg, var(--accent), #c8860a); color: #241800; cursor: pointer;
+    box-shadow: 0 6px 0 rgba(0,0,0,.3), 0 10px 24px rgba(0,0,0,.3); min-height: 80px; min-width: 220px;
+  }
+  .big-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.3); }
+  .big-btn.secondary { background: linear-gradient(180deg, #eee, #ccc); color: #222; }
+
+  .result-card {
+    background: linear-gradient(160deg, #16321f, #0c1c12); border: 2px solid var(--accent); border-radius: 22px;
+    padding: 26px 20px; margin: 18px auto;
+  }
+  .grade-big { font-size: 84px; font-weight: 900; line-height: 1; margin: 4px 0; }
+  .grade-label { font-size: 15px; opacity: .8; letter-spacing: 1px; text-transform: uppercase; }
+  .points-row { font-size: 20px; font-weight: 700; margin-top: 10px; }
+  .percent-row { font-size: 15px; opacity: .8; margin-top: 4px; }
+
+  .footer-note { margin-top: 26px; font-size: 12px; opacity: .55; max-width: 480px; text-align: center; }
+  .hidden { display: none !important; }
+
+  @keyframes shake { 10%,90% { transform: translateX(-2px);} 20%,80% { transform: translateX(4px);} 30%,50%,70% { transform: translateX(-8px);} 40%,60% { transform: translateX(8px);} }
+  .shake { animation: shake .5s; }
+  @keyframes pop { 0% { transform: scale(0);} 60% { transform: scale(1.15);} 100% { transform: scale(1);} }
+  .pop { animation: pop .5s ease; }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ============================================================
+       VOKABELTEST-INHALT – HIER FÜR JEDEN NEUEN TEST ANPASSEN
+       Jedes Item: { type: "de-en"|"en-de"|"sentence", q: Frage/Satz mit ___,
+                     options: [...], correct: "..." }
+       Notenschlüssel weiter unten im Script anpassbar.
+     ============================================================ -->
+
+  <!-- START -->
+  <div class="start-screen" id="startScreen">
+    <div style="font-size:60px;">🔐</div>
+    <h1>Vokabeltest: Escape Room</h1>
+    <p style="opacity:.75; font-size:15px; margin-top:-6px;">Unit 1 – Looking back</p>
+    <p>Unit 1 – Looking back – Viewing + Listening + Reading<br>
+    Du bist im Klassenzimmer eingeschlossen. Jede richtige Antwort öffnet ein Schloss.
+    Am Ende gibt's deine Note – zeig sie deiner Lehrkraft!</p>
+    <p style="font-size:13px; opacity:.7;">13 Fragen · jede Frage nur eine Antwort möglich, kein Zurück</p>
+    <button class="big-btn" id="startBtn">🔓 Test starten</button>
+  </div>
+
+  <!-- GAME -->
+  <div class="hidden" id="gameWrap" style="width:100%; max-width:640px;">
+    <div class="locks-row" id="locksRow"></div>
+    <div class="card">
+      <div class="room-emoji" id="roomEmoji">🚪</div>
+      <div class="qtype" id="qType">Deutsch → Englisch</div>
+      <div class="question" id="questionEl"></div>
+      <div class="choices" id="choicesEl"></div>
+      <div class="feedback" id="feedbackEl"></div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="result-screen hidden" id="resultScreen">
+    <div class="room-emoji pop">🎉</div>
+    <h1 style="font-size:26px;">Entkommen!</h1>
+    <div class="result-card">
+      <div class="grade-label">Note</div>
+      <div class="grade-big" id="gradeBig">2</div>
+      <div class="points-row" id="pointsRow">11 / 13 Punkte</div>
+      <div class="percent-row" id="percentRow">85 %</div>
+    </div>
+    <p style="opacity:.85; font-size:16px;">👆 Zeig dieses Ergebnis direkt deiner Lehrkraft.</p>
+    <button class="big-btn secondary" id="restartBtn">Neuer Versuch (nächste Person)</button>
+  </div>
+
+  <div class="footer-note">Kein Login, keine Daten verlassen dieses Gerät. Kein Speichern von Ergebnissen – nach dem Zeigen einfach für die nächste Person neu starten.</div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- Vokabeltest-Inhalt (Unit 1 – Looking back – Viewing + Listening + Reading) ----------
+  var ITEMS = [
+    { type: "de-en", q: "die Mannschaft", options: ["crew", "team", "staff"], correct: "crew" },
+    { type: "de-en", q: "der Schatz", options: ["treasure", "gold", "prize"], correct: "treasure" },
+    { type: "de-en", q: "die Aula/Versammlung", options: ["assembly", "meeting", "hall"], correct: "assembly" },
+    { type: "de-en", q: "die Uniform", options: ["uniform", "costume", "clothes"], correct: "uniform" },
+    { type: "de-en", q: "der Podcast", options: ["podcast", "broadcast", "recording"], correct: "podcast" },
+    { type: "en-de", q: "assembly", options: ["die Versammlung", "das Klassenzimmer", "die Pause"], correct: "die Versammlung" },
+    { type: "en-de", q: "host", options: ["der Gastgeber/Moderator", "der Gast", "der Kapit\u00e4n"], correct: "der Gastgeber/Moderator" },
+    { type: "en-de", q: "treasure", options: ["der Schatz", "das Gold", "die Truhe"], correct: "der Schatz" },
+    { type: "en-de", q: "captain", options: ["der Kapit\u00e4n", "der Matrose", "der Pirat"], correct: "der Kapit\u00e4n" },
+    { type: "en-de", q: "guest", options: ["der Gast", "der Gastgeber", "der Freund"], correct: "der Gast" },
+    { type: "sentence", q: "The ___ told an exciting story about the ship.", options: ["captain", "captains", "captained"], correct: "captain" },
+    { type: "sentence", q: "We listened to a podcast ___ five people from different countries.", options: ["about", "from", "with"], correct: "about" },
+    { type: "sentence", q: "'Willkommen an Bord!' means ...", options: ["Welcome on board!", "Welcome at home!", "Welcome to school!"], correct: "Welcome on board!" }
+  ];
+
+  var TYPE_LABELS = { "de-en": "Deutsch → Englisch", "en-de": "Englisch → Deutsch", "sentence": "Lückensatz / Übersetzung" };
+
+  // ---------- Notenschlüssel (Prozent-Schwellen) – bei Bedarf an den schulinternen Schlüssel anpassen ----------
+  var GRADE_THRESHOLDS = [
+    { min: 0.92, grade: "1" },
+    { min: 0.81, grade: "2" },
+    { min: 0.67, grade: "3" },
+    { min: 0.50, grade: "4" },
+    { min: 0.30, grade: "5" },
+    { min: 0, grade: "6" }
+  ];
+
+  function gradeFor(percent) {
+    for (var i = 0; i < GRADE_THRESHOLDS.length; i++) {
+      if (percent >= GRADE_THRESHOLDS[i].min) return GRADE_THRESHOLDS[i].grade;
+    }
+    return "6";
+  }
+
+  var idx = 0;
+  var correctCount = 0;
+  var answered = false;
+  var results = []; // "correct" | "wrong" per item
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function show(id) {
+    ["startScreen", "gameWrap", "resultScreen"].forEach(function (s) {
+      document.getElementById(s).classList.toggle("hidden", s !== id);
+    });
+  }
+
+  function renderLocksRow() {
+    var row = document.getElementById("locksRow");
+    row.innerHTML = "";
+    ITEMS.forEach(function (_, i) {
+      var span = document.createElement("span");
+      if (results[i] === "correct") { span.textContent = "🔓"; span.className = "correct"; }
+      else if (results[i] === "wrong") { span.textContent = "🔒"; span.className = "wrong"; }
+      else if (i === idx) { span.textContent = "🔒"; span.className = "current"; }
+      else { span.textContent = "🔒"; }
+      row.appendChild(span);
+    });
+  }
+
+  function startTest() {
+    idx = 0;
+    correctCount = 0;
+    results = [];
+    show("gameWrap");
+    nextQuestion();
+  }
+
+  function nextQuestion() {
+    if (idx >= ITEMS.length) {
+      finishTest();
+      return;
+    }
+    answered = false;
+    renderLocksRow();
+    var item = ITEMS[idx];
+    document.getElementById("qType").textContent = TYPE_LABELS[item.type] || "";
+    document.getElementById("questionEl").textContent = item.q;
+    document.getElementById("feedbackEl").textContent = "";
+    document.getElementById("feedbackEl").className = "feedback";
+    document.getElementById("roomEmoji").textContent = "🚪";
+
+    var choicesEl = document.getElementById("choicesEl");
+    choicesEl.innerHTML = "";
+    shuffle(item.options).forEach(function (opt) {
+      var btn = document.createElement("button");
+      btn.className = "choice-btn";
+      btn.textContent = opt;
+      btn.onclick = function () { onAnswer(opt, item, btn, choicesEl); };
+      choicesEl.appendChild(btn);
+    });
+  }
+
+  function onAnswer(opt, item, btn, choicesEl) {
+    if (answered) return;
+    answered = true;
+    var correct = opt === item.correct;
+    var allBtns = choicesEl.querySelectorAll("button");
+    allBtns.forEach(function (b) {
+      b.disabled = true;
+      if (b.textContent === item.correct) b.classList.add("correct");
+      else if (b === btn) b.classList.add("wrong");
+    });
+
+    var fb = document.getElementById("feedbackEl");
+    var card = document.querySelector(".card");
+    if (correct) {
+      correctCount++;
+      results[idx] = "correct";
+      document.getElementById("roomEmoji").textContent = "🔓";
+      fb.textContent = "Schloss geöffnet!";
+      fb.className = "feedback good";
+    } else {
+      results[idx] = "wrong";
+      document.getElementById("roomEmoji").textContent = "🔒";
+      fb.textContent = "Schloss bleibt zu. Richtig wäre: " + item.correct;
+      fb.className = "feedback bad";
+      card.classList.add("shake");
+      setTimeout(function () { card.classList.remove("shake"); }, 500);
+    }
+    renderLocksRow();
+    setTimeout(function () { idx++; nextQuestion(); }, correct ? 1100 : 1900);
+  }
+
+  function finishTest() {
+    var percent = correctCount / ITEMS.length;
+    var grade = gradeFor(percent);
+    document.getElementById("gradeBig").textContent = grade;
+    document.getElementById("pointsRow").textContent = correctCount + " / " + ITEMS.length + " Punkte";
+    document.getElementById("percentRow").textContent = Math.round(percent * 100) + " %";
+    show("resultScreen");
+  }
+
+  document.getElementById("startBtn").onclick = startTest;
+  document.getElementById("restartBtn").onclick = function () { show("startScreen"); };
+
+  show("startScreen");
+})();
+</script>
+</body>
+</html>
