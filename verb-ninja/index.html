@@ -119,6 +119,17 @@
   .lock-icon { font-size: 26px; flex: 0 0 auto; }
 
   .stars-big { font-size: 46px; letter-spacing: 6px; margin: 16px 0; }
+
+  .shopgrid { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:10px; }
+  .shopitem { width:92px; padding:10px 6px; border-radius:14px; cursor:pointer;
+    background:rgba(255,255,255,.06); border:2px solid rgba(255,255,255,.15);
+    text-align:center; font-size:32px; transition:transform .1s; }
+  .shopitem:active { transform:scale(.95); }
+  .shopitem .price { font-size:12px; margin-top:4px; opacity:.85; font-weight:800; }
+  .shopitem.owned { border-color:var(--accent2); }
+  .shopitem.equipped { border-color:var(--gold); box-shadow:0 0 12px rgba(255,210,63,.5); }
+  .shopitem.locked { filter:grayscale(1) brightness(.55); }
+  .shophint { font-size:13px; opacity:.8; margin-top:12px; line-height:1.5; }
 </style>
 </head>
 <body>
@@ -138,6 +149,7 @@
     <h1>Verb Ninja</h1>
     <p>Simple-Present-Dojo · Englisch Jg. 7<br>Schlag die richtige Verbform, bevor die Zeit abläuft. Schnell + richtig = Krit-Treffer!</p>
     <button class="big-btn" id="startBtn">▶️ Ins Dojo</button>
+    <button class="big-btn" id="shopBtn" style="margin-top:10px;">🏮 Schatzkammer</button>
   </div>
 
   <!-- LEVEL SELECT -->
@@ -177,6 +189,14 @@
   </div>
 
   <!-- LEVEL COMPLETE -->
+
+  <div class="level-select-screen hidden" id="shopScreen">
+    <h1>🏮 Dojo-Schatzkammer</h1>
+    <p style="opacity:.85; margin:4px 0 10px;">Alles hier ist reine Zierde — kein Gegenstand macht das Spiel leichter.</p>
+    <div class="shopgrid" id="shopGrid"></div>
+    <div class="shophint" id="shopHint"></div>
+    <button class="big-btn" id="shopBackBtn" style="margin-top:16px;">Zurück</button>
+  </div>
   <div class="level-complete-screen hidden" id="levelCompleteScreen">
     <div style="font-size:60px;" id="levelCompleteEmoji">🏆</div>
     <h1 style="font-size:26px;" id="levelCompleteTitle">Level gemeistert!</h1>
@@ -291,7 +311,7 @@
       var raw = localStorage.getItem(STORE_KEY);
       if (raw) return JSON.parse(raw);
     } catch (e) {}
-    return { coins: 0, xp: 0, totalCorrect: 0, bestStreak: 0, currentStreak: 0, lastPlayed: null, levelStars: {} };
+    return { coins: 0, xp: 0, totalCorrect: 0, bestStreak: 0, currentStreak: 0, lastPlayed: null, levelStars: {}, owned: [], equipped: "n1", perfectStreak: 0, bestPerfect: 0 };
   }
   function saveState() {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {}
@@ -307,6 +327,70 @@
     var i = 0;
     for (var b = 0; b < BELTS.length; b++) { if (state.xp >= BELTS[b].xp) i = b; }
     return i;
+  }
+
+
+  // ---- Dojo-Schatzkammer (14.09.2026) --------------------------------------
+  // Rein kosmetisch. Kein Gegenstand veraendert Zeit, Schwierigkeit oder
+  // Trefferchance - sonst waere Fehlerfreiheit kaeuflich.
+  var SHOP = [
+    { id: "n1", emoji: "🥷", preis: 0,   art: "sensei", name: "Ninja" },
+    { id: "n2", emoji: "🐉", preis: 40,  art: "sensei", name: "Drache" },
+    { id: "n3", emoji: "🦊", preis: 60,  art: "sensei", name: "Fuchs" },
+    { id: "n4", emoji: "🐯", preis: 90,  art: "sensei", name: "Tiger" },
+    { id: "n5", emoji: "🦉", preis: 120, art: "sensei", name: "Eule" },
+    { id: "n6", emoji: "🐺", preis: 160, art: "sensei", name: "Wolf" },
+    { id: "n7", emoji: "🦅", preis: 220, art: "sensei", name: "Adler" },
+    { id: "gold", emoji: "🐲", preis: -1, art: "sensei", name: "Goldener Drache",
+      bedingung: "3 Level in Folge fehlerfrei" }
+  ];
+
+  function besitzt(id) {
+    return id === "n1" || (state.owned || []).indexOf(id) >= 0;
+  }
+
+  function renderShop() {
+    var grid = document.getElementById("shopGrid");
+    grid.innerHTML = "";
+    SHOP.forEach(function (item) {
+      var d = document.createElement("div");
+      d.className = "shopitem";
+      var hat = besitzt(item.id);
+      var exklusiv = item.preis < 0;
+      if (hat) d.classList.add("owned");
+      if (state.equipped === item.id) d.classList.add("equipped");
+      if (!hat) d.classList.add("locked");
+      d.innerHTML = item.emoji + '<div class="price">' +
+        (hat ? (state.equipped === item.id ? "getragen" : "anlegen")
+             : (exklusiv ? "🔒 makellos" : item.preis + " 💰")) + "</div>";
+      d.onclick = function () { shopKlick(item); };
+      grid.appendChild(d);
+    });
+    var serie = state.perfectStreak || 0;
+    document.getElementById("shopHint").innerHTML =
+      "Makellos-Serie: <b>" + serie + " / 3</b> — drei fehlerfreie Level hintereinander " +
+      "schalten den Goldenen Drachen frei. Kaufen kann man ihn nicht.";
+  }
+
+  function shopKlick(item) {
+    if (besitzt(item.id)) {
+      state.equipped = item.id;
+    } else if (item.preis > 0 && state.coins >= item.preis) {
+      state.coins -= item.preis;
+      state.owned = (state.owned || []).concat([item.id]);
+      state.equipped = item.id;
+    } else {
+      return;
+    }
+    saveState(); renderTop(); renderShop();
+  }
+
+  function senseiEmoji() {
+    var gewaehlt = state.equipped || "n1";
+    for (var i = 0; i < SHOP.length; i++) {
+      if (SHOP[i].id === gewaehlt && besitzt(gewaehlt)) return SHOP[i].emoji;
+    }
+    return "🥷";
   }
 
   function renderTop() {
@@ -337,7 +421,7 @@
   }
 
   function show(id) {
-    ["startScreen", "levelSelectScreen", "gameCard", "chestScreen", "shareScreen", "levelCompleteScreen", "capScreen"].forEach(function (s) {
+    ["startScreen", "levelSelectScreen", "gameCard", "chestScreen", "shareScreen", "levelCompleteScreen", "capScreen", "shopScreen"].forEach(function (s) {
       document.getElementById(s).classList.toggle("hidden", s !== id);
     });
   }
@@ -405,7 +489,7 @@
     renderProgressDots();
     document.getElementById("feedbackEl").textContent = "";
     document.getElementById("feedbackEl").className = "feedback";
-    document.getElementById("senseiEmoji").textContent = "🥷";
+    document.getElementById("senseiEmoji").textContent = senseiEmoji();
 
     var sentEl = document.getElementById("sentenceEl");
     sentEl.innerHTML = (q.pre ? q.pre + " " : "") + '<span class="blank">___</span>' + q.post;
@@ -513,15 +597,32 @@
     var stars = starsFor(total, levelWrongCount);
     var prevStars = state.levelStars[activeLevel.id] || 0;
     if (stars > prevStars) state.levelStars[activeLevel.id] = stars;
-    var bonusCoins = stars * 3;
+    // Praezision zahlt sich aus - aber Fehler kosten nie etwas (Projektregel
+    // „kein Bestrafen"). Es gibt nur mehr, nicht weniger.
+    var quote = total ? levelCorrectCount / total : 0;
+    var faktor = levelWrongCount === 0 ? 3 : (quote >= 0.9 ? 2 : (quote >= 0.75 ? 1.5 : 1));
+    var bonusCoins = Math.round(stars * 3 * faktor);
     state.coins += bonusCoins;
+
+    if (levelWrongCount === 0) {
+      state.perfectStreak = (state.perfectStreak || 0) + 1;
+      if (state.perfectStreak > (state.bestPerfect || 0)) state.bestPerfect = state.perfectStreak;
+      if (state.perfectStreak >= 3 && !besitzt("gold")) {
+        state.owned = (state.owned || []).concat(["gold"]);
+      }
+    } else {
+      state.perfectStreak = 0;
+    }
     saveState(); renderTop();
 
     document.getElementById("levelCompleteEmoji").textContent = stars === 3 ? "🏆" : (stars === 2 ? "🥈" : "🥉");
     document.getElementById("levelCompleteTitle").textContent = activeLevel.name + " geschafft!";
     document.getElementById("levelCompleteStars").textContent = "★".repeat(stars) + "☆".repeat(3 - stars);
+    var zusatz = levelWrongCount === 0
+      ? " · ✨ MAKELLOS! dreifacher Bonus (Serie: " + state.perfectStreak + "/3)"
+      : (faktor > 1 ? " · Präzision x" + faktor : "");
     document.getElementById("levelCompleteSub").textContent =
-      levelCorrectCount + " von " + total + " richtig · +" + bonusCoins + " 💰 Bonus";
+      levelCorrectCount + " von " + total + " richtig · +" + bonusCoins + " 💰 Bonus" + zusatz;
     show("levelCompleteScreen");
   }
 
@@ -547,6 +648,10 @@
     show("shareScreen");
   }
 
+  document.getElementById("shopBtn").onclick = function () {
+    renderShop(); show("shopScreen");
+  };
+  document.getElementById("shopBackBtn").onclick = function () { show("startScreen"); };
   document.getElementById("startBtn").onclick = function () {
     state.lastPlayed = new Date().toISOString();
     saveState();

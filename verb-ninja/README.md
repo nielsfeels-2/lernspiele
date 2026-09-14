@@ -13,6 +13,9 @@ Trainiert gezielt die im G-Kurs häufigste Fehlerquelle: das **-s bei he/she/it*
 - Sensei-Ninja-Setting: zu jedem Satz mit Lücke zwei Antwort-Shuriken, schnelle richtige Antwort (< 3 Sek.) = **kritischer Treffer** mit Bonus.
 - **4 Levels mit steigendem Schwierigkeitsgrad** (Levelauswahl-Bildschirm, per Sternebewertung freigeschaltet): Level 1 Aussagen → Level 2 Verneinung (don't/doesn't) → Level 3 Fragen (Do/Does) → Level 4 „Endgegner" (Rechtschreibung: study→studies, watch→watches, go→goes … + gemischte Wiederholung, kürzeres Zeitlimit). Ein Level gilt ab 1 Stern als abgeschlossen und schaltet das nächste frei (kein Frust-Lock bei schlechter Leistung), mehr Sterne = mehr Bonus-Münzen.
 - **Gürtel-System** (Weiß → Gelb → Orange → Grün → Blau → Braun → Schwarz) als übergeordneter Fortschritt über alle Level hinweg (Self-Reward).
+- **🏮 Dojo-Schatzkammer** (14.09.2026): Die Münzen haben jetzt ein Ziel. Acht Sensei-Figuren (Ninja · Drache · Fuchs · Tiger · Eule · Wolf · Adler · Goldener Drache), **rein kosmetisch** – kein Gegenstand verändert Zeit, Schwierigkeit oder Trefferchance. Vorher wurden Münzen verdient und hatten keine Verwendung; die Investment-Phase des Hook-Modells fehlte komplett (Anlass: Rückfrage der SuS im Unterricht, „was kann man mit dem Geld machen?").
+- **Präzisions-Bonus** (14.09.2026): Der Levelbonus wird mit der Trefferquote multipliziert – fehlerfrei ×3, ab 90 % ×2, ab 75 % ×1,5. **Fehler kosten weiterhin nichts**; es gibt nur mehr, nie weniger. Damit lohnt sich Genauigkeit, nicht Menge.
+- **Makellos-Serie**: Drei fehlerfreie Level hintereinander schalten den **Goldenen Drachen** frei – den einzigen Gegenstand, den man nicht kaufen kann. Ein Fehler setzt die Serie zurück, sonst nichts.
 - **Schatztruhen** alle 5 richtigen Antworten mit variabler Münzmenge, seltener „goldener Shuriken" (~5 %) (Hunt-Reward).
 - **„Zeig deinen Gürtel!"**-Bildschirm bei jedem Gürtelaufstieg (Tribe-Reward).
 - Fehler kosten nie Fortschritt – nur der Streak setzt zurück. Nach 15 Aufgaben in einer Sitzung: freundlicher Pause-Hinweis (abschaltbar).
@@ -23,7 +26,7 @@ Keine Accounts, kein Tracking. Fortschritt ausschließlich lokal (`localStorage`
 
 ## QA-Checkliste (LERNAPP-BAUANLEITUNG.md)
 
-- ✅ JS-Syntax geprüft (bun build, fehlerfrei)
+- ✅ JS-Syntax geprüft (bun build, fehlerfrei) · **Nachtrag 14.09.2026:** `node`/`bun` sind auf diesem Rechner nicht installiert, deshalb Strukturprüfung statt Parser: Klammerbilanz {} 122/122, () 272/272, [] 64/64; alle `getElementById`-Ziele im HTML vorhanden; neue Funktionen definiert und aufgerufen. **Vor dem Einsatz einmal im Browser durchspielen.**
 - ✅ Jede Aufgabe lösbar, richtige Antwort immer in den Optionen, Distraktoren nie identisch mit der Lösung (30 Items über 4 Level manuell gegengeprüft)
 - ✅ Emojis eindeutig genug für die Zielgruppe Jg. 7 (kein Klasse-1-Anspruch auf Bildlesbarkeit ohne Text)
 - ➖ „Ohne Lesefähigkeit lösbar" nicht relevant (Zielgruppe Jg. 7, keine Sprachausgabe eingebaut)
