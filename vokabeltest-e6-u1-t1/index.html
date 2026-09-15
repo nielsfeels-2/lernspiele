@@ -110,7 +110,7 @@
     <p>Unit 1 – Looking back – Check-in + Station 1 (simple past)<br>
     Du bist im Klassenzimmer eingeschlossen. Jede richtig <b>geschriebene</b> Antwort öffnet ein Schloss.
     Am Ende gibt's deine Note – zeig sie deiner Lehrkraft!</p>
-    <p style="font-size:13px; opacity:.7;" id="poolInfo">13 von 24 möglichen Fragen · du tippst die Antwort selbst · jede Frage nur ein Versuch, kein Zurück</p>
+    <p style="font-size:13px; opacity:.7;" id="poolInfo">15 Fragen aus SB S. 242 · du tippst die Antwort selbst · jede Frage nur ein Versuch, kein Zurück</p>
     <p style="font-size:12px; opacity:.6;">🎲 Bei jedem Versuch eine andere Auswahl aus dem gesamten Wortschatz - lohnt sich, wirklich alles zu lernen!</p>
     <button class="big-btn" id="startBtn">🔓 Test starten</button>
   </div>
@@ -138,7 +138,7 @@
     <div class="result-card">
       <div class="grade-label">Note</div>
       <div class="grade-big" id="gradeBig">2</div>
-      <div class="points-row" id="pointsRow">11 / 13 Punkte</div>
+      <div class="points-row" id="pointsRow">12 / 15 Punkte</div>
       <div class="percent-row" id="percentRow">85 %</div>
     </div>
     <p style="opacity:.85; font-size:16px;">👆 Zeig dieses Ergebnis direkt deiner Lehrkraft.</p>
@@ -152,36 +152,75 @@
 (function () {
   "use strict";
 
-  // ---------- Vokabeltest-Inhalt (Unit 1 – Looking back – Check-in + Station 1 (simple past)) ----------
+  // ---------- Vokabeltest-Inhalt: Orange Line 2, Unit 1 – Vocabulary SB S. 242 ----------
+  // Alle 28 Eintraege der Buchseite (Check in p. 9 + Station 1 p. 10-11), keine erfundenen Woerter.
   // POOL = ALLE Vokabeln dieses Testabschnitts. TEST_SIZE = wie viele davon
   // pro Durchlauf zufällig abgefragt werden.
   var POOL = [
-    { type: "de-en", q: "aufwachen", correct: ["get up"] },
-    { type: "de-en", q: "das Fr\u00fchst\u00fcck", correct: ["breakfast"] },
-    { type: "de-en", q: "nerv\u00f6s", correct: ["nervous"] },
-    { type: "de-en", q: "das Land (Staat)", correct: ["country"] },
-    { type: "de-en", q: "bleiben (blieb)", correct: ["stayed"] },
-    { type: "de-en", q: "das Gef\u00fchl", correct: ["feeling"] },
+    // ---- Deutsch → Englisch · Check in (SB S. 242, p. 9) ----
+    { type: "de-en", q: "müssen", correct: ["have to", "to have to"] },
+    { type: "de-en", q: "das Federmäppchen", correct: ["pencil case", "a pencil case"] },
+    { type: "de-en", q: "haben; besitzen", correct: ["have got", "to have got", "has got"] },
+    { type: "de-en", q: "hoffen", correct: ["hope", "to hope"] },
+    { type: "de-en", q: "sich freuen auf", correct: ["look forward to", "to look forward to"] },
+    { type: "de-en", q: "zeigen", correct: ["show", "to show"] },
+    { type: "de-en", q: "der Turnschuh", correct: ["trainer", "a trainer", "trainers"] },
+    { type: "de-en", q: "zusammen; gemeinsam", correct: ["together"] },
+    { type: "de-en", q: "damit", correct: ["so"] },
     { type: "de-en", q: "traurig", correct: ["sad"] },
-    { type: "de-en", q: "gelangweilt", correct: ["bored"] },
-    { type: "de-en", q: "aufgeregt", correct: ["excited"] },
-    { type: "de-en", q: "die Ferien/der Urlaub", correct: ["holiday", "holidays"] },
-    { type: "de-en", q: "unregelm\u00e4\u00dfiges Verb: gehen (ging)", correct: ["went"] },
-    { type: "de-en", q: "unregelm\u00e4\u00dfiges Verb: sehen (sah)", correct: ["saw"] },
-    { type: "en-de", q: "summer camp", correct: ["ferienlager"] },
-    { type: "en-de", q: "embarrassed", correct: ["peinlich ber\u00fchrt"] },
-    { type: "en-de", q: "countryside", correct: ["die landschaft", "landschaft"] },
-    { type: "en-de", q: "to miss/missed", correct: ["vermissen"] },
-    { type: "en-de", q: "to stay/stayed", correct: ["bleiben", "blieb"] },
-    { type: "en-de", q: "surprised", correct: ["\u00fcberrascht"] },
-    { type: "en-de", q: "playground", correct: ["der pausenhof", "pausenhof", "spielplatz"] },
-    { type: "en-de", q: "abroad", correct: ["im ausland"] },
-    { type: "sentence", q: "Last summer, I ___ (go) to France with my family.", correct: ["went"] },
-    { type: "sentence", q: "He ___ (not/like) the food at first.", correct: ["didn't like", "didnt like"] },
-    { type: "sentence", q: "She ___ (stay) with her grandparents.", correct: ["stayed"] },
-    { type: "sentence", q: "___ you visit the castle? (Simple past question)", correct: ["did"] }
+    { type: "de-en", q: "Frau (Anrede)", correct: ["ms", "ms."] },
+    { type: "de-en", q: "die Pizza", correct: ["pizza", "a pizza"] },
+    // ---- Deutsch → Englisch · Station 1 (SB S. 242, p. 10-11) ----
+    { type: "de-en", q: "das Flugzeug", correct: ["plane", "a plane", "aeroplane"] },
+    { type: "de-en", q: "die Sehenswürdigkeit", correct: ["sight", "a sight"] },
+    { type: "de-en", q: "simple past von to meet", correct: ["met"] },
+    { type: "de-en", q: "schrecklich; furchtbar", correct: ["awful"] },
+    { type: "de-en", q: "unglaublich; toll; erstaunlich", correct: ["amazing"] },
+    { type: "de-en", q: "wirklich; echt; sehr", correct: ["really"] },
+    { type: "de-en", q: "simple past von to eat", correct: ["ate"] },
+    { type: "de-en", q: "besteigen; klettern; steigen", correct: ["climb", "to climb"] },
+    { type: "de-en", q: "segeln gehen", correct: ["go sailing", "to go sailing"] },
+    { type: "de-en", q: "ausschlafen; lange schlafen", correct: ["sleep late", "to sleep late"] },
+    { type: "de-en", q: "königlich", correct: ["royal"] },
+    { type: "de-en", q: "das Fahrgeschäft", correct: ["fairground ride", "a fairground ride"] },
+    { type: "de-en", q: "eine Besichtigungstour machen", correct: ["go sightseeing", "to go sightseeing"] },
+    { type: "de-en", q: "mieten", correct: ["rent", "to rent"] },
+    { type: "de-en", q: "das Souvenir; das Andenken", correct: ["souvenir", "a souvenir"] },
+    // ---- Englisch → Deutsch ----
+    { type: "en-de", q: "to have to", correct: ["müssen", "muessen"] },
+    { type: "en-de", q: "pencil case", correct: ["federmäppchen", "das federmäppchen", "federmaeppchen"] },
+    { type: "en-de", q: "to look forward to", correct: ["sich freuen auf", "freuen auf", "sich freuen"] },
+    { type: "en-de", q: "trainer", correct: ["turnschuh", "der turnschuh", "trainer", "trainerin"] },
+    { type: "en-de", q: "sight", correct: ["sehenswürdigkeit", "die sehenswürdigkeit", "sehenswuerdigkeit"] },
+    { type: "en-de", q: "awful", correct: ["schrecklich", "furchtbar"] },
+    { type: "en-de", q: "amazing", correct: ["unglaublich", "toll", "erstaunlich"] },
+    { type: "en-de", q: "to climb", correct: ["klettern", "besteigen", "steigen"] },
+    { type: "en-de", q: "to sleep late", correct: ["ausschlafen", "lange schlafen"] },
+    { type: "en-de", q: "royal", correct: ["königlich", "koeniglich"] },
+    { type: "en-de", q: "fairground ride", correct: ["fahrgeschäft", "das fahrgeschäft", "fahrgeschaeft"] },
+    { type: "en-de", q: "souvenir", correct: ["souvenir", "das souvenir", "andenken", "das andenken"] },
+    // ---- Lückensätze · alle Beispielsätze stehen so im Buch (SB S. 242) ----
+    { type: "sentence", q: "My ___ ___ is in my bag.  (Federmäppchen)", correct: ["pencil case"] },
+    { type: "sentence", q: "Your new house ___ ___ a big garden.", correct: ["has got"] },
+    { type: "sentence", q: "I ___ my new teachers are nice.", correct: ["hope"] },
+    { type: "sentence", q: "I'm looking forward ___ seeing my friends.", correct: ["to"] },
+    { type: "sentence", q: "Kira wants to ___ Katie her new bag.", correct: ["show"] },
+    { type: "sentence", q: "We have lunch ___ in the cafeteria.", correct: ["together"] },
+    { type: "sentence", q: "We meet in the park ___ we can play football.", correct: ["so"] },
+    { type: "sentence", q: "I like ___ Green's dog.  (Anrede)", correct: ["ms", "ms."] },
+    { type: "sentence", q: "This is the ___ to London.", correct: ["plane"] },
+    { type: "sentence", q: "There are so many ___ in London.", correct: ["sights"] },
+    { type: "sentence", q: "The weather was ___. It rained a lot.", correct: ["awful"] },
+    { type: "sentence", q: "Katie went to a summer camp in ___.", correct: ["wales"] },
+    { type: "sentence", q: "That's an ___ photo of a plane.", correct: ["amazing"] },
+    { type: "sentence", q: "Katie and her cousin went ___ in Wales.", correct: ["sailing"] },
+    { type: "sentence", q: "Elliot often ___ late in the holidays.  (to sleep)", correct: ["slept"] },
+    { type: "sentence", q: "Windsor Castle is a ___ home.", correct: ["royal"] },
+    { type: "sentence", q: "I like fast ___ rides.", correct: ["fairground"] },
+    { type: "sentence", q: "We went ___ in London.", correct: ["sightseeing"] },
+    { type: "sentence", q: "Where can I ___ a car?", correct: ["rent"] }
   ];
-  var TEST_SIZE = Math.min(13, POOL.length);
+  var TEST_SIZE = Math.min(15, POOL.length);
 
   var TYPE_LABELS = { "de-en": "Deutsch → Englisch", "en-de": "Englisch → Deutsch", "sentence": "Lückensatz / Übersetzung" };
 
