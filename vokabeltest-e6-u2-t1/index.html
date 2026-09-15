@@ -21,6 +21,7 @@
   .locks-row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 640px; margin: 6px 0 4px; }
   .locks-row span { font-size: 20px; opacity: .5; }
   .locks-row span.correct { opacity: 1; }
+  .locks-row span.half { opacity: 1; filter: grayscale(.6); }
   .locks-row span.wrong { opacity: 1; }
   .locks-row span.current { opacity: 1; filter: drop-shadow(0 0 6px var(--accent)); }
 
@@ -110,7 +111,7 @@
     <p>Unit 2 – In the spotlight – Check-in + Station 2 (Kleidung/Körper)<br>
     Du bist im Klassenzimmer eingeschlossen. Jede richtig <b>geschriebene</b> Antwort öffnet ein Schloss.
     Am Ende gibt's deine Note – zeig sie deiner Lehrkraft!</p>
-    <p style="font-size:13px; opacity:.7;" id="poolInfo">13 von 23 möglichen Fragen · du tippst die Antwort selbst · jede Frage nur ein Versuch, kein Zurück</p>
+    <p style="font-size:13px; opacity:.7;" id="poolInfo">13 von 23 möglichen Fragen · du tippst die Antwort selbst · 2 Punkte je Wort, 1 Punkt bei einem Schreibfehler</p>
     <p style="font-size:12px; opacity:.6;">🎲 Bei jedem Versuch eine andere Auswahl aus dem gesamten Wortschatz - lohnt sich, wirklich alles zu lernen!</p>
     <button class="big-btn" id="startBtn">🔓 Test starten</button>
   </div>
@@ -205,9 +206,66 @@
     return String(str || "").trim().replace(/\s+/g, " ").toLowerCase();
   }
 
+  // ---------- Bewertung (Nutzerregeln 15.09.2026) ----------
+  // Zwei Punkte, wenn das Wort stimmt. Ein Punkt, wenn es erkennbar dasselbe
+  // Wort ist, aber falsch geschrieben. Artikel und Gross-/Kleinschreibung
+  // zaehlen nicht mit - "das Souvenir" und "Souvenir" sind dieselbe Antwort.
+  var ARTIKEL = /^(der|die|das|den|dem|ein|eine|the|a|an)\s+/;
+
+  function ohneArtikel(str) {
+    return normalize(str).replace(ARTIKEL, "");
+  }
+
+  function abstand(a, b) {
+    var m = a.length, n = b.length, i, j, vor = [], jetzt = [];
+    for (j = 0; j <= n; j++) vor[j] = j;
+    for (i = 1; i <= m; i++) {
+      jetzt = [i];
+      for (j = 1; j <= n; j++) {
+        jetzt[j] = Math.min(vor[j] + 1, jetzt[j - 1] + 1,
+                            vor[j - 1] + (a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1));
+      }
+      vor = jetzt;
+    }
+    return vor[n];
+  }
+
+  // Wie weit darf danebengeschrieben sein? Kurze Woerter gar nicht - sonst
+  // wuerde aus "sad" ein akzeptiertes "bad".
+  function toleranz(wort) {
+    if (wort.length < 4) return 0;
+    if (wort.length < 8) return 1;
+    return 2;
+  }
+
+  function punkteFuer(given, correctList) {
+    var g = normalize(given), gA = ohneArtikel(given), i, c, cA;
+    if (!g) return 0;
+    for (i = 0; i < correctList.length; i++) {
+      c = normalize(correctList[i]); cA = ohneArtikel(correctList[i]);
+      if (g === c || gA === cA) return 2;
+    }
+    for (i = 0; i < correctList.length; i++) {
+      cA = ohneArtikel(correctList[i]);
+      if (!cA.length || gA.charAt(0) !== cA.charAt(0)) continue;
+      if (abstand(gA, cA) <= toleranz(cA)) return 1;
+    }
+    return 0;
+  }
+
+  // Schluessel je Vokabel, damit dasselbe Wort nicht zweimal drankommt.
+  function vokabelSchluessel(item) {
+    // Bevorzugt der ausdrueckliche key aus der Wortliste. Ohne ihn wuerden
+    // gebeugte Formen auseinanderfallen ("has got" gegen "have got") und
+    // dieselbe Vokabel zweimal drankommen.
+    if (item.key) return item.key;
+    return item.type === "en-de" ? ohneArtikel(item.q) : ohneArtikel(item.correct[0]);
+  }
+
   var ITEMS = [];
   var idx = 0;
   var correctCount = 0;
+  var punkteGesamt = 0;
   var answered = false;
   var results = []; // "correct" | "wrong" per item
 
@@ -221,7 +279,14 @@
   }
 
   function pickItems() {
-    return shuffle(POOL).slice(0, TEST_SIZE);
+    var gemischt = shuffle(POOL), gesehen = {}, raus = [], i, k;
+    for (i = 0; i < gemischt.length && raus.length < TEST_SIZE; i++) {
+      k = vokabelSchluessel(gemischt[i]);
+      if (gesehen[k]) continue;
+      gesehen[k] = true;
+      raus.push(gemischt[i]);
+    }
+    return raus;
   }
 
   function show(id) {
@@ -236,6 +301,7 @@
     ITEMS.forEach(function (_, i) {
       var span = document.createElement("span");
       if (results[i] === "correct") { span.textContent = "🔓"; span.className = "correct"; }
+      else if (results[i] === "half") { span.textContent = "🔓"; span.className = "half"; }
       else if (results[i] === "wrong") { span.textContent = "🔒"; span.className = "wrong"; }
       else if (i === idx) { span.textContent = "🔒"; span.className = "current"; }
       else { span.textContent = "🔒"; }
@@ -247,6 +313,7 @@
     ITEMS = pickItems();
     idx = 0;
     correctCount = 0;
+    punkteGesamt = 0;
     results = [];
     show("gameWrap");
     nextQuestion();
@@ -278,21 +345,27 @@
     if (answered) return;
     answered = true;
     var input = document.getElementById("answerInput");
-    var given = normalize(input.value);
-    var accepted = item.correct.map(normalize);
-    var correct = given.length > 0 && accepted.indexOf(given) !== -1;
+    var punkte = punkteFuer(input.value, item.correct);
+    var correct = punkte === 2;
 
     input.disabled = true;
     document.getElementById("submitBtn").disabled = true;
 
     var fb = document.getElementById("feedbackEl");
     var card = document.querySelector(".card");
+    punkteGesamt += punkte;
     if (correct) {
       correctCount++;
       results[idx] = "correct";
       input.className = "answer-input correct";
       document.getElementById("roomEmoji").textContent = "🔓";
-      fb.textContent = "Schloss geöffnet!";
+      fb.textContent = "Schloss geöffnet!  2 Punkte";
+      fb.className = "feedback good";
+    } else if (punkte === 1) {
+      results[idx] = "half";
+      input.className = "answer-input correct";
+      document.getElementById("roomEmoji").textContent = "🔓";
+      fb.textContent = "Fast! Richtig ist: " + item.correct[0] + "  —  1 Punkt für den Schreibfehler";
       fb.className = "feedback good";
     } else {
       results[idx] = "wrong";
@@ -304,14 +377,15 @@
       setTimeout(function () { card.classList.remove("shake"); }, 500);
     }
     renderLocksRow();
-    setTimeout(function () { idx++; nextQuestion(); }, correct ? 1100 : 2200);
+    setTimeout(function () { idx++; nextQuestion(); }, punkte === 2 ? 1100 : 2200);
   }
 
   function finishTest() {
-    var percent = correctCount / ITEMS.length;
+    var maximum = ITEMS.length * 2;
+    var percent = punkteGesamt / maximum;
     var grade = gradeFor(percent);
     document.getElementById("gradeBig").textContent = grade;
-    document.getElementById("pointsRow").textContent = correctCount + " / " + ITEMS.length + " Punkte";
+    document.getElementById("pointsRow").textContent = punkteGesamt + " / " + maximum + " Punkte";
     document.getElementById("percentRow").textContent = Math.round(percent * 100) + " %";
     show("resultScreen");
   }
