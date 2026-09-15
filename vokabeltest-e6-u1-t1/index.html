@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Vokabeltest – Unit 1 – Looking back</title>
+<title>Vokabeltest E6 · Unit 1 · Check in (SB S. 242)</title>
 <style>
   :root {
     --bg1: #0b1a14; --bg2: #142a1f; --accent: #ffb238; --accent2: #4ce07a;
@@ -21,6 +21,7 @@
   .locks-row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 640px; margin: 6px 0 4px; }
   .locks-row span { font-size: 20px; opacity: .5; }
   .locks-row span.correct { opacity: 1; }
+  .locks-row span.half { opacity: 1; filter: grayscale(.6); }
   .locks-row span.wrong { opacity: 1; }
   .locks-row span.current { opacity: 1; filter: drop-shadow(0 0 6px var(--accent)); }
 
@@ -106,11 +107,11 @@
   <div class="start-screen" id="startScreen">
     <div style="font-size:60px;">🔐</div>
     <h1>Vokabeltest: Escape Room</h1>
-    <p style="opacity:.75; font-size:15px; margin-top:-6px;">Unit 1 – Looking back</p>
+    <p style="opacity:.75; font-size:15px; margin-top:-6px;">Orange Line 2, Unit 1 – Check in (SB S. 242, p. 9)</p>
     <p>Unit 1 – Looking back – Check-in + Station 1 (simple past)<br>
     Du bist im Klassenzimmer eingeschlossen. Jede richtig <b>geschriebene</b> Antwort öffnet ein Schloss.
     Am Ende gibt's deine Note – zeig sie deiner Lehrkraft!</p>
-    <p style="font-size:13px; opacity:.7;" id="poolInfo">15 Fragen aus SB S. 242 · du tippst die Antwort selbst · du tippst die Antwort selbst · jede Frage nur ein Versuch, kein Zurück</p>
+    <p style="font-size:13px; opacity:.7;" id="poolInfo">12 Fragen aus SB S. 242 · Check in (p. 9) · 2 Punkte je Wort, 1 Punkt bei einem Schreibfehler</p>
     <p style="font-size:12px; opacity:.6;">🎲 Bei jedem Versuch eine andere Auswahl aus dem gesamten Wortschatz - lohnt sich, wirklich alles zu lernen!</p>
     <button class="big-btn" id="startBtn">🔓 Test starten</button>
   </div>
@@ -138,7 +139,7 @@
     <div class="result-card">
       <div class="grade-label">Note</div>
       <div class="grade-big" id="gradeBig">2</div>
-      <div class="points-row" id="pointsRow">12 / 15 Punkte</div>
+      <div class="points-row" id="pointsRow">24 / 24 Punkte</div>
       <div class="percent-row" id="percentRow">85 %</div>
     </div>
     <p style="opacity:.85; font-size:16px;">👆 Zeig dieses Ergebnis direkt deiner Lehrkraft.</p>
@@ -157,70 +158,42 @@
   // POOL = ALLE Vokabeln dieses Testabschnitts. TEST_SIZE = wie viele davon
   // pro Durchlauf zufällig abgefragt werden.
   var POOL = [
-    // ---- Deutsch → Englisch · Check in (SB S. 242, p. 9) ----
-    { type: "de-en", q: "müssen", correct: ["have to", "to have to"] },
-    { type: "de-en", q: "das Federmäppchen", correct: ["pencil case", "a pencil case"] },
-    { type: "de-en", q: "haben; besitzen", correct: ["have got", "to have got", "has got"] },
-    { type: "de-en", q: "hoffen", correct: ["hope", "to hope"] },
-    { type: "de-en", q: "sich freuen auf", correct: ["look forward to", "to look forward to"] },
-    { type: "de-en", q: "zeigen", correct: ["show", "to show"] },
-    { type: "de-en", q: "der Turnschuh", correct: ["trainer", "a trainer", "trainers"] },
-    { type: "de-en", q: "zusammen; gemeinsam", correct: ["together"] },
-    { type: "de-en", q: "damit", correct: ["so"] },
-    { type: "de-en", q: "traurig", correct: ["sad"] },
-    { type: "de-en", q: "Frau (Anrede)", correct: ["ms", "ms."] },
-    { type: "de-en", q: "die Pizza", correct: ["pizza", "a pizza"] },
-    // ---- Deutsch → Englisch · Station 1 (SB S. 242, p. 10-11) ----
-    { type: "de-en", q: "das Flugzeug", correct: ["plane", "a plane", "aeroplane"] },
-    { type: "de-en", q: "die Sehenswürdigkeit", correct: ["sight", "a sight"] },
-    { type: "de-en", q: "simple past von to meet", correct: ["met"] },
-    { type: "de-en", q: "schrecklich; furchtbar", correct: ["awful"] },
-    { type: "de-en", q: "unglaublich; toll; erstaunlich", correct: ["amazing"] },
-    { type: "de-en", q: "wirklich; echt; sehr", correct: ["really"] },
-    { type: "de-en", q: "simple past von to eat", correct: ["ate"] },
-    { type: "de-en", q: "besteigen; klettern; steigen", correct: ["climb", "to climb"] },
-    { type: "de-en", q: "segeln gehen", correct: ["go sailing", "to go sailing"] },
-    { type: "de-en", q: "ausschlafen; lange schlafen", correct: ["sleep late", "to sleep late"] },
-    { type: "de-en", q: "königlich", correct: ["royal"] },
-    { type: "de-en", q: "das Fahrgeschäft", correct: ["fairground ride", "a fairground ride"] },
-    { type: "de-en", q: "eine Besichtigungstour machen", correct: ["go sightseeing", "to go sightseeing"] },
-    { type: "de-en", q: "mieten", correct: ["rent", "to rent"] },
-    { type: "de-en", q: "das Souvenir; das Andenken", correct: ["souvenir", "a souvenir"] },
-    // ---- Englisch → Deutsch ----
-    { type: "en-de", q: "to have to", correct: ["müssen", "muessen"] },
-    { type: "en-de", q: "pencil case", correct: ["federmäppchen", "das federmäppchen", "federmaeppchen"] },
-    { type: "en-de", q: "to look forward to", correct: ["sich freuen auf", "freuen auf", "sich freuen"] },
-    { type: "en-de", q: "trainer", correct: ["turnschuh", "der turnschuh", "trainer", "trainerin"] },
-    { type: "en-de", q: "sight", correct: ["sehenswürdigkeit", "die sehenswürdigkeit", "sehenswuerdigkeit"] },
-    { type: "en-de", q: "awful", correct: ["schrecklich", "furchtbar"] },
-    { type: "en-de", q: "amazing", correct: ["unglaublich", "toll", "erstaunlich"] },
-    { type: "en-de", q: "to climb", correct: ["klettern", "besteigen", "steigen"] },
-    { type: "en-de", q: "to sleep late", correct: ["ausschlafen", "lange schlafen"] },
-    { type: "en-de", q: "royal", correct: ["königlich", "koeniglich"] },
-    { type: "en-de", q: "fairground ride", correct: ["fahrgeschäft", "das fahrgeschäft", "fahrgeschaeft"] },
-    { type: "en-de", q: "souvenir", correct: ["souvenir", "das souvenir", "andenken", "das andenken"] },
-    // ---- Lückensätze: die Lücke ist immer die Vokabel selbst ----
-    { type: "sentence", q: "My ___ ___ is in my bag.", correct: ["pencil case"] },
-    { type: "sentence", q: "Your new house ___ ___ a big garden.", correct: ["has got"] },
-    { type: "sentence", q: "I ___ my new teachers are nice.", correct: ["hope"] },
-    { type: "sentence", q: "I'm ___ ___ ___ seeing my friends.", correct: ["looking forward to"] },
-    { type: "sentence", q: "Kira wants to ___ Katie her new bag.", correct: ["show"] },
-    { type: "sentence", q: "We have lunch ___ in the cafeteria.", correct: ["together"] },
-    { type: "sentence", q: "We meet in the park ___ we can play football.", correct: ["so"] },
-    { type: "sentence", q: "I like ___ Green's dog.", correct: ["ms", "ms."] },
-    { type: "sentence", q: "This is the ___ to London.", correct: ["plane"] },
-    { type: "sentence", q: "There are so many ___ in London.", correct: ["sights", "sight"] },
-    { type: "sentence", q: "The weather was ___. It rained a lot.", correct: ["awful"] },
-    { type: "sentence", q: "Katie went to a summer camp in ___.", correct: ["wales"] },
-    { type: "sentence", q: "That's an ___ photo of a plane.", correct: ["amazing"] },
-    { type: "sentence", q: "Katie and her cousin ___ ___ in Wales.", correct: ["went sailing"] },
-    { type: "sentence", q: "Elliot often ___ ___ in the holidays.", correct: ["slept late"] },
-    { type: "sentence", q: "Windsor Castle is a ___ home.", correct: ["royal"] },
-    { type: "sentence", q: "I like fast ___ ___.", correct: ["fairground rides", "fairground ride"] },
-    { type: "sentence", q: "We ___ ___ in London.", correct: ["went sightseeing"] },
-    { type: "sentence", q: "Where can I ___ a car?", correct: ["rent"] }
+    { key: "have to", type: "de-en", q: "müssen", correct: ["have to", "to have to"] },
+    { key: "pencil case", type: "de-en", q: "das Federmäppchen", correct: ["pencil case", "a pencil case"] },
+    { key: "have got", type: "de-en", q: "haben; besitzen", correct: ["have got", "to have got", "has got"] },
+    { key: "hope", type: "de-en", q: "hoffen", correct: ["hope", "to hope"] },
+    { key: "look forward to", type: "de-en", q: "sich freuen auf", correct: ["look forward to", "to look forward to"] },
+    { key: "show", type: "de-en", q: "zeigen", correct: ["show", "to show"] },
+    { key: "trainer", type: "de-en", q: "der Turnschuh", correct: ["trainer", "a trainer", "trainers"] },
+    { key: "together", type: "de-en", q: "zusammen; gemeinsam", correct: ["together"] },
+    { key: "so", type: "de-en", q: "damit", correct: ["so"] },
+    { key: "sad", type: "de-en", q: "traurig", correct: ["sad"] },
+    { key: "ms", type: "de-en", q: "Frau (Anrede)", correct: ["ms", "ms."] },
+    { key: "pizza", type: "de-en", q: "die Pizza", correct: ["pizza", "a pizza"] },
+    { key: "have to", type: "en-de", q: "have to", correct: ["müssen"] },
+    { key: "pencil case", type: "en-de", q: "pencil case", correct: ["das Federmäppchen"] },
+    { key: "have got", type: "en-de", q: "have got", correct: ["haben", "besitzen"] },
+    { key: "hope", type: "en-de", q: "hope", correct: ["hoffen"] },
+    { key: "look forward to", type: "en-de", q: "look forward to", correct: ["sich freuen auf"] },
+    { key: "show", type: "en-de", q: "show", correct: ["zeigen"] },
+    { key: "trainer", type: "en-de", q: "trainer", correct: ["der Turnschuh"] },
+    { key: "together", type: "en-de", q: "together", correct: ["zusammen", "gemeinsam"] },
+    { key: "so", type: "en-de", q: "so", correct: ["damit"] },
+    { key: "sad", type: "en-de", q: "sad", correct: ["traurig"] },
+    { key: "ms", type: "en-de", q: "ms", correct: ["Frau (Anrede)"] },
+    { key: "pizza", type: "en-de", q: "pizza", correct: ["die Pizza"] },
+    { key: "have to", type: "sentence", q: "You ___ ___ wear trainers for sport.", correct: ["have to"] },
+    { key: "pencil case", type: "sentence", q: "My ___ ___ is in my bag.", correct: ["pencil case"] },
+    { key: "have got", type: "sentence", q: "Your new house ___ ___ a big garden.", correct: ["has got"] },
+    { key: "hope", type: "sentence", q: "I ___ my new teachers are nice.", correct: ["hope"] },
+    { key: "look forward to", type: "sentence", q: "I'm ___ ___ ___ seeing my friends.", correct: ["looking forward to"] },
+    { key: "show", type: "sentence", q: "Kira wants to ___ Katie her new bag.", correct: ["show"] },
+    { key: "together", type: "sentence", q: "We have lunch ___ in the cafeteria.", correct: ["together"] },
+    { key: "so", type: "sentence", q: "We meet in the park ___ we can play football.", correct: ["so"] },
+    { key: "sad", type: "sentence", q: "I was very ___ when my friend moved away.", correct: ["sad"] },
+    { key: "ms", type: "sentence", q: "I like ___ Green's dog.", correct: ["ms", "ms."] }
   ];
-  var TEST_SIZE = Math.min(15, POOL.length);
+  var TEST_SIZE = Math.min(12, POOL.length);
 
   var TYPE_LABELS = { "de-en": "Deutsch → Englisch", "en-de": "Englisch → Deutsch", "sentence": "Lückensatz", };
 
@@ -245,9 +218,66 @@
     return String(str || "").trim().replace(/\s+/g, " ").toLowerCase();
   }
 
+  // ---------- Bewertung (Nutzerregeln 15.09.2026) ----------
+  // Zwei Punkte, wenn das Wort stimmt. Ein Punkt, wenn es erkennbar dasselbe
+  // Wort ist, aber falsch geschrieben. Artikel und Gross-/Kleinschreibung
+  // zaehlen nicht mit - "das Souvenir" und "Souvenir" sind dieselbe Antwort.
+  var ARTIKEL = /^(der|die|das|den|dem|ein|eine|the|a|an)\s+/;
+
+  function ohneArtikel(str) {
+    return normalize(str).replace(ARTIKEL, "");
+  }
+
+  function abstand(a, b) {
+    var m = a.length, n = b.length, i, j, vor = [], jetzt = [];
+    for (j = 0; j <= n; j++) vor[j] = j;
+    for (i = 1; i <= m; i++) {
+      jetzt = [i];
+      for (j = 1; j <= n; j++) {
+        jetzt[j] = Math.min(vor[j] + 1, jetzt[j - 1] + 1,
+                            vor[j - 1] + (a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1));
+      }
+      vor = jetzt;
+    }
+    return vor[n];
+  }
+
+  // Wie weit darf danebengeschrieben sein? Kurze Woerter gar nicht - sonst
+  // wuerde aus "sad" ein akzeptiertes "bad".
+  function toleranz(wort) {
+    if (wort.length < 4) return 0;
+    if (wort.length < 8) return 1;
+    return 2;
+  }
+
+  function punkteFuer(given, correctList) {
+    var g = normalize(given), gA = ohneArtikel(given), i, c, cA;
+    if (!g) return 0;
+    for (i = 0; i < correctList.length; i++) {
+      c = normalize(correctList[i]); cA = ohneArtikel(correctList[i]);
+      if (g === c || gA === cA) return 2;
+    }
+    for (i = 0; i < correctList.length; i++) {
+      cA = ohneArtikel(correctList[i]);
+      if (!cA.length || gA.charAt(0) !== cA.charAt(0)) continue;
+      if (abstand(gA, cA) <= toleranz(cA)) return 1;
+    }
+    return 0;
+  }
+
+  // Schluessel je Vokabel, damit dasselbe Wort nicht zweimal drankommt.
+  function vokabelSchluessel(item) {
+    // Bevorzugt der ausdrueckliche key aus der Wortliste. Ohne ihn wuerden
+    // gebeugte Formen auseinanderfallen ("has got" gegen "have got") und
+    // dieselbe Vokabel zweimal drankommen.
+    if (item.key) return item.key;
+    return item.type === "en-de" ? ohneArtikel(item.q) : ohneArtikel(item.correct[0]);
+  }
+
   var ITEMS = [];
   var idx = 0;
   var correctCount = 0;
+  var punkteGesamt = 0;
   var answered = false;
   var results = []; // "correct" | "wrong" per item
 
@@ -261,7 +291,14 @@
   }
 
   function pickItems() {
-    return shuffle(POOL).slice(0, TEST_SIZE);
+    var gemischt = shuffle(POOL), gesehen = {}, raus = [], i, k;
+    for (i = 0; i < gemischt.length && raus.length < TEST_SIZE; i++) {
+      k = vokabelSchluessel(gemischt[i]);
+      if (gesehen[k]) continue;
+      gesehen[k] = true;
+      raus.push(gemischt[i]);
+    }
+    return raus;
   }
 
   function show(id) {
@@ -276,6 +313,7 @@
     ITEMS.forEach(function (_, i) {
       var span = document.createElement("span");
       if (results[i] === "correct") { span.textContent = "🔓"; span.className = "correct"; }
+      else if (results[i] === "half") { span.textContent = "🔓"; span.className = "half"; }
       else if (results[i] === "wrong") { span.textContent = "🔒"; span.className = "wrong"; }
       else if (i === idx) { span.textContent = "🔒"; span.className = "current"; }
       else { span.textContent = "🔒"; }
@@ -287,6 +325,7 @@
     ITEMS = pickItems();
     idx = 0;
     correctCount = 0;
+    punkteGesamt = 0;
     results = [];
     show("gameWrap");
     nextQuestion();
@@ -318,21 +357,27 @@
     if (answered) return;
     answered = true;
     var input = document.getElementById("answerInput");
-    var given = normalize(input.value);
-    var accepted = item.correct.map(normalize);
-    var correct = given.length > 0 && accepted.indexOf(given) !== -1;
+    var punkte = punkteFuer(input.value, item.correct);
+    var correct = punkte === 2;
 
     input.disabled = true;
     document.getElementById("submitBtn").disabled = true;
 
     var fb = document.getElementById("feedbackEl");
     var card = document.querySelector(".card");
+    punkteGesamt += punkte;
     if (correct) {
       correctCount++;
       results[idx] = "correct";
       input.className = "answer-input correct";
       document.getElementById("roomEmoji").textContent = "🔓";
-      fb.textContent = "Schloss geöffnet!";
+      fb.textContent = "Schloss geöffnet!  2 Punkte";
+      fb.className = "feedback good";
+    } else if (punkte === 1) {
+      results[idx] = "half";
+      input.className = "answer-input correct";
+      document.getElementById("roomEmoji").textContent = "🔓";
+      fb.textContent = "Fast! Richtig ist: " + item.correct[0] + "  —  1 Punkt für den Schreibfehler";
       fb.className = "feedback good";
     } else {
       results[idx] = "wrong";
@@ -344,14 +389,15 @@
       setTimeout(function () { card.classList.remove("shake"); }, 500);
     }
     renderLocksRow();
-    setTimeout(function () { idx++; nextQuestion(); }, correct ? 1100 : 2200);
+    setTimeout(function () { idx++; nextQuestion(); }, punkte === 2 ? 1100 : 2200);
   }
 
   function finishTest() {
-    var percent = correctCount / ITEMS.length;
+    var maximum = ITEMS.length * 2;
+    var percent = punkteGesamt / maximum;
     var grade = gradeFor(percent);
     document.getElementById("gradeBig").textContent = grade;
-    document.getElementById("pointsRow").textContent = correctCount + " / " + ITEMS.length + " Punkte";
+    document.getElementById("pointsRow").textContent = punkteGesamt + " / " + maximum + " Punkte";
     document.getElementById("percentRow").textContent = Math.round(percent * 100) + " %";
     show("resultScreen");
   }
