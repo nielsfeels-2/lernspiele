@@ -110,7 +110,7 @@
     <p>Orange Line 2, Unit 1 – Länder (p. 11) und Viewing (p. 15), SB S. 243<br>
     Du bist im Klassenzimmer eingeschlossen. Jede richtig <b>geschriebene</b> Antwort öffnet ein Schloss.
     Am Ende gibt's deine Note – zeig sie deiner Lehrkraft!</p>
-    <p style="font-size:13px; opacity:.7;" id="poolInfo">15 Fragen aus SB S. 243 · du tippst die Antwort selbst · jede Frage nur ein Versuch, kein Zurück</p>
+    <p style="font-size:13px; opacity:.7;" id="poolInfo">15 Fragen aus SB S. 243 · du tippst die Antwort selbst · du tippst die Antwort selbst · jede Frage nur ein Versuch, kein Zurück</p>
     <p style="font-size:12px; opacity:.6;">🎲 Bei jedem Versuch eine andere Auswahl aus dem gesamten Wortschatz - lohnt sich, wirklich alles zu lernen!</p>
     <button class="big-btn" id="startBtn">🔓 Test starten</button>
   </div>
@@ -187,25 +187,25 @@
     { type: "en-de", q: "at first", correct: ["zuerst", "zunächst", "zunaechst"] },
     { type: "en-de", q: "to put in", correct: ["hineintun", "eingeben"] },
     { type: "en-de", q: "tea", correct: ["tee", "der tee", "abendessen", "das frühe abendessen"] },
-    { type: "sentence", q: "___ is near England.  (Frankreich)", correct: ["france"] },
-    { type: "sentence", q: "You can go by plane and ship to ___.  (die USA)", correct: ["the usa", "usa"] },
-    { type: "sentence", q: "England is in the ___.  (Vereinigtes Königreich)", correct: ["uk", "the uk"] },
-    { type: "sentence", q: "My friends went on holiday to ___.  (Griechenland)", correct: ["greece"] },
-    { type: "sentence", q: "It is very hot in ___.  (Indien)", correct: ["india"] },
-    { type: "sentence", q: "I lived in ___, but now I live in England.  (die Türkei)", correct: ["turkey"] },
-    { type: "sentence", q: "The ___ are next to Germany.  (die Niederlande)", correct: ["netherlands"] },
-    { type: "sentence", q: "Moscow is a city in ___.  (Russland)", correct: ["russia"] },
+    // ---- Lückensätze: die Lücke ist immer die Vokabel selbst ----
+    { type: "sentence", q: "___ is near England.", correct: ["france"] },
+    { type: "sentence", q: "You can go by plane and ship to ___ ___.", correct: ["the usa"] },
+    { type: "sentence", q: "England is in the ___.", correct: ["uk", "the uk"] },
+    { type: "sentence", q: "My friends went on holiday to ___.", correct: ["greece"] },
+    { type: "sentence", q: "It is very hot in ___.", correct: ["india"] },
+    { type: "sentence", q: "I lived in ___, but now I live in England.", correct: ["turkey"] },
+    { type: "sentence", q: "___ ___ are next to Germany.", correct: ["the netherlands"] },
+    { type: "sentence", q: "Moscow is a city in ___.", correct: ["russia"] },
     { type: "sentence", q: "Katie walked on the ___ at Brighton.", correct: ["seafront"] },
     { type: "sentence", q: "How many fish are in the ___?", correct: ["aquarium"] },
-    { type: "sentence", q: "I need my sunhat and my ___ ___.", correct: ["sun cream"] },
+    { type: "sentence", q: "I need my sunhat and my ___ ___.", correct: ["sun cream", "suncream"] },
     { type: "sentence", q: "The fairground is on the ___.", correct: ["pier"] },
     { type: "sentence", q: "I ___ never eat in that café.", correct: ["would"] },
-    { type: "sentence", q: "I wasn't happy ___ ___, then it was OK.", correct: ["at first"] },
-    { type: "sentence", q: "Kira ___ sugar ___ her tea.  (to put in)", correct: ["puts in"] }
+    { type: "sentence", q: "I wasn't happy ___ ___, then it was OK.", correct: ["at first"] }
   ];
   var TEST_SIZE = Math.min(15, POOL.length);
 
-  var TYPE_LABELS = { "de-en": "Deutsch → Englisch", "en-de": "Englisch → Deutsch", "sentence": "Lückensatz / Übersetzung" };
+  var TYPE_LABELS = { "de-en": "Deutsch → Englisch", "en-de": "Englisch → Deutsch", "sentence": "Lückensatz", };
 
   // ---------- Notenschlüssel (Prozent-Schwellen) – bei Bedarf an den schulinternen Schlüssel anpassen ----------
   var GRADE_THRESHOLDS = [
