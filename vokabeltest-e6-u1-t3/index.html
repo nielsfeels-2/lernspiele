@@ -21,6 +21,7 @@
   .locks-row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 640px; margin: 6px 0 4px; }
   .locks-row span { font-size: 20px; opacity: .5; }
   .locks-row span.correct { opacity: 1; }
+  .locks-row span.half { opacity: 1; filter: grayscale(.6); }
   .locks-row span.wrong { opacity: 1; }
   .locks-row span.current { opacity: 1; filter: drop-shadow(0 0 6px var(--accent)); }
 
@@ -106,11 +107,11 @@
   <div class="start-screen" id="startScreen">
     <div style="font-size:60px;">🔐</div>
     <h1>Vokabeltest: Escape Room</h1>
-    <p style="opacity:.75; font-size:15px; margin-top:-6px;">Vokabeltest E6 · Unit 1 · Länder und Viewing (SB S. 243)</p>
+    <p style="opacity:.75; font-size:15px; margin-top:-6px;">Orange Line 2, Unit 1 – Länder (p. 11) und Viewing (p. 15), SB S. 243</p>
     <p>Orange Line 2, Unit 1 – Länder (p. 11) und Viewing (p. 15), SB S. 243<br>
     Du bist im Klassenzimmer eingeschlossen. Jede richtig <b>geschriebene</b> Antwort öffnet ein Schloss.
     Am Ende gibt's deine Note – zeig sie deiner Lehrkraft!</p>
-    <p style="font-size:13px; opacity:.7;" id="poolInfo">15 Fragen aus SB S. 243 · du tippst die Antwort selbst · du tippst die Antwort selbst · jede Frage nur ein Versuch, kein Zurück</p>
+    <p style="font-size:13px; opacity:.7;" id="poolInfo">15 Fragen aus SB S. 243 · Länder und Viewing (p. 11, p. 15) · 2 Punkte je Wort, 1 Punkt bei einem Schreibfehler</p>
     <p style="font-size:12px; opacity:.6;">🎲 Bei jedem Versuch eine andere Auswahl aus dem gesamten Wortschatz - lohnt sich, wirklich alles zu lernen!</p>
     <button class="big-btn" id="startBtn">🔓 Test starten</button>
   </div>
@@ -138,7 +139,7 @@
     <div class="result-card">
       <div class="grade-label">Note</div>
       <div class="grade-big" id="gradeBig">2</div>
-      <div class="points-row" id="pointsRow">12 / 15 Punkte</div>
+      <div class="points-row" id="pointsRow">30 / 30 Punkte</div>
       <div class="percent-row" id="percentRow">85 %</div>
     </div>
     <p style="opacity:.85; font-size:16px;">👆 Zeig dieses Ergebnis direkt deiner Lehrkraft.</p>
@@ -157,51 +158,60 @@
   // POOL = ALLE Vokabeln dieses Testabschnitts. TEST_SIZE = wie viele davon
   // pro Durchlauf zufällig abgefragt werden.
   var POOL = [
-    { type: "de-en", q: "Frankreich", correct: ["France"] },
-    { type: "de-en", q: "die USA (Vereinigte Staaten)", correct: ["the USA", "USA", "the United States"] },
-    { type: "de-en", q: "Italien", correct: ["Italy"] },
-    { type: "de-en", q: "China", correct: ["China"] },
-    { type: "de-en", q: "das Vereinigte Königreich", correct: ["the UK", "UK", "the United Kingdom"] },
-    { type: "de-en", q: "Griechenland", correct: ["Greece"] },
-    { type: "de-en", q: "Indien", correct: ["India"] },
-    { type: "de-en", q: "die Türkei", correct: ["Turkey"] },
-    { type: "de-en", q: "die Niederlande", correct: ["the Netherlands", "Netherlands"] },
-    { type: "de-en", q: "Russland", correct: ["Russia"] },
-    { type: "de-en", q: "die Küste; das Meeresufer", correct: ["seafront", "the seafront"] },
-    { type: "de-en", q: "die Sonnenbrille", correct: ["sunglasses"] },
-    { type: "de-en", q: "die Landkarte; der Stadtplan", correct: ["map", "a map"] },
-    { type: "de-en", q: "das Aquarium", correct: ["aquarium", "an aquarium"] },
-    { type: "de-en", q: "die Sonnencreme", correct: ["sun cream", "suncream"] },
-    { type: "de-en", q: "der Pier; der Landungssteg", correct: ["pier", "the pier"] },
-    { type: "de-en", q: "würde(n)", correct: ["would"] },
-    { type: "de-en", q: "zuerst; zunächst", correct: ["at first"] },
-    { type: "de-en", q: "hineintun; eingeben", correct: ["put in", "to put in"] },
-    { type: "de-en", q: "der Tee; das frühe Abendessen", correct: ["tea"] },
-    { type: "en-de", q: "Greece", correct: ["griechenland"] },
-    { type: "en-de", q: "the Netherlands", correct: ["die niederlande", "niederlande"] },
-    { type: "en-de", q: "Turkey", correct: ["die türkei", "türkei", "tuerkei"] },
-    { type: "en-de", q: "the UK", correct: ["das vereinigte königreich", "vereinigtes königreich", "grossbritannien"] },
-    { type: "en-de", q: "seafront", correct: ["küste", "die küste", "meeresufer", "das meeresufer", "kueste"] },
-    { type: "en-de", q: "sun cream", correct: ["sonnencreme", "die sonnencreme"] },
-    { type: "en-de", q: "pier", correct: ["pier", "der pier", "landungssteg", "der landungssteg"] },
-    { type: "en-de", q: "at first", correct: ["zuerst", "zunächst", "zunaechst"] },
-    { type: "en-de", q: "to put in", correct: ["hineintun", "eingeben"] },
-    { type: "en-de", q: "tea", correct: ["tee", "der tee", "abendessen", "das frühe abendessen"] },
-    // ---- Lückensätze: die Lücke ist immer die Vokabel selbst ----
-    { type: "sentence", q: "___ is near England.", correct: ["france"] },
-    { type: "sentence", q: "You can go by plane and ship to ___ ___.", correct: ["the usa"] },
-    { type: "sentence", q: "England is in the ___.", correct: ["uk", "the uk"] },
-    { type: "sentence", q: "My friends went on holiday to ___.", correct: ["greece"] },
-    { type: "sentence", q: "It is very hot in ___.", correct: ["india"] },
-    { type: "sentence", q: "I lived in ___, but now I live in England.", correct: ["turkey"] },
-    { type: "sentence", q: "___ ___ are next to Germany.", correct: ["the netherlands"] },
-    { type: "sentence", q: "Moscow is a city in ___.", correct: ["russia"] },
-    { type: "sentence", q: "Katie walked on the ___ at Brighton.", correct: ["seafront"] },
-    { type: "sentence", q: "How many fish are in the ___?", correct: ["aquarium"] },
-    { type: "sentence", q: "I need my sunhat and my ___ ___.", correct: ["sun cream", "suncream"] },
-    { type: "sentence", q: "The fairground is on the ___.", correct: ["pier"] },
-    { type: "sentence", q: "I ___ never eat in that café.", correct: ["would"] },
-    { type: "sentence", q: "I wasn't happy ___ ___, then it was OK.", correct: ["at first"] }
+    { key: "france", type: "de-en", q: "Frankreich", correct: ["france"] },
+    { key: "usa", type: "de-en", q: "die USA (Vereinigte Staaten)", correct: ["the usa", "usa", "the united states"] },
+    { key: "italy", type: "de-en", q: "Italien", correct: ["italy"] },
+    { key: "china", type: "de-en", q: "China", correct: ["china"] },
+    { key: "uk", type: "de-en", q: "das Vereinigte Königreich", correct: ["the uk", "uk", "the united kingdom"] },
+    { key: "greece", type: "de-en", q: "Griechenland", correct: ["greece"] },
+    { key: "india", type: "de-en", q: "Indien", correct: ["india"] },
+    { key: "turkey", type: "de-en", q: "die Türkei", correct: ["turkey"] },
+    { key: "netherlands", type: "de-en", q: "die Niederlande", correct: ["the netherlands", "netherlands"] },
+    { key: "russia", type: "de-en", q: "Russland", correct: ["russia"] },
+    { key: "seafront", type: "de-en", q: "die Küste; das Meeresufer", correct: ["seafront", "the seafront"] },
+    { key: "sunglasses", type: "de-en", q: "die Sonnenbrille", correct: ["sunglasses"] },
+    { key: "map", type: "de-en", q: "die Landkarte; der Stadtplan", correct: ["map", "a map"] },
+    { key: "aquarium", type: "de-en", q: "das Aquarium", correct: ["aquarium", "an aquarium"] },
+    { key: "sun cream", type: "de-en", q: "die Sonnencreme", correct: ["sun cream", "suncream"] },
+    { key: "pier", type: "de-en", q: "der Pier; der Landungssteg", correct: ["pier", "the pier"] },
+    { key: "would", type: "de-en", q: "würde(n)", correct: ["would"] },
+    { key: "at first", type: "de-en", q: "zuerst; zunächst", correct: ["at first"] },
+    { key: "put in", type: "de-en", q: "hineintun; eingeben", correct: ["put in", "to put in"] },
+    { key: "tea", type: "de-en", q: "der Tee; das frühe Abendessen", correct: ["tea"] },
+    { key: "france", type: "en-de", q: "france", correct: ["Frankreich"] },
+    { key: "usa", type: "en-de", q: "the usa", correct: ["die USA (Vereinigte Staaten)"] },
+    { key: "italy", type: "en-de", q: "italy", correct: ["Italien"] },
+    { key: "china", type: "en-de", q: "china", correct: ["China"] },
+    { key: "uk", type: "en-de", q: "the uk", correct: ["das Vereinigte Königreich"] },
+    { key: "greece", type: "en-de", q: "greece", correct: ["Griechenland"] },
+    { key: "india", type: "en-de", q: "india", correct: ["Indien"] },
+    { key: "turkey", type: "en-de", q: "turkey", correct: ["die Türkei"] },
+    { key: "netherlands", type: "en-de", q: "the netherlands", correct: ["die Niederlande"] },
+    { key: "russia", type: "en-de", q: "russia", correct: ["Russland"] },
+    { key: "seafront", type: "en-de", q: "seafront", correct: ["die Küste", "das Meeresufer"] },
+    { key: "sunglasses", type: "en-de", q: "sunglasses", correct: ["die Sonnenbrille"] },
+    { key: "map", type: "en-de", q: "map", correct: ["die Landkarte", "der Stadtplan"] },
+    { key: "aquarium", type: "en-de", q: "aquarium", correct: ["das Aquarium"] },
+    { key: "sun cream", type: "en-de", q: "sun cream", correct: ["die Sonnencreme"] },
+    { key: "pier", type: "en-de", q: "pier", correct: ["der Pier", "der Landungssteg"] },
+    { key: "would", type: "en-de", q: "would", correct: ["würde(n)"] },
+    { key: "at first", type: "en-de", q: "at first", correct: ["zuerst", "zunächst"] },
+    { key: "put in", type: "en-de", q: "put in", correct: ["hineintun", "eingeben"] },
+    { key: "tea", type: "en-de", q: "tea", correct: ["der Tee", "das frühe Abendessen"] },
+    { key: "france", type: "sentence", q: "___ is near England.", correct: ["france"] },
+    { key: "usa", type: "sentence", q: "You can go by plane and ship to ___ ___.", correct: ["the usa"] },
+    { key: "uk", type: "sentence", q: "England is in the ___.", correct: ["uk"] },
+    { key: "greece", type: "sentence", q: "My friends went on holiday to ___.", correct: ["greece"] },
+    { key: "india", type: "sentence", q: "It is very hot in ___.", correct: ["india"] },
+    { key: "turkey", type: "sentence", q: "I lived in ___, but now I live in England.", correct: ["turkey"] },
+    { key: "netherlands", type: "sentence", q: "___ ___ are next to Germany.", correct: ["the netherlands"] },
+    { key: "russia", type: "sentence", q: "Moscow is a city in ___.", correct: ["russia"] },
+    { key: "seafront", type: "sentence", q: "Katie walked on the ___ at Brighton.", correct: ["seafront"] },
+    { key: "aquarium", type: "sentence", q: "How many fish are in the ___?", correct: ["aquarium"] },
+    { key: "sun cream", type: "sentence", q: "I need my sunhat and my ___ ___.", correct: ["sun cream", "suncream"] },
+    { key: "pier", type: "sentence", q: "The fairground is on the ___.", correct: ["pier"] },
+    { key: "would", type: "sentence", q: "I ___ never eat in that café.", correct: ["would"] },
+    { key: "at first", type: "sentence", q: "I wasn't happy ___ ___, then it was OK.", correct: ["at first"] }
   ];
   var TEST_SIZE = Math.min(15, POOL.length);
 
@@ -228,9 +238,66 @@
     return String(str || "").trim().replace(/\s+/g, " ").toLowerCase();
   }
 
+  // ---------- Bewertung (Nutzerregeln 15.09.2026) ----------
+  // Zwei Punkte, wenn das Wort stimmt. Ein Punkt, wenn es erkennbar dasselbe
+  // Wort ist, aber falsch geschrieben. Artikel und Gross-/Kleinschreibung
+  // zaehlen nicht mit - "das Souvenir" und "Souvenir" sind dieselbe Antwort.
+  var ARTIKEL = /^(der|die|das|den|dem|ein|eine|the|a|an)\s+/;
+
+  function ohneArtikel(str) {
+    return normalize(str).replace(ARTIKEL, "");
+  }
+
+  function abstand(a, b) {
+    var m = a.length, n = b.length, i, j, vor = [], jetzt = [];
+    for (j = 0; j <= n; j++) vor[j] = j;
+    for (i = 1; i <= m; i++) {
+      jetzt = [i];
+      for (j = 1; j <= n; j++) {
+        jetzt[j] = Math.min(vor[j] + 1, jetzt[j - 1] + 1,
+                            vor[j - 1] + (a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1));
+      }
+      vor = jetzt;
+    }
+    return vor[n];
+  }
+
+  // Wie weit darf danebengeschrieben sein? Kurze Woerter gar nicht - sonst
+  // wuerde aus "sad" ein akzeptiertes "bad".
+  function toleranz(wort) {
+    if (wort.length < 4) return 0;
+    if (wort.length < 8) return 1;
+    return 2;
+  }
+
+  function punkteFuer(given, correctList) {
+    var g = normalize(given), gA = ohneArtikel(given), i, c, cA;
+    if (!g) return 0;
+    for (i = 0; i < correctList.length; i++) {
+      c = normalize(correctList[i]); cA = ohneArtikel(correctList[i]);
+      if (g === c || gA === cA) return 2;
+    }
+    for (i = 0; i < correctList.length; i++) {
+      cA = ohneArtikel(correctList[i]);
+      if (!cA.length || gA.charAt(0) !== cA.charAt(0)) continue;
+      if (abstand(gA, cA) <= toleranz(cA)) return 1;
+    }
+    return 0;
+  }
+
+  // Schluessel je Vokabel, damit dasselbe Wort nicht zweimal drankommt.
+  function vokabelSchluessel(item) {
+    // Bevorzugt der ausdrueckliche key aus der Wortliste. Ohne ihn wuerden
+    // gebeugte Formen auseinanderfallen ("has got" gegen "have got") und
+    // dieselbe Vokabel zweimal drankommen.
+    if (item.key) return item.key;
+    return item.type === "en-de" ? ohneArtikel(item.q) : ohneArtikel(item.correct[0]);
+  }
+
   var ITEMS = [];
   var idx = 0;
   var correctCount = 0;
+  var punkteGesamt = 0;
   var answered = false;
   var results = []; // "correct" | "wrong" per item
 
@@ -244,7 +311,14 @@
   }
 
   function pickItems() {
-    return shuffle(POOL).slice(0, TEST_SIZE);
+    var gemischt = shuffle(POOL), gesehen = {}, raus = [], i, k;
+    for (i = 0; i < gemischt.length && raus.length < TEST_SIZE; i++) {
+      k = vokabelSchluessel(gemischt[i]);
+      if (gesehen[k]) continue;
+      gesehen[k] = true;
+      raus.push(gemischt[i]);
+    }
+    return raus;
   }
 
   function show(id) {
@@ -259,6 +333,7 @@
     ITEMS.forEach(function (_, i) {
       var span = document.createElement("span");
       if (results[i] === "correct") { span.textContent = "🔓"; span.className = "correct"; }
+      else if (results[i] === "half") { span.textContent = "🔓"; span.className = "half"; }
       else if (results[i] === "wrong") { span.textContent = "🔒"; span.className = "wrong"; }
       else if (i === idx) { span.textContent = "🔒"; span.className = "current"; }
       else { span.textContent = "🔒"; }
@@ -270,6 +345,7 @@
     ITEMS = pickItems();
     idx = 0;
     correctCount = 0;
+    punkteGesamt = 0;
     results = [];
     show("gameWrap");
     nextQuestion();
@@ -301,21 +377,27 @@
     if (answered) return;
     answered = true;
     var input = document.getElementById("answerInput");
-    var given = normalize(input.value);
-    var accepted = item.correct.map(normalize);
-    var correct = given.length > 0 && accepted.indexOf(given) !== -1;
+    var punkte = punkteFuer(input.value, item.correct);
+    var correct = punkte === 2;
 
     input.disabled = true;
     document.getElementById("submitBtn").disabled = true;
 
     var fb = document.getElementById("feedbackEl");
     var card = document.querySelector(".card");
+    punkteGesamt += punkte;
     if (correct) {
       correctCount++;
       results[idx] = "correct";
       input.className = "answer-input correct";
       document.getElementById("roomEmoji").textContent = "🔓";
-      fb.textContent = "Schloss geöffnet!";
+      fb.textContent = "Schloss geöffnet!  2 Punkte";
+      fb.className = "feedback good";
+    } else if (punkte === 1) {
+      results[idx] = "half";
+      input.className = "answer-input correct";
+      document.getElementById("roomEmoji").textContent = "🔓";
+      fb.textContent = "Fast! Richtig ist: " + item.correct[0] + "  —  1 Punkt für den Schreibfehler";
       fb.className = "feedback good";
     } else {
       results[idx] = "wrong";
@@ -327,14 +409,15 @@
       setTimeout(function () { card.classList.remove("shake"); }, 500);
     }
     renderLocksRow();
-    setTimeout(function () { idx++; nextQuestion(); }, correct ? 1100 : 2200);
+    setTimeout(function () { idx++; nextQuestion(); }, punkte === 2 ? 1100 : 2200);
   }
 
   function finishTest() {
-    var percent = correctCount / ITEMS.length;
+    var maximum = ITEMS.length * 2;
+    var percent = punkteGesamt / maximum;
     var grade = gradeFor(percent);
     document.getElementById("gradeBig").textContent = grade;
-    document.getElementById("pointsRow").textContent = correctCount + " / " + ITEMS.length + " Punkte";
+    document.getElementById("pointsRow").textContent = punkteGesamt + " / " + maximum + " Punkte";
     document.getElementById("percentRow").textContent = Math.round(percent * 100) + " %";
     show("resultScreen");
   }
