@@ -110,7 +110,7 @@
     <p>Unit 1 – Looking back – Check-in + Station 1 (simple past)<br>
     Du bist im Klassenzimmer eingeschlossen. Jede richtig <b>geschriebene</b> Antwort öffnet ein Schloss.
     Am Ende gibt's deine Note – zeig sie deiner Lehrkraft!</p>
-    <p style="font-size:13px; opacity:.7;" id="poolInfo">15 Fragen aus SB S. 242 · du tippst die Antwort selbst · jede Frage nur ein Versuch, kein Zurück</p>
+    <p style="font-size:13px; opacity:.7;" id="poolInfo">15 Fragen aus SB S. 242 · du tippst die Antwort selbst · du tippst die Antwort selbst · jede Frage nur ein Versuch, kein Zurück</p>
     <p style="font-size:12px; opacity:.6;">🎲 Bei jedem Versuch eine andere Auswahl aus dem gesamten Wortschatz - lohnt sich, wirklich alles zu lernen!</p>
     <button class="big-btn" id="startBtn">🔓 Test starten</button>
   </div>
@@ -199,30 +199,30 @@
     { type: "en-de", q: "royal", correct: ["königlich", "koeniglich"] },
     { type: "en-de", q: "fairground ride", correct: ["fahrgeschäft", "das fahrgeschäft", "fahrgeschaeft"] },
     { type: "en-de", q: "souvenir", correct: ["souvenir", "das souvenir", "andenken", "das andenken"] },
-    // ---- Lückensätze · alle Beispielsätze stehen so im Buch (SB S. 242) ----
-    { type: "sentence", q: "My ___ ___ is in my bag.  (Federmäppchen)", correct: ["pencil case"] },
+    // ---- Lückensätze: die Lücke ist immer die Vokabel selbst ----
+    { type: "sentence", q: "My ___ ___ is in my bag.", correct: ["pencil case"] },
     { type: "sentence", q: "Your new house ___ ___ a big garden.", correct: ["has got"] },
     { type: "sentence", q: "I ___ my new teachers are nice.", correct: ["hope"] },
-    { type: "sentence", q: "I'm looking forward ___ seeing my friends.", correct: ["to"] },
+    { type: "sentence", q: "I'm ___ ___ ___ seeing my friends.", correct: ["looking forward to"] },
     { type: "sentence", q: "Kira wants to ___ Katie her new bag.", correct: ["show"] },
     { type: "sentence", q: "We have lunch ___ in the cafeteria.", correct: ["together"] },
     { type: "sentence", q: "We meet in the park ___ we can play football.", correct: ["so"] },
-    { type: "sentence", q: "I like ___ Green's dog.  (Anrede)", correct: ["ms", "ms."] },
+    { type: "sentence", q: "I like ___ Green's dog.", correct: ["ms", "ms."] },
     { type: "sentence", q: "This is the ___ to London.", correct: ["plane"] },
-    { type: "sentence", q: "There are so many ___ in London.", correct: ["sights"] },
+    { type: "sentence", q: "There are so many ___ in London.", correct: ["sights", "sight"] },
     { type: "sentence", q: "The weather was ___. It rained a lot.", correct: ["awful"] },
     { type: "sentence", q: "Katie went to a summer camp in ___.", correct: ["wales"] },
     { type: "sentence", q: "That's an ___ photo of a plane.", correct: ["amazing"] },
-    { type: "sentence", q: "Katie and her cousin went ___ in Wales.", correct: ["sailing"] },
-    { type: "sentence", q: "Elliot often ___ late in the holidays.  (to sleep)", correct: ["slept"] },
+    { type: "sentence", q: "Katie and her cousin ___ ___ in Wales.", correct: ["went sailing"] },
+    { type: "sentence", q: "Elliot often ___ ___ in the holidays.", correct: ["slept late"] },
     { type: "sentence", q: "Windsor Castle is a ___ home.", correct: ["royal"] },
-    { type: "sentence", q: "I like fast ___ rides.", correct: ["fairground"] },
-    { type: "sentence", q: "We went ___ in London.", correct: ["sightseeing"] },
+    { type: "sentence", q: "I like fast ___ ___.", correct: ["fairground rides", "fairground ride"] },
+    { type: "sentence", q: "We ___ ___ in London.", correct: ["went sightseeing"] },
     { type: "sentence", q: "Where can I ___ a car?", correct: ["rent"] }
   ];
   var TEST_SIZE = Math.min(15, POOL.length);
 
-  var TYPE_LABELS = { "de-en": "Deutsch → Englisch", "en-de": "Englisch → Deutsch", "sentence": "Lückensatz / Übersetzung" };
+  var TYPE_LABELS = { "de-en": "Deutsch → Englisch", "en-de": "Englisch → Deutsch", "sentence": "Lückensatz", };
 
   // ---------- Notenschlüssel (Prozent-Schwellen) – bei Bedarf an den schulinternen Schlüssel anpassen ----------
   var GRADE_THRESHOLDS = [
