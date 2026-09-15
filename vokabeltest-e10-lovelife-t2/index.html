@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Vokabeltest 2 – Films and film reviews</title>
+<style>
+  :root {
+    --bg1: #0b1a14; --bg2: #142a1f; --accent: #ffb238; --accent2: #4ce07a;
+    --card: rgba(255,255,255,0.06); --card-border: rgba(255,255,255,0.14); --bad: #ff8b8b;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: radial-gradient(1100px 700px at 50% -10%, #1d3a2a 0%, var(--bg1) 55%, var(--bg2) 100%);
+    color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    overscroll-behavior: none; touch-action: manipulation;
+  }
+  #app { min-height: 100%; display: flex; flex-direction: column; align-items: center; padding: env(safe-area-inset-top, 16px) 16px 24px; user-select: none; }
+
+  .locks-row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 640px; margin: 6px 0 4px; }
+  .locks-row span { font-size: 20px; opacity: .5; }
+  .locks-row span.correct { opacity: 1; }
+  .locks-row span.half { opacity: 1; filter: grayscale(.6); }
+  .locks-row span.wrong { opacity: 1; }
+  .locks-row span.current { opacity: 1; filter: drop-shadow(0 0 6px var(--accent)); }
+
+  .card {
+    width: 100%; max-width: 640px; background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 22px; padding: 28px 22px; margin-top: 12px; text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,.4);
+  }
+  .room-emoji { font-size: 48px; margin-bottom: 8px; }
+  .qtype { font-size: 13px; opacity: .7; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .question { font-size: 24px; font-weight: 800; line-height: 1.4; margin: 6px 0 22px; min-height: 70px; display: flex; align-items: center; justify-content: center; }
+
+  .answer-form { display: flex; flex-direction: column; gap: 12px; }
+  .answer-input {
+    width: 100%; min-height: 60px; border-radius: 16px; border: 2px solid rgba(255,255,255,.25);
+    font-size: 22px; font-weight: 700; text-align: center; padding: 10px 16px; color: #0d1f16;
+    background: linear-gradient(180deg, #fff, #e4f5ea); font-family: inherit;
+  }
+  .answer-input:focus { outline: none; border-color: var(--accent); }
+  .answer-input.correct { background: linear-gradient(180deg, #b8ffcf, #59e087); }
+  .answer-input.wrong { background: linear-gradient(180deg, #ffc2c2, #ff8b8b); }
+  .submit-btn {
+    min-height: 60px; border-radius: 16px; border: none; font-size: 19px; font-weight: 800; color: #241800;
+    cursor: pointer; background: linear-gradient(180deg, var(--accent), #c8860a);
+    box-shadow: 0 6px 0 rgba(0,0,0,.25), 0 10px 18px rgba(0,0,0,.25); padding: 10px 16px;
+  }
+  .submit-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.25); }
+  .submit-btn:disabled { opacity: .5; }
+
+  .feedback { min-height: 30px; font-size: 16px; font-weight: 700; margin-top: 16px; }
+  .feedback.good { color: var(--accent2); }
+  .feedback.bad { color: var(--bad); }
+
+  .start-screen, .result-screen { width: 100%; max-width: 640px; text-align: center; margin-top: 30px; }
+  .start-screen h1 { font-size: 32px; margin-bottom: 8px; }
+  .start-screen p { opacity: .85; font-size: 16px; line-height: 1.55; }
+  .big-btn {
+    margin-top: 22px; padding: 18px 34px; font-size: 20px; font-weight: 800; border: none; border-radius: 18px;
+    background: linear-gradient(180deg, var(--accent), #c8860a); color: #241800; cursor: pointer;
+    box-shadow: 0 6px 0 rgba(0,0,0,.3), 0 10px 24px rgba(0,0,0,.3); min-height: 80px; min-width: 220px;
+  }
+  .big-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.3); }
+  .big-btn.secondary { background: linear-gradient(180deg, #eee, #ccc); color: #222; }
+
+  .result-card {
+    background: linear-gradient(160deg, #16321f, #0c1c12); border: 2px solid var(--accent); border-radius: 22px;
+    padding: 26px 20px; margin: 18px auto;
+  }
+  .grade-big { font-size: 84px; font-weight: 900; line-height: 1; margin: 4px 0; }
+  .grade-label { font-size: 15px; opacity: .8; letter-spacing: 1px; text-transform: uppercase; }
+  .points-row { font-size: 20px; font-weight: 700; margin-top: 10px; }
+  .percent-row { font-size: 15px; opacity: .8; margin-top: 4px; }
+
+  .footer-note { margin-top: 26px; font-size: 12px; opacity: .55; max-width: 480px; text-align: center; }
+  .hidden { display: none !important; }
+
+  @keyframes shake { 10%,90% { transform: translateX(-2px);} 20%,80% { transform: translateX(4px);} 30%,50%,70% { transform: translateX(-8px);} 40%,60% { transform: translateX(8px);} }
+  .shake { animation: shake .5s; }
+  @keyframes pop { 0% { transform: scale(0);} 60% { transform: scale(1.15);} 100% { transform: scale(1);} }
+  .pop { animation: pop .5s ease; }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ============================================================
+       VOKABELTEST-INHALT – HIER FÜR JEDEN NEUEN TEST ANPASSEN
+       POOL enthält ALLE Vokabeln des Testabschnitts (nicht nur die Testgröße!).
+       Jedes Mal, wenn der Test gestartet wird, werden TEST_SIZE zufällige
+       Items in zufälliger Reihenfolge gezogen - jede Person (und jeder neue
+       Versuch) bekommt eine andere Auswahl. Das verhindert Abschreiben und
+       gibt gleichzeitig eine "zweite Chance" mit anderen Wörtern.
+       Jedes Item: { type: "de-en"|"en-de"|"sentence", q: Frage/Satz mit ___,
+                     correct: ["akzeptierte Schreibweise 1", "..."] }
+       WICHTIG: Freitext-Eingabe, KEIN Multiple-Choice - die SuS sollen das
+       Wort wirklich schreiben (siehe leistungsbewertung_standard.md).
+       Vergleich ist case-insensitive (Groß-/Kleinschreibung egal), aber
+       Tippfehler zählen als falsch - Rechtschreibung ist Testgegenstand.
+       Notenschlüssel weiter unten im Script anpassbar.
+     ============================================================ -->
+
+  <!-- START -->
+  <div class="start-screen" id="startScreen">
+    <div style="font-size:60px;">🔐</div>
+    <h1>Vokabeltest: Escape Room</h1>
+    <p style="opacity:.75; font-size:15px; margin-top:-6px;">Vokabeltest 2 – Films and film reviews</p>
+    <p>UV 10-1 „Love life!" – Test 2 (Std. 7–9: Filmwortschatz)<br>
+    Du bist im Klassenzimmer eingeschlossen. Jede richtig <b>geschriebene</b> Antwort öffnet ein Schloss.
+    Am Ende gibt's deine Note – zeig sie deiner Lehrkraft!</p>
+    <p style="font-size:13px; opacity:.7;" id="poolInfo">13 von 24 möglichen Fragen · du tippst die Antwort selbst · 2 Punkte je Wort, 1 Punkt bei einem Schreibfehler</p>
+    <p style="font-size:12px; opacity:.6;">🎲 Bei jedem Versuch eine andere Auswahl aus dem gesamten Wortschatz - lohnt sich, wirklich alles zu lernen!</p>
+    <button class="big-btn" id="startBtn">🔓 Test starten</button>
+  </div>
+
+  <!-- GAME -->
+  <div class="hidden" id="gameWrap" style="width:100%; max-width:640px;">
+    <div class="locks-row" id="locksRow"></div>
+    <div class="card">
+      <div class="room-emoji" id="roomEmoji">🚪</div>
+      <div class="qtype" id="qType">Deutsch → Englisch</div>
+      <div class="question" id="questionEl"></div>
+      <form class="answer-form" id="answerForm" autocomplete="off">
+        <input class="answer-input" id="answerInput" type="text" autocomplete="off" autocapitalize="off"
+               autocorrect="off" spellcheck="false" placeholder="Antwort eingeben …">
+        <button class="submit-btn" id="submitBtn" type="submit">Prüfen</button>
+      </form>
+      <div class="feedback" id="feedbackEl"></div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="result-screen hidden" id="resultScreen">
+    <div class="room-emoji pop">🎉</div>
+    <h1 style="font-size:26px;">Entkommen!</h1>
+    <div class="result-card">
+      <div class="grade-label">Note</div>
+      <div class="grade-big" id="gradeBig">2</div>
+      <div class="points-row" id="pointsRow">11 / 13 Punkte</div>
+      <div class="percent-row" id="percentRow">85 %</div>
+    </div>
+    <p style="opacity:.85; font-size:16px;">👆 Zeig dieses Ergebnis direkt deiner Lehrkraft.</p>
+    <button class="big-btn secondary" id="restartBtn">Neuer Versuch (nächste Person)</button>
+  </div>
+
+  <div class="footer-note">Kein Login, keine Daten verlassen dieses Gerät. Kein Speichern von Ergebnissen – nach dem Zeigen einfach für die nächste Person neu starten.</div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- Vokabeltest-Inhalt (UV 10-1 „Love life!" – Test 2 (Std. 7–9: Filmwortschatz)) ----------
+  // POOL = ALLE Vokabeln dieses Testabschnitts. TEST_SIZE = wie viele davon
+  // pro Durchlauf zufällig abgefragt werden.
+  var POOL = [
+    { type: "de-en", q: "der/die Schauspieler/in", correct: ["actor", "an actor"] },
+    { type: "de-en", q: "der/die Regisseur/in", correct: ["director", "a director"] },
+    { type: "de-en", q: "Regie führen", correct: ["to direct", "direct"] },
+    { type: "de-en", q: "eine Rolle spielen", correct: ["to play a part", "play a part", "to play a role"] },
+    { type: "de-en", q: "die Figur (im Film)", correct: ["character", "a character"] },
+    { type: "de-en", q: "der Held / die Heldin", correct: ["hero", "a hero"] },
+    { type: "de-en", q: "die Kostüme", correct: ["costumes"] },
+    { type: "de-en", q: "die Filmmusik", correct: ["music", "the music"] },
+    { type: "de-en", q: "das Happy End", correct: ["happy ending", "a happy ending"] },
+    { type: "de-en", q: "die Filmkritik", correct: ["film review", "a film review", "review"] },
+    { type: "de-en", q: "der Actionfilm", correct: ["action film", "action"] },
+    { type: "de-en", q: "der Zeichentrickfilm", correct: ["cartoon", "a cartoon"] },
+    { type: "de-en", q: "der Historienfilm", correct: ["historical drama", "a historical drama"] },
+    { type: "de-en", q: "der Horrorfilm", correct: ["horror film", "a horror film"] },
+    { type: "de-en", q: "die Komödie", correct: ["comedy", "a comedy"] },
+    { type: "de-en", q: "spannend", correct: ["exciting"] },
+    { type: "de-en", q: "langweilig", correct: ["boring"] },
+    { type: "de-en", q: "großartig", correct: ["brilliant"] },
+    { type: "de-en", q: "berühmt", correct: ["famous"] },
+    { type: "de-en", q: "die Handlung", correct: ["plot", "the plot", "story"] },
+    { type: "de-en", q: "mit jemandem Schluss machen", correct: ["to break up with somebody", "break up with somebody"] },
+    { type: "de-en", q: "sich in jemanden verlieben", correct: ["to fall in love with somebody", "fall in love with somebody"] }
+  ];
+  var TEST_SIZE = Math.min(13, POOL.length);
+
+  var TYPE_LABELS = { "de-en": "Deutsch → Englisch", "en-de": "Englisch → Deutsch", "sentence": "Lückensatz / Übersetzung" };
+
+  // ---------- Notenschlüssel (Prozent-Schwellen) – bei Bedarf an den schulinternen Schlüssel anpassen ----------
+  var GRADE_THRESHOLDS = [
+    { min: 0.92, grade: "1" },
+    { min: 0.81, grade: "2" },
+    { min: 0.67, grade: "3" },
+    { min: 0.50, grade: "4" },
+    { min: 0.30, grade: "5" },
+    { min: 0, grade: "6" }
+  ];
+
+  function gradeFor(percent) {
+    for (var i = 0; i < GRADE_THRESHOLDS.length; i++) {
+      if (percent >= GRADE_THRESHOLDS[i].min) return GRADE_THRESHOLDS[i].grade;
+    }
+    return "6";
+  }
+
+  function normalize(str) {
+    return String(str || "").trim().replace(/\s+/g, " ").toLowerCase();
+  }
+
+  // ---------- Bewertung (Nutzerregeln 15.09.2026) ----------
+  // Zwei Punkte, wenn das Wort stimmt. Ein Punkt, wenn es erkennbar dasselbe
+  // Wort ist, aber falsch geschrieben. Artikel und Gross-/Kleinschreibung
+  // zaehlen nicht mit - "das Souvenir" und "Souvenir" sind dieselbe Antwort.
+  var ARTIKEL = /^(der|die|das|den|dem|ein|eine|the|a|an)\s+/;
+
+  function ohneArtikel(str) {
+    return normalize(str).replace(ARTIKEL, "");
+  }
+
+  function abstand(a, b) {
+    var m = a.length, n = b.length, i, j, vor = [], jetzt = [];
+    for (j = 0; j <= n; j++) vor[j] = j;
+    for (i = 1; i <= m; i++) {
+      jetzt = [i];
+      for (j = 1; j <= n; j++) {
+        jetzt[j] = Math.min(vor[j] + 1, jetzt[j - 1] + 1,
+                            vor[j - 1] + (a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1));
+      }
+      vor = jetzt;
+    }
+    return vor[n];
+  }
+
+  // Wie weit darf danebengeschrieben sein? Kurze Woerter gar nicht - sonst
+  // wuerde aus "sad" ein akzeptiertes "bad".
+  function toleranz(wort) {
+    if (wort.length < 4) return 0;
+    if (wort.length < 8) return 1;
+    return 2;
+  }
+
+  function punkteFuer(given, correctList) {
+    var g = normalize(given), gA = ohneArtikel(given), i, c, cA;
+    if (!g) return 0;
+    for (i = 0; i < correctList.length; i++) {
+      c = normalize(correctList[i]); cA = ohneArtikel(correctList[i]);
+      if (g === c || gA === cA) return 2;
+    }
+    for (i = 0; i < correctList.length; i++) {
+      cA = ohneArtikel(correctList[i]);
+      if (!cA.length || gA.charAt(0) !== cA.charAt(0)) continue;
+      if (abstand(gA, cA) <= toleranz(cA)) return 1;
+    }
+    return 0;
+  }
+
+  // Schluessel je Vokabel, damit dasselbe Wort nicht zweimal drankommt.
+  function vokabelSchluessel(item) {
+    // Bevorzugt der ausdrueckliche key aus der Wortliste. Ohne ihn wuerden
+    // gebeugte Formen auseinanderfallen ("has got" gegen "have got") und
+    // dieselbe Vokabel zweimal drankommen.
+    if (item.key) return item.key;
+    return item.type === "en-de" ? ohneArtikel(item.q) : ohneArtikel(item.correct[0]);
+  }
+
+  var ITEMS = [];
+  var idx = 0;
+  var correctCount = 0;
+  var punkteGesamt = 0;
+  var answered = false;
+  var results = []; // "correct" | "wrong" per item
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function pickItems() {
+    var gemischt = shuffle(POOL), gesehen = {}, raus = [], i, k;
+    for (i = 0; i < gemischt.length && raus.length < TEST_SIZE; i++) {
+      k = vokabelSchluessel(gemischt[i]);
+      if (gesehen[k]) continue;
+      gesehen[k] = true;
+      raus.push(gemischt[i]);
+    }
+    return raus;
+  }
+
+  function show(id) {
+    ["startScreen", "gameWrap", "resultScreen"].forEach(function (s) {
+      document.getElementById(s).classList.toggle("hidden", s !== id);
+    });
+  }
+
+  function renderLocksRow() {
+    var row = document.getElementById("locksRow");
+    row.innerHTML = "";
+    ITEMS.forEach(function (_, i) {
+      var span = document.createElement("span");
+      if (results[i] === "correct") { span.textContent = "🔓"; span.className = "correct"; }
+      else if (results[i] === "half") { span.textContent = "🔓"; span.className = "half"; }
+      else if (results[i] === "wrong") { span.textContent = "🔒"; span.className = "wrong"; }
+      else if (i === idx) { span.textContent = "🔒"; span.className = "current"; }
+      else { span.textContent = "🔒"; }
+      row.appendChild(span);
+    });
+  }
+
+  function startTest() {
+    ITEMS = pickItems();
+    idx = 0;
+    correctCount = 0;
+    punkteGesamt = 0;
+    results = [];
+    show("gameWrap");
+    nextQuestion();
+  }
+
+  function nextQuestion() {
+    if (idx >= ITEMS.length) {
+      finishTest();
+      return;
+    }
+    answered = false;
+    renderLocksRow();
+    var item = ITEMS[idx];
+    document.getElementById("qType").textContent = TYPE_LABELS[item.type] || "";
+    document.getElementById("questionEl").textContent = item.q;
+    document.getElementById("feedbackEl").textContent = "";
+    document.getElementById("feedbackEl").className = "feedback";
+    document.getElementById("roomEmoji").textContent = "🚪";
+
+    var input = document.getElementById("answerInput");
+    input.value = "";
+    input.className = "answer-input";
+    input.disabled = false;
+    document.getElementById("submitBtn").disabled = false;
+    setTimeout(function () { input.focus(); }, 50);
+  }
+
+  function onAnswer(item) {
+    if (answered) return;
+    answered = true;
+    var input = document.getElementById("answerInput");
+    var punkte = punkteFuer(input.value, item.correct);
+    var correct = punkte === 2;
+
+    input.disabled = true;
+    document.getElementById("submitBtn").disabled = true;
+
+    var fb = document.getElementById("feedbackEl");
+    var card = document.querySelector(".card");
+    punkteGesamt += punkte;
+    if (correct) {
+      correctCount++;
+      results[idx] = "correct";
+      input.className = "answer-input correct";
+      document.getElementById("roomEmoji").textContent = "🔓";
+      fb.textContent = "Schloss geöffnet!  2 Punkte";
+      fb.className = "feedback good";
+    } else if (punkte === 1) {
+      results[idx] = "half";
+      input.className = "answer-input correct";
+      document.getElementById("roomEmoji").textContent = "🔓";
+      fb.textContent = "Fast! Richtig ist: " + item.correct[0] + "  —  1 Punkt für den Schreibfehler";
+      fb.className = "feedback good";
+    } else {
+      results[idx] = "wrong";
+      input.className = "answer-input wrong";
+      document.getElementById("roomEmoji").textContent = "🔒";
+      fb.textContent = "Schloss bleibt zu. Richtig wäre: " + item.correct[0];
+      fb.className = "feedback bad";
+      card.classList.add("shake");
+      setTimeout(function () { card.classList.remove("shake"); }, 500);
+    }
+    renderLocksRow();
+    setTimeout(function () { idx++; nextQuestion(); }, punkte === 2 ? 1100 : 2200);
+  }
+
+  function finishTest() {
+    var maximum = ITEMS.length * 2;
+    var percent = punkteGesamt / maximum;
+    var grade = gradeFor(percent);
+    document.getElementById("gradeBig").textContent = grade;
+    document.getElementById("pointsRow").textContent = punkteGesamt + " / " + maximum + " Punkte";
+    document.getElementById("percentRow").textContent = Math.round(percent * 100) + " %";
+    show("resultScreen");
+  }
+
+  document.getElementById("startBtn").onclick = startTest;
+  document.getElementById("restartBtn").onclick = function () { show("startScreen"); };
+  document.getElementById("answerForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    onAnswer(ITEMS[idx]);
+  });
+
+  show("startScreen");
+})();
+</script>
+</body>
+</html>
