@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Vokabeltest – Unit 1 – Looking back</title>
+<title>Vokabeltest E6 · Unit 1 · Station 1 (SB S. 242–243)</title>
 <style>
   :root {
     --bg1: #0b1a14; --bg2: #142a1f; --accent: #ffb238; --accent2: #4ce07a;
@@ -106,11 +106,11 @@
   <div class="start-screen" id="startScreen">
     <div style="font-size:60px;">🔐</div>
     <h1>Vokabeltest: Escape Room</h1>
-    <p style="opacity:.75; font-size:15px; margin-top:-6px;">Unit 1 – Looking back</p>
-    <p>Unit 1 – Looking back – Viewing + Listening + Reading<br>
+    <p style="opacity:.75; font-size:15px; margin-top:-6px;">Vokabeltest E6 · Unit 1 · Station 1 (SB S. 242–243)</p>
+    <p>Orange Line 2, Unit 1 – Station 1, p. 10 und p. 11 (SB S. 242–243)<br>
     Du bist im Klassenzimmer eingeschlossen. Jede richtig <b>geschriebene</b> Antwort öffnet ein Schloss.
     Am Ende gibt's deine Note – zeig sie deiner Lehrkraft!</p>
-    <p style="font-size:13px; opacity:.7;" id="poolInfo">13 von 24 möglichen Fragen · du tippst die Antwort selbst · jede Frage nur ein Versuch, kein Zurück</p>
+    <p style="font-size:13px; opacity:.7;" id="poolInfo">15 Fragen aus SB S. 242–243 · du tippst die Antwort selbst · jede Frage nur ein Versuch, kein Zurück</p>
     <p style="font-size:12px; opacity:.6;">🎲 Bei jedem Versuch eine andere Auswahl aus dem gesamten Wortschatz - lohnt sich, wirklich alles zu lernen!</p>
     <button class="big-btn" id="startBtn">🔓 Test starten</button>
   </div>
@@ -138,7 +138,7 @@
     <div class="result-card">
       <div class="grade-label">Note</div>
       <div class="grade-big" id="gradeBig">2</div>
-      <div class="points-row" id="pointsRow">11 / 13 Punkte</div>
+      <div class="points-row" id="pointsRow">12 / 15 Punkte</div>
       <div class="percent-row" id="percentRow">85 %</div>
     </div>
     <p style="opacity:.85; font-size:16px;">👆 Zeig dieses Ergebnis direkt deiner Lehrkraft.</p>
@@ -152,36 +152,63 @@
 (function () {
   "use strict";
 
-  // ---------- Vokabeltest-Inhalt (Unit 1 – Looking back – Viewing + Listening + Reading) ----------
+  // ---------- Vokabeltest-Inhalt: Orange Line 2, Unit 1 – Vocabulary SB S. 242 ----------
+  // Alle 28 Eintraege der Buchseite (Check in p. 9 + Station 1 p. 10-11), keine erfundenen Woerter.
   // POOL = ALLE Vokabeln dieses Testabschnitts. TEST_SIZE = wie viele davon
   // pro Durchlauf zufällig abgefragt werden.
   var POOL = [
-    { type: "de-en", q: "die Mannschaft", correct: ["crew"] },
-    { type: "de-en", q: "der Schatz", correct: ["treasure"] },
-    { type: "de-en", q: "die Aula/Versammlung", correct: ["assembly"] },
-    { type: "de-en", q: "die Uniform", correct: ["uniform"] },
-    { type: "de-en", q: "der Podcast", correct: ["podcast"] },
-    { type: "de-en", q: "die Insel", correct: ["island"] },
-    { type: "de-en", q: "das Land (GB-Region)", correct: ["country"] },
-    { type: "de-en", q: "der Nachbar", correct: ["neighbour", "neighbor"] },
-    { type: "de-en", q: "das Interview", correct: ["interview"] },
-    { type: "de-en", q: "erz\u00e4hlen (erz\u00e4hlte)", correct: ["told"] },
-    { type: "en-de", q: "assembly", correct: ["die versammlung", "versammlung"] },
-    { type: "en-de", q: "host", correct: ["der gastgeber", "gastgeber", "moderator"] },
-    { type: "en-de", q: "treasure", correct: ["der schatz", "schatz"] },
-    { type: "en-de", q: "captain", correct: ["der kapit\u00e4n", "kapit\u00e4n"] },
-    { type: "en-de", q: "guest", correct: ["der gast", "gast"] },
-    { type: "en-de", q: "crew", correct: ["die mannschaft", "mannschaft"] },
-    { type: "en-de", q: "pirate", correct: ["der pirat", "pirat"] },
-    { type: "en-de", q: "adventure", correct: ["das abenteuer", "abenteuer"] },
-    { type: "en-de", q: "island", correct: ["die insel", "insel"] },
-    { type: "en-de", q: "background", correct: ["hintergrund", "der hintergrund"] },
-    { type: "sentence", q: "The ___ told an exciting story about the ship.", correct: ["captain"] },
-    { type: "sentence", q: "We listened to a podcast about five people from different ___.", correct: ["countries"] },
-    { type: "sentence", q: "'Willkommen an Bord!' auf Englisch:", correct: ["welcome on board"] },
-    { type: "sentence", q: "The crew ___ (find) a hidden treasure.", correct: ["found"] }
+    { type: "de-en", q: "das Flugzeug", correct: ["plane", "a plane"] },
+    { type: "de-en", q: "die Sehenswürdigkeit", correct: ["sight", "a sight"] },
+    { type: "de-en", q: "simple past von to meet", correct: ["met"] },
+    { type: "de-en", q: "schrecklich; furchtbar", correct: ["awful"] },
+    { type: "de-en", q: "unglaublich; toll; erstaunlich", correct: ["amazing"] },
+    { type: "de-en", q: "wirklich; echt; sehr", correct: ["really"] },
+    { type: "de-en", q: "simple past von to eat", correct: ["ate"] },
+    { type: "de-en", q: "besteigen; klettern; steigen", correct: ["climb", "to climb"] },
+    { type: "de-en", q: "segeln gehen", correct: ["go sailing", "to go sailing"] },
+    { type: "de-en", q: "ausschlafen; lange schlafen", correct: ["sleep late", "to sleep late"] },
+    { type: "de-en", q: "königlich", correct: ["royal"] },
+    { type: "de-en", q: "das Fahrgeschäft", correct: ["fairground ride", "a fairground ride"] },
+    { type: "de-en", q: "eine Besichtigungstour machen", correct: ["go sightseeing", "to go sightseeing"] },
+    { type: "de-en", q: "mieten", correct: ["rent", "to rent"] },
+    { type: "de-en", q: "das Souvenir; das Andenken", correct: ["souvenir", "a souvenir"] },
+    { type: "de-en", q: "packen; einpacken", correct: ["pack", "to pack"] },
+    { type: "de-en", q: "der Sonnenhut", correct: ["sunhat", "a sunhat", "sun hat"] },
+    { type: "de-en", q: "probieren; versuchen", correct: ["try", "to try"] },
+    { type: "de-en", q: "Platzhalter für ein Nomen", correct: ["one", "ones", "one(s)"] },
+    { type: "de-en", q: "schwer; schwierig; hart", correct: ["hard"] },
+    { type: "de-en", q: "simple past von to hang out", correct: ["hung out", "hung out with"] },
+    { type: "de-en", q: "suchen nach", correct: ["look for", "to look for"] },
+    { type: "de-en", q: "verpassen; vermissen", correct: ["miss", "to miss"] },
+    { type: "en-de", q: "sight", correct: ["sehenswürdigkeit", "die sehenswürdigkeit", "sehenswuerdigkeit"] },
+    { type: "en-de", q: "awful", correct: ["schrecklich", "furchtbar"] },
+    { type: "en-de", q: "amazing", correct: ["unglaublich", "toll", "erstaunlich"] },
+    { type: "en-de", q: "to sleep late", correct: ["ausschlafen", "lange schlafen"] },
+    { type: "en-de", q: "fairground ride", correct: ["fahrgeschäft", "das fahrgeschäft", "fahrgeschaeft"] },
+    { type: "en-de", q: "souvenir", correct: ["souvenir", "das souvenir", "andenken", "das andenken"] },
+    { type: "en-de", q: "to pack", correct: ["packen", "einpacken"] },
+    { type: "en-de", q: "sunhat", correct: ["sonnenhut", "der sonnenhut"] },
+    { type: "en-de", q: "hard", correct: ["schwer", "schwierig", "hart"] },
+    { type: "en-de", q: "to look for", correct: ["suchen nach", "suchen"] },
+    { type: "en-de", q: "to miss", correct: ["verpassen", "vermissen"] },
+    { type: "sentence", q: "This is the ___ to London.", correct: ["plane"] },
+    { type: "sentence", q: "There are so many ___ in London.", correct: ["sights"] },
+    { type: "sentence", q: "The weather was ___. It rained a lot.", correct: ["awful"] },
+    { type: "sentence", q: "Katie went to a summer camp in ___.", correct: ["wales"] },
+    { type: "sentence", q: "That's an ___ photo of a plane.", correct: ["amazing"] },
+    { type: "sentence", q: "Katie and her cousin went ___ in Wales.", correct: ["sailing"] },
+    { type: "sentence", q: "Elliot often ___ late in the holidays.  (to sleep)", correct: ["slept"] },
+    { type: "sentence", q: "Windsor Castle is a ___ home.", correct: ["royal"] },
+    { type: "sentence", q: "I like fast ___ rides.", correct: ["fairground"] },
+    { type: "sentence", q: "We went ___ in London.", correct: ["sightseeing"] },
+    { type: "sentence", q: "Where can I ___ a car?", correct: ["rent"] },
+    { type: "sentence", q: "I have to ___ my things.", correct: ["pack"] },
+    { type: "sentence", q: "We ___ some great food.  (to try, simple past)", correct: ["tried"] },
+    { type: "sentence", q: "This is a nice sunhat. That ___ is nice too.", correct: ["one"] },
+    { type: "sentence", q: "Help me ___ ___ my phone, please.", correct: ["look for"] },
+    { type: "sentence", q: "I ___ the bus yesterday and I had to walk.  (to miss)", correct: ["missed"] }
   ];
-  var TEST_SIZE = Math.min(13, POOL.length);
+  var TEST_SIZE = Math.min(15, POOL.length);
 
   var TYPE_LABELS = { "de-en": "Deutsch → Englisch", "en-de": "Englisch → Deutsch", "sentence": "Lückensatz / Übersetzung" };
 
