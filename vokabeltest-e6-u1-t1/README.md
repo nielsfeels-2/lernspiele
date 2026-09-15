@@ -34,3 +34,11 @@ ganze Seite.
 - ✅ Offline, keine externen Requests, kein Login, kein localStorage
 
 Notenschlüssel: Standardskala – bitte gegen den schulinternen Schlüssel prüfen.
+
+## Lückensätze: die Lücke ist die Vokabel
+
+**Nutzerregel 15.09.2026:** „wenn du die Sätze nimmst sollst du da die items abfragen. also zB *Katie and her cousin _____ in Wales* und nicht *Katie and her cousin went sailing in …*"
+
+Gelückt wird immer der Vokabeleintrag selbst, nie ein anderes Wort des Satzes. *to go sailing* → `Katie and her cousin ___ ___ in Wales.` Die Zahl der Lücken entspricht der Zahl der Wörter in der Lösung.
+
+Die Beispielsätze des Buches werden dafür gekürzt oder angepasst — sie eins zu eins zu übernehmen und irgendein Wort zu lücken war der Fehler.
