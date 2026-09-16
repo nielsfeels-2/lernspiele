@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Vokabeltest – Unit 2 – In the spotlight</title>
+<title>Vokabeltest E6 · Unit 2 · Check in und Station 1</title>
 <style>
   :root {
     --bg1: #0b1a14; --bg2: #142a1f; --accent: #ffb238; --accent2: #4ce07a;
@@ -107,11 +107,11 @@
   <div class="start-screen" id="startScreen">
     <div style="font-size:60px;">🔐</div>
     <h1>Vokabeltest: Escape Room</h1>
-    <p style="opacity:.75; font-size:15px; margin-top:-6px;">Unit 2 – In the spotlight</p>
-    <p>Unit 2 – In the spotlight – Check-in + Station 2 (Kleidung/Körper)<br>
+    <p style="opacity:.75; font-size:15px; margin-top:-6px;">Orange Line 2, Unit 2 – Check in und Station 1 (SB S. 246–248)</p>
+    <p>Unit 1 – Looking back – Check-in + Station 1 (simple past)<br>
     Du bist im Klassenzimmer eingeschlossen. Jede richtig <b>geschriebene</b> Antwort öffnet ein Schloss.
     Am Ende gibt's deine Note – zeig sie deiner Lehrkraft!</p>
-    <p style="font-size:13px; opacity:.7;" id="poolInfo">13 von 23 möglichen Fragen · du tippst die Antwort selbst · 2 Punkte je Wort, 1 Punkt bei einem Schreibfehler</p>
+    <p style="font-size:13px; opacity:.7;" id="poolInfo">15 Fragen aus SB S. 246–248 · 2 Punkte je Wort, 1 Punkt bei einem Schreibfehler</p>
     <p style="font-size:12px; opacity:.6;">🎲 Bei jedem Versuch eine andere Auswahl aus dem gesamten Wortschatz - lohnt sich, wirklich alles zu lernen!</p>
     <button class="big-btn" id="startBtn">🔓 Test starten</button>
   </div>
@@ -139,7 +139,7 @@
     <div class="result-card">
       <div class="grade-label">Note</div>
       <div class="grade-big" id="gradeBig">2</div>
-      <div class="points-row" id="pointsRow">11 / 13 Punkte</div>
+      <div class="points-row" id="pointsRow">30 / 30 Punkte</div>
       <div class="percent-row" id="percentRow">85 %</div>
     </div>
     <p style="opacity:.85; font-size:16px;">👆 Zeig dieses Ergebnis direkt deiner Lehrkraft.</p>
@@ -153,37 +153,141 @@
 (function () {
   "use strict";
 
-  // ---------- Vokabeltest-Inhalt (Unit 2 – In the spotlight – Check-in + Station 2 (Kleidung/Körper)) ----------
+  // ---------- Vokabeltest-Inhalt: Orange Line 2, Unit 1 – Vocabulary SB S. 242 ----------
+  // Alle 28 Eintraege der Buchseite (Check in p. 9 + Station 1 p. 10-11), keine erfundenen Woerter.
   // POOL = ALLE Vokabeln dieses Testabschnitts. TEST_SIZE = wie viele davon
   // pro Durchlauf zufällig abgefragt werden.
   var POOL = [
-    { type: "de-en", q: "die Freizeit", correct: ["free time"] },
-    { type: "de-en", q: "die Kleidung", correct: ["clothes"] },
-    { type: "de-en", q: "gestreift", correct: ["striped"] },
-    { type: "de-en", q: "tragen (trug)", correct: ["wore"] },
-    { type: "de-en", q: "das Talent", correct: ["talent"] },
-    { type: "de-en", q: "das Hobby", correct: ["hobby"] },
-    { type: "de-en", q: "die Turnschuhe", correct: ["trainers"] },
-    { type: "de-en", q: "gepunktet", correct: ["spotted"] },
-    { type: "de-en", q: "kariert", correct: ["checked"] },
-    { type: "de-en", q: "der Kapuzenpulli", correct: ["hoodie"] },
-    { type: "en-de", q: "hoodie", correct: ["der kapuzenpulli", "kapuzenpulli"] },
-    { type: "en-de", q: "trainers", correct: ["die turnschuhe", "turnschuhe"] },
-    { type: "en-de", q: "to be good at", correct: ["gut sein in"] },
-    { type: "en-de", q: "skills", correct: ["die f\u00e4higkeiten", "f\u00e4higkeiten"] },
-    { type: "en-de", q: "curly hair", correct: ["lockiges haar"] },
-    { type: "en-de", q: "striped", correct: ["gestreift"] },
-    { type: "en-de", q: "to wear/wore", correct: ["tragen", "trug"] },
-    { type: "en-de", q: "talented", correct: ["talentiert"] },
-    { type: "en-de", q: "outfit", correct: ["das outfit", "outfit"] },
-    { type: "sentence", q: "Mia is ___ (tall) than her brother.", correct: ["taller"] },
-    { type: "sentence", q: "She is the ___ (tall) in the family.", correct: ["tallest"] },
-    { type: "sentence", q: "This song is ___ (interesting) than that one.", correct: ["more interesting"] },
-    { type: "sentence", q: "That was the ___ (exciting) concert ever!", correct: ["most exciting"] }
+    { key: "spotlight", type: "de-en", q: "das Rampenlicht; der Scheinwerfer", correct: ["spotlight", "the spotlight"] },
+    { key: "theatre", type: "de-en", q: "das Theater", correct: ["theatre", "the theatre", "theater"] },
+    { key: "play", type: "de-en", q: "das Theaterstück", correct: ["play", "a play"] },
+    { key: "show", type: "de-en", q: "die Show; die Schau; die Aufführung", correct: ["show", "a show"] },
+    { key: "screen", type: "de-en", q: "die Leinwand; der Bildschirm", correct: ["screen", "a screen"] },
+    { key: "sound", type: "de-en", q: "der Ton; der Laut; das Geräusch", correct: ["sound", "the sound"] },
+    { key: "singer", type: "de-en", q: "der Sänger / die Sängerin", correct: ["singer", "a singer"] },
+    { key: "dancer", type: "de-en", q: "der Tänzer / die Tänzerin", correct: ["dancer", "a dancer"] },
+    { key: "chat", type: "de-en", q: "chatten; plaudern", correct: ["chat", "to chat"] },
+    { key: "online", type: "de-en", q: "online", correct: ["online"] },
+    { key: "stream", type: "de-en", q: "streamen (im Internet)", correct: ["stream", "to stream"] },
+    { key: "radio", type: "de-en", q: "das Radio", correct: ["radio", "the radio"] },
+    { key: "actor", type: "de-en", q: "der Schauspieler / die Schauspielerin", correct: ["actor", "an actor"] },
+    { key: "give", type: "de-en", q: "geben; halten (Vortrag)", correct: ["give", "to give"] },
+    { key: "presentation", type: "de-en", q: "die Präsentation; der Vortrag", correct: ["presentation", "a presentation"] },
+    { key: "breathe", type: "de-en", q: "atmen", correct: ["breathe", "to breathe"] },
+    { key: "slowly", type: "de-en", q: "langsam", correct: ["slowly"] },
+    { key: "stomach", type: "de-en", q: "der Bauch; der Magen", correct: ["stomach", "the stomach"] },
+    { key: "stand up", type: "de-en", q: "aufstehen", correct: ["stand up", "to stand up"] },
+    { key: "straight", type: "de-en", q: "gerade; direkt", correct: ["straight"] },
+    { key: "head", type: "de-en", q: "der Kopf", correct: ["head", "the head"] },
+    { key: "body", type: "de-en", q: "der Körper", correct: ["body", "the body"] },
+    { key: "way", type: "de-en", q: "die Art und Weise", correct: ["way", "the way"] },
+    { key: "feel more comfortable", type: "de-en", q: "sich wohler fühlen", correct: ["feel more comfortable", "to feel more comfortable"] },
+    { key: "smile", type: "de-en", q: "lächeln", correct: ["smile", "to smile"] },
+    { key: "calm", type: "de-en", q: "ruhig; friedlich", correct: ["calm"] },
+    { key: "stand", type: "de-en", q: "stehen", correct: ["stand", "to stand", "stood"] },
+    { key: "confident", type: "de-en", q: "selbstsicher; selbstbewusst", correct: ["confident"] },
+    { key: "speak", type: "de-en", q: "sprechen", correct: ["speak", "to speak", "spoke"] },
+    { key: "clearly", type: "de-en", q: "deutlich; klar", correct: ["clearly"] },
+    { key: "fast", type: "de-en", q: "schnell", correct: ["fast"] },
+    { key: "arm", type: "de-en", q: "der Arm", correct: ["arm", "the arm"] },
+    { key: "more interesting", type: "de-en", q: "interessanter", correct: ["more interesting"] },
+    { key: "carefully", type: "de-en", q: "sorgfältig; vorsichtig", correct: ["carefully"] },
+    { key: "nod", type: "de-en", q: "nicken", correct: ["nod", "to nod"] },
+    { key: "shake", type: "de-en", q: "schütteln", correct: ["shake", "to shake", "shook"] },
+    { key: "answer", type: "de-en", q: "beantworten; antworten", correct: ["answer", "to answer"] },
+    { key: "wait", type: "de-en", q: "warten", correct: ["wait", "to wait"] },
+    { key: "finish", type: "de-en", q: "aufhören; enden; beenden", correct: ["finish", "to finish"] },
+    { key: "loudly", type: "de-en", q: "laut", correct: ["loudly"] },
+    { key: "quietly", type: "de-en", q: "ruhig; leise; still", correct: ["quietly"] },
+    { key: "something", type: "de-en", q: "etwas", correct: ["something"] },
+    { key: "ear", type: "de-en", q: "das Ohr", correct: ["ear", "the ear"] },
+    { key: "mistake", type: "de-en", q: "der Fehler", correct: ["mistake", "a mistake"] },
+    { key: "any", type: "de-en", q: "irgendwelche", correct: ["any"] },
+    { key: "back", type: "de-en", q: "der Rücken; die Rückseite", correct: ["back", "the back"] },
+    { key: "leg", type: "de-en", q: "das Bein", correct: ["leg", "the leg"] },
+    { key: "nose", type: "de-en", q: "die Nase", correct: ["nose", "the nose"] },
+    { key: "shoulder", type: "de-en", q: "die Schulter", correct: ["shoulder", "the shoulder"] },
+    { key: "neck", type: "de-en", q: "der Hals; der Nacken; das Genick", correct: ["neck", "the neck"] },
+    { key: "mouth", type: "de-en", q: "der Mund", correct: ["mouth", "the mouth"] },
+    { key: "finger", type: "de-en", q: "der Finger", correct: ["finger", "the finger"] },
+    { key: "knee", type: "de-en", q: "das Knie", correct: ["knee", "the knee"] },
+    { key: "toe", type: "de-en", q: "der Zeh", correct: ["toe", "the toe"] },
+    { key: "pick up", type: "de-en", q: "aufheben; abholen", correct: ["pick up", "to pick up"] },
+    { key: "thought", type: "de-en", q: "simple past von to think (denken)", correct: ["thought"] },
+    { key: "point at", type: "de-en", q: "zeigen (auf)", correct: ["point at", "to point at", "point", "to point"] },
+    { key: "wave", type: "de-en", q: "winken", correct: ["wave", "to wave"] },
+    { key: "clap", type: "de-en", q: "klatschen", correct: ["clap", "to clap"] },
+    { key: "wink", type: "de-en", q: "zwinkern", correct: ["wink", "to wink"] },
+    { key: "shrug", type: "de-en", q: "mit den Achseln zucken", correct: ["shrug", "to shrug"] },
+    { key: "quickly", type: "de-en", q: "schnell", correct: ["quickly"] },
+    { key: "band", type: "de-en", q: "die Band; die Musikgruppe", correct: ["band", "a band"] },
+    { key: "spotlight", type: "en-de", q: "spotlight", correct: ["das Rampenlicht", "der Scheinwerfer"] },
+    { key: "theatre", type: "en-de", q: "theatre", correct: ["das Theater"] },
+    { key: "play", type: "en-de", q: "play", correct: ["das Theaterstück"] },
+    { key: "show", type: "en-de", q: "show", correct: ["die Show", "die Schau", "die Aufführung"] },
+    { key: "screen", type: "en-de", q: "screen", correct: ["die Leinwand", "der Bildschirm"] },
+    { key: "sound", type: "en-de", q: "sound", correct: ["der Ton", "der Laut", "das Geräusch"] },
+    { key: "singer", type: "en-de", q: "singer", correct: ["der Sänger / die Sängerin"] },
+    { key: "dancer", type: "en-de", q: "dancer", correct: ["der Tänzer / die Tänzerin"] },
+    { key: "chat", type: "en-de", q: "chat", correct: ["chatten", "plaudern"] },
+    { key: "online", type: "en-de", q: "online", correct: ["online"] },
+    { key: "stream", type: "en-de", q: "stream", correct: ["streamen (im Internet)"] },
+    { key: "radio", type: "en-de", q: "radio", correct: ["das Radio"] },
+    { key: "actor", type: "en-de", q: "actor", correct: ["der Schauspieler / die Schauspielerin"] },
+    { key: "give", type: "en-de", q: "give", correct: ["geben", "halten (Vortrag)"] },
+    { key: "presentation", type: "en-de", q: "presentation", correct: ["die Präsentation", "der Vortrag"] },
+    { key: "breathe", type: "en-de", q: "breathe", correct: ["atmen"] },
+    { key: "slowly", type: "en-de", q: "slowly", correct: ["langsam"] },
+    { key: "stomach", type: "en-de", q: "stomach", correct: ["der Bauch", "der Magen"] },
+    { key: "stand up", type: "en-de", q: "stand up", correct: ["aufstehen"] },
+    { key: "straight", type: "en-de", q: "straight", correct: ["gerade", "direkt"] },
+    { key: "head", type: "en-de", q: "head", correct: ["der Kopf"] },
+    { key: "body", type: "en-de", q: "body", correct: ["der Körper"] },
+    { key: "way", type: "en-de", q: "way", correct: ["die Art und Weise"] },
+    { key: "feel more comfortable", type: "en-de", q: "feel more comfortable", correct: ["sich wohler fühlen"] },
+    { key: "smile", type: "en-de", q: "smile", correct: ["lächeln"] },
+    { key: "calm", type: "en-de", q: "calm", correct: ["ruhig", "friedlich"] },
+    { key: "stand", type: "en-de", q: "stand", correct: ["stehen"] },
+    { key: "confident", type: "en-de", q: "confident", correct: ["selbstsicher", "selbstbewusst"] },
+    { key: "speak", type: "en-de", q: "speak", correct: ["sprechen"] },
+    { key: "clearly", type: "en-de", q: "clearly", correct: ["deutlich", "klar"] },
+    { key: "fast", type: "en-de", q: "fast", correct: ["schnell"] },
+    { key: "arm", type: "en-de", q: "arm", correct: ["der Arm"] },
+    { key: "more interesting", type: "en-de", q: "more interesting", correct: ["interessanter"] },
+    { key: "carefully", type: "en-de", q: "carefully", correct: ["sorgfältig", "vorsichtig"] },
+    { key: "nod", type: "en-de", q: "nod", correct: ["nicken"] },
+    { key: "shake", type: "en-de", q: "shake", correct: ["schütteln"] },
+    { key: "answer", type: "en-de", q: "answer", correct: ["beantworten", "antworten"] },
+    { key: "wait", type: "en-de", q: "wait", correct: ["warten"] },
+    { key: "finish", type: "en-de", q: "finish", correct: ["aufhören", "enden", "beenden"] },
+    { key: "loudly", type: "en-de", q: "loudly", correct: ["laut"] },
+    { key: "quietly", type: "en-de", q: "quietly", correct: ["ruhig", "leise", "still"] },
+    { key: "something", type: "en-de", q: "something", correct: ["etwas"] },
+    { key: "ear", type: "en-de", q: "ear", correct: ["das Ohr"] },
+    { key: "mistake", type: "en-de", q: "mistake", correct: ["der Fehler"] },
+    { key: "any", type: "en-de", q: "any", correct: ["irgendwelche"] },
+    { key: "back", type: "en-de", q: "back", correct: ["der Rücken", "die Rückseite"] },
+    { key: "leg", type: "en-de", q: "leg", correct: ["das Bein"] },
+    { key: "nose", type: "en-de", q: "nose", correct: ["die Nase"] },
+    { key: "shoulder", type: "en-de", q: "shoulder", correct: ["die Schulter"] },
+    { key: "neck", type: "en-de", q: "neck", correct: ["der Hals", "der Nacken", "das Genick"] },
+    { key: "mouth", type: "en-de", q: "mouth", correct: ["der Mund"] },
+    { key: "finger", type: "en-de", q: "finger", correct: ["der Finger"] },
+    { key: "knee", type: "en-de", q: "knee", correct: ["das Knie"] },
+    { key: "toe", type: "en-de", q: "toe", correct: ["der Zeh"] },
+    { key: "pick up", type: "en-de", q: "pick up", correct: ["aufheben", "abholen"] },
+    { key: "thought", type: "en-de", q: "thought", correct: ["simple past von to think (denken)"] },
+    { key: "point at", type: "en-de", q: "point at", correct: ["zeigen (auf)"] },
+    { key: "wave", type: "en-de", q: "wave", correct: ["winken"] },
+    { key: "clap", type: "en-de", q: "clap", correct: ["klatschen"] },
+    { key: "wink", type: "en-de", q: "wink", correct: ["zwinkern"] },
+    { key: "shrug", type: "en-de", q: "shrug", correct: ["mit den Achseln zucken"] },
+    { key: "quickly", type: "en-de", q: "quickly", correct: ["schnell"] },
+    { key: "band", type: "en-de", q: "band", correct: ["die Band", "die Musikgruppe"] }
   ];
-  var TEST_SIZE = Math.min(13, POOL.length);
+  var TEST_SIZE = Math.min(15, POOL.length);
 
-  var TYPE_LABELS = { "de-en": "Deutsch → Englisch", "en-de": "Englisch → Deutsch", "sentence": "Lückensatz / Übersetzung" };
+  var TYPE_LABELS = { "de-en": "Deutsch → Englisch", "en-de": "Englisch → Deutsch", "sentence": "Lückensatz", };
 
   // ---------- Notenschlüssel (Prozent-Schwellen) – bei Bedarf an den schulinternen Schlüssel anpassen ----------
   var GRADE_THRESHOLDS = [
