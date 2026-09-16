@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Vokabeltest – Unit 2 – In the spotlight</title>
+<title>Vokabeltest E6 · Unit 2 · Station 2, Viewing, Listening, Reading</title>
 <style>
   :root {
     --bg1: #0b1a14; --bg2: #142a1f; --accent: #ffb238; --accent2: #4ce07a;
@@ -107,11 +107,11 @@
   <div class="start-screen" id="startScreen">
     <div style="font-size:60px;">🔐</div>
     <h1>Vokabeltest: Escape Room</h1>
-    <p style="opacity:.75; font-size:15px; margin-top:-6px;">Unit 2 – In the spotlight</p>
-    <p>Unit 2 – In the spotlight – Reading + Sprachmittlung + Berufe<br>
+    <p style="opacity:.75; font-size:15px; margin-top:-6px;">Orange Line 2, Unit 2 – Station 2 bis Reading (SB S. 248–250)</p>
+    <p>Unit 1 – Looking back – Check-in + Station 1 (simple past)<br>
     Du bist im Klassenzimmer eingeschlossen. Jede richtig <b>geschriebene</b> Antwort öffnet ein Schloss.
     Am Ende gibt's deine Note – zeig sie deiner Lehrkraft!</p>
-    <p style="font-size:13px; opacity:.7;" id="poolInfo">13 von 23 möglichen Fragen · du tippst die Antwort selbst · 2 Punkte je Wort, 1 Punkt bei einem Schreibfehler</p>
+    <p style="font-size:13px; opacity:.7;" id="poolInfo">15 Fragen aus SB S. 248–250 · 2 Punkte je Wort, 1 Punkt bei einem Schreibfehler</p>
     <p style="font-size:12px; opacity:.6;">🎲 Bei jedem Versuch eine andere Auswahl aus dem gesamten Wortschatz - lohnt sich, wirklich alles zu lernen!</p>
     <button class="big-btn" id="startBtn">🔓 Test starten</button>
   </div>
@@ -139,7 +139,7 @@
     <div class="result-card">
       <div class="grade-label">Note</div>
       <div class="grade-big" id="gradeBig">2</div>
-      <div class="points-row" id="pointsRow">11 / 13 Punkte</div>
+      <div class="points-row" id="pointsRow">30 / 30 Punkte</div>
       <div class="percent-row" id="percentRow">85 %</div>
     </div>
     <p style="opacity:.85; font-size:16px;">👆 Zeig dieses Ergebnis direkt deiner Lehrkraft.</p>
@@ -153,37 +153,179 @@
 (function () {
   "use strict";
 
-  // ---------- Vokabeltest-Inhalt (Unit 2 – In the spotlight – Reading + Sprachmittlung + Berufe) ----------
+  // ---------- Vokabeltest-Inhalt: Orange Line 2, Unit 1 – Vocabulary SB S. 242 ----------
+  // Alle 28 Eintraege der Buchseite (Check in p. 9 + Station 1 p. 10-11), keine erfundenen Woerter.
   // POOL = ALLE Vokabeln dieses Testabschnitts. TEST_SIZE = wie viele davon
   // pro Durchlauf zufällig abgefragt werden.
   var POOL = [
-    { type: "de-en", q: "die B\u00fchne", correct: ["stage"] },
-    { type: "de-en", q: "ber\u00fchmt", correct: ["famous"] },
-    { type: "de-en", q: "der Feuerwehrmann", correct: ["firefighter"] },
-    { type: "de-en", q: "die Krankenschwester", correct: ["nurse"] },
-    { type: "de-en", q: "bedeuten", correct: ["to mean", "mean"] },
-    { type: "de-en", q: "das Publikum", correct: ["audience"] },
-    { type: "de-en", q: "der Vorhang", correct: ["curtain"] },
-    { type: "de-en", q: "der Schauspieler", correct: ["actor"] },
-    { type: "de-en", q: "der Polizist", correct: ["police officer"] },
-    { type: "de-en", q: "der Beruf", correct: ["job"] },
-    { type: "en-de", q: "audience", correct: ["das publikum", "publikum"] },
-    { type: "en-de", q: "to mean", correct: ["bedeuten"] },
-    { type: "en-de", q: "nurse", correct: ["die krankenschwester", "krankenschwester"] },
-    { type: "en-de", q: "firefighter", correct: ["der feuerwehrmann", "feuerwehrmann"] },
-    { type: "en-de", q: "stage", correct: ["die b\u00fchne", "b\u00fchne"] },
-    { type: "en-de", q: "famous", correct: ["ber\u00fchmt"] },
-    { type: "en-de", q: "job", correct: ["der beruf", "beruf"] },
-    { type: "en-de", q: "silent film", correct: ["stummfilm", "der stummfilm"] },
-    { type: "en-de", q: "spotlight", correct: ["scheinwerferlicht", "das scheinwerferlicht"] },
-    { type: "sentence", q: "A firefighter ___ (put out) fires and helps people.", correct: ["puts out"] },
-    { type: "sentence", q: "What ___ a nurse do?", correct: ["does"] },
-    { type: "sentence", q: "'Was bedeutet das Wort?' auf Englisch:", correct: ["what does the word mean"] },
-    { type: "sentence", q: "She works ___ a hospital. (Ort)", correct: ["at", "in"] }
+    { key: "set", type: "de-en", q: "das Set; die Kulisse", correct: ["set", "the set"] },
+    { key: "direct", type: "de-en", q: "Regie führen bei; anweisen; leiten", correct: ["direct", "to direct"] },
+    { key: "check", type: "de-en", q: "überprüfen; kontrollieren", correct: ["check", "to check"] },
+    { key: "script", type: "de-en", q: "das Drehbuch; das Skript", correct: ["script", "the script"] },
+    { key: "act", type: "de-en", q: "spielen; sich verhalten; handeln", correct: ["act", "to act"] },
+    { key: "role", type: "de-en", q: "die Rolle", correct: ["role", "the role"] },
+    { key: "create", type: "de-en", q: "machen; schaffen; erschaffen", correct: ["create", "to create"] },
+    { key: "lighting", type: "de-en", q: "die Beleuchtung", correct: ["lighting", "the lighting"] },
+    { key: "noise", type: "de-en", q: "das Geräusch; der Lärm", correct: ["noise", "the noise"] },
+    { key: "go for a walk", type: "de-en", q: "spazieren gehen", correct: ["go for a walk", "to go for a walk"] },
+    { key: "costume", type: "de-en", q: "das Kostüm", correct: ["costume", "a costume"] },
+    { key: "which", type: "de-en", q: "welche(r/s)", correct: ["which"] },
+    { key: "these", type: "de-en", q: "diese (hier)", correct: ["these"] },
+    { key: "suitable", type: "de-en", q: "passend; geeignet", correct: ["suitable"] },
+    { key: "wear", type: "de-en", q: "tragen; anhaben", correct: ["wear", "to wear", "wore"] },
+    { key: "coat", type: "de-en", q: "der Mantel; die Jacke", correct: ["coat", "a coat"] },
+    { key: "bigger", type: "de-en", q: "größer", correct: ["bigger"] },
+    { key: "more colourful", type: "de-en", q: "bunter; farbiger", correct: ["more colourful", "more colorful"] },
+    { key: "trousers", type: "de-en", q: "die Hose", correct: ["trousers"] },
+    { key: "horrible", type: "de-en", q: "schrecklich; furchtbar", correct: ["horrible"] },
+    { key: "worse", type: "de-en", q: "schlimmer", correct: ["worse"] },
+    { key: "the others", type: "de-en", q: "die anderen", correct: ["the others", "others"] },
+    { key: "worst", type: "de-en", q: "schlimmste; schlechteste", correct: ["worst", "the worst"] },
+    { key: "nicer", type: "de-en", q: "schöner; netter", correct: ["nicer"] },
+    { key: "shirt", type: "de-en", q: "das Hemd", correct: ["shirt", "a shirt"] },
+    { key: "smaller", type: "de-en", q: "kleiner", correct: ["smaller"] },
+    { key: "size", type: "de-en", q: "die Größe", correct: ["size", "the size"] },
+    { key: "suit", type: "de-en", q: "stehen; passen", correct: ["suit", "to suit"] },
+    { key: "model", type: "de-en", q: "das Model; das Modell", correct: ["model", "a model"] },
+    { key: "jacket", type: "de-en", q: "die Jacke", correct: ["jacket", "a jacket"] },
+    { key: "more attractive", type: "de-en", q: "attraktiver", correct: ["more attractive"] },
+    { key: "more comfortable", type: "de-en", q: "bequemer; angenehmer", correct: ["more comfortable"] },
+    { key: "better", type: "de-en", q: "besser", correct: ["better"] },
+    { key: "most beautiful", type: "de-en", q: "schönste", correct: ["most beautiful", "the most beautiful"] },
+    { key: "I'll take", type: "de-en", q: "ich nehme …", correct: ["i'll take", "ill take", "i will take"] },
+    { key: "what else", type: "de-en", q: "was sonst; was noch", correct: ["what else"] },
+    { key: "sweater", type: "de-en", q: "der Pullover", correct: ["sweater", "a sweater"] },
+    { key: "most attractive", type: "de-en", q: "attraktivste", correct: ["most attractive", "the most attractive"] },
+    { key: "it goes well with", type: "de-en", q: "es passt gut zu", correct: ["it goes well with", "goes well with"] },
+    { key: "shoe", type: "de-en", q: "der Schuh", correct: ["shoe", "a shoe"] },
+    { key: "yours", type: "de-en", q: "deine/deiner/deins", correct: ["yours"] },
+    { key: "nicest", type: "de-en", q: "schönste; netteste", correct: ["nicest", "the nicest"] },
+    { key: "coolest", type: "de-en", q: "coolste", correct: ["coolest", "the coolest"] },
+    { key: "fit", type: "de-en", q: "passen", correct: ["fit", "to fit"] },
+    { key: "scarf", type: "de-en", q: "der Schal; das Tuch", correct: ["scarf", "a scarf", "scarves"] },
+    { key: "mine", type: "de-en", q: "meine/meiner/meins", correct: ["mine"] },
+    { key: "most unusual", type: "de-en", q: "ungewöhnlichste", correct: ["most unusual", "the most unusual"] },
+    { key: "dress", type: "de-en", q: "das Kleid", correct: ["dress", "a dress"] },
+    { key: "skirt", type: "de-en", q: "der Rock", correct: ["skirt", "a skirt"] },
+    { key: "boot", type: "de-en", q: "der Stiefel", correct: ["boot", "a boot"] },
+    { key: "glove", type: "de-en", q: "der Handschuh", correct: ["glove", "a glove"] },
+    { key: "sock", type: "de-en", q: "die Socke", correct: ["sock", "a sock"] },
+    { key: "shorts", type: "de-en", q: "die Shorts; die kurze Hose", correct: ["shorts"] },
+    { key: "belt", type: "de-en", q: "der Gürtel", correct: ["belt", "a belt"] },
+    { key: "dollar", type: "de-en", q: "der Dollar", correct: ["dollar", "a dollar"] },
+    { key: "million", type: "de-en", q: "die Million", correct: ["million", "a million"] },
+    { key: "detective", type: "de-en", q: "der Detektiv / die Detektivin", correct: ["detective", "a detective"] },
+    { key: "thief", type: "de-en", q: "der Dieb / die Diebin", correct: ["thief", "a thief", "thieves"] },
+    { key: "character", type: "de-en", q: "die Figur; der Charakter", correct: ["character", "a character"] },
+    { key: "narrator", type: "de-en", q: "der Erzähler / die Erzählerin", correct: ["narrator", "the narrator"] },
+    { key: "waiter", type: "de-en", q: "der Kellner", correct: ["waiter", "a waiter"] },
+    { key: "driver", type: "de-en", q: "der Fahrer / die Fahrerin", correct: ["driver", "a driver"] },
+    { key: "young", type: "de-en", q: "jung", correct: ["young"] },
+    { key: "scene", type: "de-en", q: "die Szene; der Schauplatz", correct: ["scene", "a scene"] },
+    { key: "bus stop", type: "de-en", q: "die Bushaltestelle", correct: ["bus stop", "the bus stop"] },
+    { key: "pound", type: "de-en", q: "das Pfund", correct: ["pound", "a pound"] },
+    { key: "enough", type: "de-en", q: "genug; genügend", correct: ["enough"] },
+    { key: "plate", type: "de-en", q: "der Teller", correct: ["plate", "a plate"] },
+    { key: "glass", type: "de-en", q: "das Glas", correct: ["glass", "a glass"] },
+    { key: "pot", type: "de-en", q: "der Topf", correct: ["pot", "a pot"] },
+    { key: "moment", type: "de-en", q: "der Moment; der Augenblick", correct: ["moment", "a moment"] },
+    { key: "useless", type: "de-en", q: "sinnlos; unbrauchbar; zwecklos", correct: ["useless"] },
+    { key: "dream", type: "de-en", q: "der Traum", correct: ["dream", "a dream"] },
+    { key: "maybe", type: "de-en", q: "vielleicht", correct: ["maybe"] },
+    { key: "leaflet", type: "de-en", q: "die Broschüre; der Prospekt", correct: ["leaflet", "a leaflet"] },
+    { key: "worker", type: "de-en", q: "der Arbeiter / die Arbeiterin", correct: ["worker", "a worker"] },
+    { key: "hard-working", type: "de-en", q: "fleißig", correct: ["hard-working", "hard working"] },
+    { key: "determined", type: "de-en", q: "entschlossen; zielstrebig", correct: ["determined"] },
+    { key: "get on", type: "de-en", q: "einsteigen", correct: ["get on", "to get on"] },
+    { key: "past", type: "de-en", q: "vorbei (an)", correct: ["past"] },
+    { key: "end", type: "de-en", q: "aufhören; enden; beenden", correct: ["end", "to end"] },
+    { key: "could", type: "de-en", q: "könnte", correct: ["could"] },
+    { key: "set", type: "en-de", q: "set", correct: ["das Set", "die Kulisse"] },
+    { key: "direct", type: "en-de", q: "direct", correct: ["Regie führen bei", "anweisen", "leiten"] },
+    { key: "check", type: "en-de", q: "check", correct: ["überprüfen", "kontrollieren"] },
+    { key: "script", type: "en-de", q: "script", correct: ["das Drehbuch", "das Skript"] },
+    { key: "act", type: "en-de", q: "act", correct: ["spielen", "sich verhalten", "handeln"] },
+    { key: "role", type: "en-de", q: "role", correct: ["die Rolle"] },
+    { key: "create", type: "en-de", q: "create", correct: ["machen", "schaffen", "erschaffen"] },
+    { key: "lighting", type: "en-de", q: "lighting", correct: ["die Beleuchtung"] },
+    { key: "noise", type: "en-de", q: "noise", correct: ["das Geräusch", "der Lärm"] },
+    { key: "go for a walk", type: "en-de", q: "go for a walk", correct: ["spazieren gehen"] },
+    { key: "costume", type: "en-de", q: "costume", correct: ["das Kostüm"] },
+    { key: "which", type: "en-de", q: "which", correct: ["welche(r/s)"] },
+    { key: "these", type: "en-de", q: "these", correct: ["diese (hier)"] },
+    { key: "suitable", type: "en-de", q: "suitable", correct: ["passend", "geeignet"] },
+    { key: "wear", type: "en-de", q: "wear", correct: ["tragen", "anhaben"] },
+    { key: "coat", type: "en-de", q: "coat", correct: ["der Mantel", "die Jacke"] },
+    { key: "bigger", type: "en-de", q: "bigger", correct: ["größer"] },
+    { key: "more colourful", type: "en-de", q: "more colourful", correct: ["bunter", "farbiger"] },
+    { key: "trousers", type: "en-de", q: "trousers", correct: ["die Hose"] },
+    { key: "horrible", type: "en-de", q: "horrible", correct: ["schrecklich", "furchtbar"] },
+    { key: "worse", type: "en-de", q: "worse", correct: ["schlimmer"] },
+    { key: "the others", type: "en-de", q: "the others", correct: ["die anderen"] },
+    { key: "worst", type: "en-de", q: "worst", correct: ["schlimmste", "schlechteste"] },
+    { key: "nicer", type: "en-de", q: "nicer", correct: ["schöner", "netter"] },
+    { key: "shirt", type: "en-de", q: "shirt", correct: ["das Hemd"] },
+    { key: "smaller", type: "en-de", q: "smaller", correct: ["kleiner"] },
+    { key: "size", type: "en-de", q: "size", correct: ["die Größe"] },
+    { key: "suit", type: "en-de", q: "suit", correct: ["stehen", "passen"] },
+    { key: "model", type: "en-de", q: "model", correct: ["das Model", "das Modell"] },
+    { key: "jacket", type: "en-de", q: "jacket", correct: ["die Jacke"] },
+    { key: "more attractive", type: "en-de", q: "more attractive", correct: ["attraktiver"] },
+    { key: "more comfortable", type: "en-de", q: "more comfortable", correct: ["bequemer", "angenehmer"] },
+    { key: "better", type: "en-de", q: "better", correct: ["besser"] },
+    { key: "most beautiful", type: "en-de", q: "most beautiful", correct: ["schönste"] },
+    { key: "I'll take", type: "en-de", q: "i'll take", correct: ["ich nehme …"] },
+    { key: "what else", type: "en-de", q: "what else", correct: ["was sonst", "was noch"] },
+    { key: "sweater", type: "en-de", q: "sweater", correct: ["der Pullover"] },
+    { key: "most attractive", type: "en-de", q: "most attractive", correct: ["attraktivste"] },
+    { key: "it goes well with", type: "en-de", q: "it goes well with", correct: ["es passt gut zu"] },
+    { key: "shoe", type: "en-de", q: "shoe", correct: ["der Schuh"] },
+    { key: "yours", type: "en-de", q: "yours", correct: ["deine/deiner/deins"] },
+    { key: "nicest", type: "en-de", q: "nicest", correct: ["schönste", "netteste"] },
+    { key: "coolest", type: "en-de", q: "coolest", correct: ["coolste"] },
+    { key: "fit", type: "en-de", q: "fit", correct: ["passen"] },
+    { key: "scarf", type: "en-de", q: "scarf", correct: ["der Schal", "das Tuch"] },
+    { key: "mine", type: "en-de", q: "mine", correct: ["meine/meiner/meins"] },
+    { key: "most unusual", type: "en-de", q: "most unusual", correct: ["ungewöhnlichste"] },
+    { key: "dress", type: "en-de", q: "dress", correct: ["das Kleid"] },
+    { key: "skirt", type: "en-de", q: "skirt", correct: ["der Rock"] },
+    { key: "boot", type: "en-de", q: "boot", correct: ["der Stiefel"] },
+    { key: "glove", type: "en-de", q: "glove", correct: ["der Handschuh"] },
+    { key: "sock", type: "en-de", q: "sock", correct: ["die Socke"] },
+    { key: "shorts", type: "en-de", q: "shorts", correct: ["die Shorts", "die kurze Hose"] },
+    { key: "belt", type: "en-de", q: "belt", correct: ["der Gürtel"] },
+    { key: "dollar", type: "en-de", q: "dollar", correct: ["der Dollar"] },
+    { key: "million", type: "en-de", q: "million", correct: ["die Million"] },
+    { key: "detective", type: "en-de", q: "detective", correct: ["der Detektiv / die Detektivin"] },
+    { key: "thief", type: "en-de", q: "thief", correct: ["der Dieb / die Diebin"] },
+    { key: "character", type: "en-de", q: "character", correct: ["die Figur", "der Charakter"] },
+    { key: "narrator", type: "en-de", q: "narrator", correct: ["der Erzähler / die Erzählerin"] },
+    { key: "waiter", type: "en-de", q: "waiter", correct: ["der Kellner"] },
+    { key: "driver", type: "en-de", q: "driver", correct: ["der Fahrer / die Fahrerin"] },
+    { key: "young", type: "en-de", q: "young", correct: ["jung"] },
+    { key: "scene", type: "en-de", q: "scene", correct: ["die Szene", "der Schauplatz"] },
+    { key: "bus stop", type: "en-de", q: "bus stop", correct: ["die Bushaltestelle"] },
+    { key: "pound", type: "en-de", q: "pound", correct: ["das Pfund"] },
+    { key: "enough", type: "en-de", q: "enough", correct: ["genug", "genügend"] },
+    { key: "plate", type: "en-de", q: "plate", correct: ["der Teller"] },
+    { key: "glass", type: "en-de", q: "glass", correct: ["das Glas"] },
+    { key: "pot", type: "en-de", q: "pot", correct: ["der Topf"] },
+    { key: "moment", type: "en-de", q: "moment", correct: ["der Moment", "der Augenblick"] },
+    { key: "useless", type: "en-de", q: "useless", correct: ["sinnlos", "unbrauchbar", "zwecklos"] },
+    { key: "dream", type: "en-de", q: "dream", correct: ["der Traum"] },
+    { key: "maybe", type: "en-de", q: "maybe", correct: ["vielleicht"] },
+    { key: "leaflet", type: "en-de", q: "leaflet", correct: ["die Broschüre", "der Prospekt"] },
+    { key: "worker", type: "en-de", q: "worker", correct: ["der Arbeiter / die Arbeiterin"] },
+    { key: "hard-working", type: "en-de", q: "hard-working", correct: ["fleißig"] },
+    { key: "determined", type: "en-de", q: "determined", correct: ["entschlossen", "zielstrebig"] },
+    { key: "get on", type: "en-de", q: "get on", correct: ["einsteigen"] },
+    { key: "past", type: "en-de", q: "past", correct: ["vorbei (an)"] },
+    { key: "end", type: "en-de", q: "end", correct: ["aufhören", "enden", "beenden"] },
+    { key: "could", type: "en-de", q: "could", correct: ["könnte"] }
   ];
-  var TEST_SIZE = Math.min(13, POOL.length);
+  var TEST_SIZE = Math.min(15, POOL.length);
 
-  var TYPE_LABELS = { "de-en": "Deutsch → Englisch", "en-de": "Englisch → Deutsch", "sentence": "Lückensatz / Übersetzung" };
+  var TYPE_LABELS = { "de-en": "Deutsch → Englisch", "en-de": "Englisch → Deutsch", "sentence": "Lückensatz", };
 
   // ---------- Notenschlüssel (Prozent-Schwellen) – bei Bedarf an den schulinternen Schlüssel anpassen ----------
   var GRADE_THRESHOLDS = [
