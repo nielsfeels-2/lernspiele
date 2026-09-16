@@ -236,17 +236,48 @@
     return 2;
   }
 
-  function punkteFuer(given, correctList) {
-    var g = normalize(given), gA = ohneArtikel(given), i, c, cA;
-    if (!g) return 0;
-    for (i = 0; i < correctList.length; i++) {
-      c = normalize(correctList[i]); cA = ohneArtikel(correctList[i]);
-      if (g === c || gA === cA) return 2;
+  // Ein Synonym genuegt (Nutzerregel 15.09.2026). Aus "der Turnschuh; der
+  // Trainer / die Trainerin" werden Turnschuh, Trainer, Trainerin - jede
+  // einzelne Antwort zaehlt voll. Klammern werden beidseitig aufgeloest:
+  // "Frau (Anrede)" -> Frau, "wuerde(n)" -> wuerde und wuerden.
+  function varianten(str) {
+    var roh = String(str || ""), kandidaten = [roh], raus = [], i, j, teile;
+    if (roh.indexOf("(") !== -1) {
+      kandidaten.push(roh.replace(/\s*\([^)]*\)/g, ""));   // Klammer weg
+      kandidaten.push(roh.replace(/[()]/g, ""));             // Klammer aufloesen
+      kandidaten.push(roh.replace(/^[^(]*\(([^)]*)\).*$/, "$1"));  // nur der Klammerinhalt
     }
+    for (i = 0; i < kandidaten.length; i++) {
+      teile = kandidaten[i].split(/[;\/,]/);
+      for (j = 0; j < teile.length; j++) {
+        var n = normalize(teile[j]), a = ohneArtikel(teile[j]);
+        if (n && raus.indexOf(n) === -1) raus.push(n);
+        if (a && raus.indexOf(a) === -1) raus.push(a);
+      }
+    }
+    return raus;
+  }
+
+  function alleVarianten(correctList) {
+    var raus = [], i, j, v;
     for (i = 0; i < correctList.length; i++) {
-      cA = ohneArtikel(correctList[i]);
-      if (!cA.length || gA.charAt(0) !== cA.charAt(0)) continue;
-      if (abstand(gA, cA) <= toleranz(cA)) return 1;
+      v = varianten(correctList[i]);
+      for (j = 0; j < v.length; j++) if (raus.indexOf(v[j]) === -1) raus.push(v[j]);
+    }
+    return raus;
+  }
+
+  function punkteFuer(given, correctList) {
+    var g = normalize(given), gA = ohneArtikel(given);
+    if (!g) return 0;
+    var moeglich = alleVarianten(correctList), i, c;
+    for (i = 0; i < moeglich.length; i++) {
+      if (g === moeglich[i] || gA === moeglich[i]) return 2;
+    }
+    for (i = 0; i < moeglich.length; i++) {
+      c = moeglich[i];
+      if (!c.length || gA.charAt(0) !== c.charAt(0)) continue;
+      if (abstand(gA, c) <= toleranz(c)) return 1;
     }
     return 0;
   }
