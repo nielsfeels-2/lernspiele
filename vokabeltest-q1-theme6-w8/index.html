@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Vokabeltest E6 · Unit 1 · Check in (SB S. 242)</title>
+<style>
+  :root {
+    --bg1: #0b1a14; --bg2: #142a1f; --accent: #ffb238; --accent2: #4ce07a;
+    --card: rgba(255,255,255,0.06); --card-border: rgba(255,255,255,0.14); --bad: #ff8b8b;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: radial-gradient(1100px 700px at 50% -10%, #1d3a2a 0%, var(--bg1) 55%, var(--bg2) 100%);
+    color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    overscroll-behavior: none; touch-action: manipulation;
+  }
+  #app { min-height: 100%; display: flex; flex-direction: column; align-items: center; padding: env(safe-area-inset-top, 16px) 16px 24px; user-select: none; }
+
+  .locks-row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 640px; margin: 6px 0 4px; }
+  .locks-row span { font-size: 20px; opacity: .5; }
+  .locks-row span.correct { opacity: 1; }
+  .locks-row span.half { opacity: 1; filter: grayscale(.6); }
+  .locks-row span.wrong { opacity: 1; }
+  .locks-row span.current { opacity: 1; filter: drop-shadow(0 0 6px var(--accent)); }
+
+  .card {
+    width: 100%; max-width: 640px; background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 22px; padding: 28px 22px; margin-top: 12px; text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,.4);
+  }
+  .room-emoji { font-size: 48px; margin-bottom: 8px; }
+  .qtype { font-size: 13px; opacity: .7; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .question { font-size: 24px; font-weight: 800; line-height: 1.4; margin: 6px 0 22px; min-height: 70px; display: flex; align-items: center; justify-content: center; }
+
+  .answer-form { display: flex; flex-direction: column; gap: 12px; }
+  .answer-input {
+    width: 100%; min-height: 60px; border-radius: 16px; border: 2px solid rgba(255,255,255,.25);
+    font-size: 22px; font-weight: 700; text-align: center; padding: 10px 16px; color: #0d1f16;
+    background: linear-gradient(180deg, #fff, #e4f5ea); font-family: inherit;
+  }
+  .answer-input:focus { outline: none; border-color: var(--accent); }
+  .answer-input.correct { background: linear-gradient(180deg, #b8ffcf, #59e087); }
+  .answer-input.wrong { background: linear-gradient(180deg, #ffc2c2, #ff8b8b); }
+  .submit-btn {
+    min-height: 60px; border-radius: 16px; border: none; font-size: 19px; font-weight: 800; color: #241800;
+    cursor: pointer; background: linear-gradient(180deg, var(--accent), #c8860a);
+    box-shadow: 0 6px 0 rgba(0,0,0,.25), 0 10px 18px rgba(0,0,0,.25); padding: 10px 16px;
+  }
+  .submit-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.25); }
+  .submit-btn:disabled { opacity: .5; }
+
+  .feedback { min-height: 30px; font-size: 16px; font-weight: 700; margin-top: 16px; }
+  .feedback.good { color: var(--accent2); }
+  .feedback.bad { color: var(--bad); }
+
+  .start-screen, .result-screen { width: 100%; max-width: 640px; text-align: center; margin-top: 30px; }
+  .start-screen h1 { font-size: 32px; margin-bottom: 8px; }
+  .start-screen p { opacity: .85; font-size: 16px; line-height: 1.55; }
+  .big-btn {
+    margin-top: 22px; padding: 18px 34px; font-size: 20px; font-weight: 800; border: none; border-radius: 18px;
+    background: linear-gradient(180deg, var(--accent), #c8860a); color: #241800; cursor: pointer;
+    box-shadow: 0 6px 0 rgba(0,0,0,.3), 0 10px 24px rgba(0,0,0,.3); min-height: 80px; min-width: 220px;
+  }
+  .big-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.3); }
+  .big-btn.secondary { background: linear-gradient(180deg, #eee, #ccc); color: #222; }
+
+  .result-card {
+    background: linear-gradient(160deg, #16321f, #0c1c12); border: 2px solid var(--accent); border-radius: 22px;
+    padding: 26px 20px; margin: 18px auto;
+  }
+  .grade-big { font-size: 84px; font-weight: 900; line-height: 1; margin: 4px 0; }
+  .grade-label { font-size: 15px; opacity: .8; letter-spacing: 1px; text-transform: uppercase; }
+  .points-row { font-size: 20px; font-weight: 700; margin-top: 10px; }
+  .percent-row { font-size: 15px; opacity: .8; margin-top: 4px; }
+
+  .footer-note { margin-top: 26px; font-size: 12px; opacity: .55; max-width: 480px; text-align: center; }
+  .hidden { display: none !important; }
+
+  @keyframes shake { 10%,90% { transform: translateX(-2px);} 20%,80% { transform: translateX(4px);} 30%,50%,70% { transform: translateX(-8px);} 40%,60% { transform: translateX(8px);} }
+  .shake { animation: shake .5s; }
+  @keyframes pop { 0% { transform: scale(0);} 60% { transform: scale(1.15);} 100% { transform: scale(1);} }
+  .pop { animation: pop .5s ease; }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ============================================================
+       VOKABELTEST-INHALT – HIER FÜR JEDEN NEUEN TEST ANPASSEN
+       POOL enthält ALLE Vokabeln des Testabschnitts (nicht nur die Testgröße!).
+       Jedes Mal, wenn der Test gestartet wird, werden TEST_SIZE zufällige
+       Items in zufälliger Reihenfolge gezogen - jede Person (und jeder neue
+       Versuch) bekommt eine andere Auswahl. Das verhindert Abschreiben und
+       gibt gleichzeitig eine "zweite Chance" mit anderen Wörtern.
+       Jedes Item: { type: "de-en"|"en-de"|"sentence", q: Frage/Satz mit ___,
+                     correct: ["akzeptierte Schreibweise 1", "..."] }
+       WICHTIG: Freitext-Eingabe, KEIN Multiple-Choice - die SuS sollen das
+       Wort wirklich schreiben (siehe leistungsbewertung_standard.md).
+       Vergleich ist case-insensitive (Groß-/Kleinschreibung egal), aber
+       Tippfehler zählen als falsch - Rechtschreibung ist Testgegenstand.
+       Notenschlüssel weiter unten im Script anpassbar.
+     ============================================================ -->
+
+  <!-- START -->
+  <div class="start-screen" id="startScreen">
+    <div style="font-size:60px;">🔐</div>
+    <h1>Vokabeltest: Escape Room</h1>
+    <p style="opacity:.75; font-size:15px; margin-top:-6px;">Orange Line 2, Unit 1 – Check in (SB S. 242, p. 9)</p>
+    <p>Q1 GK Englisch · Theme 6 · Word list Part B, S. 2 · SB S. 305–309 · Di 08.12.2026<br>
+    Du bist im Klassenzimmer eingeschlossen. Jede richtig <b>geschriebene</b> Antwort öffnet ein Schloss.
+    Am Ende gibt's deine Note – zeig sie deiner Lehrkraft!</p>
+    <p style="font-size:13px; opacity:.7;" id="poolInfo">15 Fragen aus Word list Part B, S. 2 (SB S. 305–309) · du tippst die Antwort selbst · 2 Punkte je Wort, 1 Punkt bei einem Schreibfehler</p>
+    <p style="font-size:12px; opacity:.6;">🎲 Bei jedem Versuch eine andere Auswahl aus dem gesamten Wortschatz - lohnt sich, wirklich alles zu lernen!</p>
+    <button class="big-btn" id="startBtn">🔓 Test starten</button>
+  </div>
+
+  <!-- GAME -->
+  <div class="hidden" id="gameWrap" style="width:100%; max-width:640px;">
+    <div class="locks-row" id="locksRow"></div>
+    <div class="card">
+      <div class="room-emoji" id="roomEmoji">🚪</div>
+      <div class="qtype" id="qType">Deutsch → Englisch</div>
+      <div class="question" id="questionEl"></div>
+      <form class="answer-form" id="answerForm" autocomplete="off">
+        <input class="answer-input" id="answerInput" type="text" autocomplete="off" autocapitalize="off"
+               autocorrect="off" spellcheck="false" placeholder="Antwort eingeben …">
+        <button class="submit-btn" id="submitBtn" type="submit">Prüfen</button>
+      </form>
+      <div class="feedback" id="feedbackEl"></div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="result-screen hidden" id="resultScreen">
+    <div class="room-emoji pop">🎉</div>
+    <h1 style="font-size:26px;">Entkommen!</h1>
+    <div class="result-card">
+      <div class="grade-label">Note</div>
+      <div class="grade-big" id="gradeBig">2</div>
+      <div class="points-row" id="pointsRow">24 / 24 Punkte</div>
+      <div class="percent-row" id="percentRow">85 %</div>
+    </div>
+    <p style="opacity:.85; font-size:16px;">👆 Zeig dieses Ergebnis direkt deiner Lehrkraft.</p>
+    <button class="big-btn secondary" id="restartBtn">Neuer Versuch (nächste Person)</button>
+  </div>
+
+  <div class="footer-note">Kein Login, keine Daten verlassen dieses Gerät. Kein Speichern von Ergebnissen – nach dem Zeigen einfach für die nächste Person neu starten.</div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- Vokabeltest-Inhalt: Orange Line 2, Unit 1 – Vocabulary SB S. 242 ----------
+  // Alle 28 Eintraege der Buchseite (Check in p. 9 + Station 1 p. 10-11), keine erfundenen Woerter.
+  // POOL = ALLE Vokabeln dieses Testabschnitts. TEST_SIZE = wie viele davon
+  // pro Durchlauf zufällig abgefragt werden.
+  var POOL = [
+    { key: "inappropriate", type: "de-en", q: "unangebracht · unangemessen · ungeeignet", correct: ["inappropriate"] },
+    { key: "inappropriate", type: "en-de", q: "inappropriate", correct: ["unangebracht", "unangemessen", "ungeeignet"] },
+    { key: "inappropriate", type: "luecke", q: "The way he behaved was ___.", correct: ["inappropriate"] },
+    { key: "firmly", type: "de-en", q: "bestimmt · fest · sicher", correct: ["firmly"] },
+    { key: "firmly", type: "en-de", q: "firmly", correct: ["bestimmt", "fest", "sicher"] },
+    { key: "firmly", type: "luecke", q: "I held her hand ___ in my hand and told her that I loved her.", correct: ["firmly"] },
+    { key: "unity", type: "de-en", q: "Einheit · Einigkeit", correct: ["unity"] },
+    { key: "unity", type: "en-de", q: "unity (no pl)", correct: ["Einheit", "Einigkeit"] },
+    { key: "unity", type: "luecke", q: "During the war the President called for citizens to come together in ___.", correct: ["unity"] },
+    { key: "plantation", type: "de-en", q: "Pflanzung · Plantage", correct: ["plantation"] },
+    { key: "plantation", type: "en-de", q: "plantation", correct: ["Pflanzung", "Plantage"] },
+    { key: "possession", type: "de-en", q: "Besitz", correct: ["possession"] },
+    { key: "possession", type: "en-de", q: "possession", correct: ["Besitz"] },
+    { key: "possession", type: "luecke", q: "The museum has some very expensive artifacts in its ___.", correct: ["possession"] },
+    { key: "intimidation", type: "de-en", q: "Einschüchterung", correct: ["intimidation"] },
+    { key: "intimidation", type: "en-de", q: "intimidation (no pl)", correct: ["Einschüchterung"] },
+    { key: "intimidation", type: "luecke", q: "Voter ___ is illegal.", correct: ["intimidation"] },
+    { key: "lynch", type: "de-en", q: "lynchen", correct: ["lynch", "to lynch"] },
+    { key: "lynch", type: "en-de", q: "to lynch", correct: ["lynchen"] },
+    { key: "sit-in", type: "de-en", q: "Sitzstreik", correct: ["sit-in"] },
+    { key: "sit-in", type: "en-de", q: "sit-in", correct: ["Sitzstreik"] },
+    { key: "assassinate sb", type: "de-en", q: "ein Attentat auf jdn verüben · ermorden", correct: ["assassinate sb", "to assassinate", "to assassinate sb"] },
+    { key: "assassinate sb", type: "en-de", q: "to assassinate sb", correct: ["ein Attentat auf jdn verüben", "ermorden"] },
+    { key: "murder", type: "de-en", q: "ermorden", correct: ["murder", "to murder"] },
+    { key: "murder", type: "en-de", q: "to murder", correct: ["ermorden"] },
+    { key: "clerk", type: "de-en", q: "Verkäufer/in", correct: ["clerk"] },
+    { key: "clerk", type: "en-de", q: "clerk (AE)", correct: ["Verkäufer/in"] },
+    { key: "clerk", type: "luecke", q: "My father was a ___.", correct: ["clerk"] },
+    { key: "counterfeit", type: "de-en", q: "gefälscht · nachgemacht", correct: ["counterfeit"] },
+    { key: "counterfeit", type: "en-de", q: "counterfeit", correct: ["gefälscht", "nachgemacht"] },
+    { key: "counterfeit", type: "luecke", q: "The money was ___.", correct: ["counterfeit"] },
+    { key: "model", type: "de-en", q: "modellieren · nachbilden · sich zum Vorbild nehmen", correct: ["model", "to model"] },
+    { key: "model", type: "en-de", q: "to model", correct: ["modellieren", "nachbilden", "sich zum Vorbild nehmen"] },
+    { key: "contraception", type: "de-en", q: "(Empfängnis) verhütung · verhütung", correct: ["contraception"] },
+    { key: "contraception", type: "en-de", q: "contraception (no pl)", correct: ["(Empfängnis) verhütung", "verhütung"] },
+    { key: "contraception", type: "luecke", q: "Information on ___ is available on the internet.", correct: ["contraception"] },
+    { key: "overturn", type: "de-en", q: "(um)kippen · kippen · umkippen", correct: ["overturn", "to overturn"] },
+    { key: "overturn", type: "en-de", q: "to overturn", correct: ["(um)kippen", "kippen", "umkippen"] },
+    { key: "overturn", type: "luecke", q: "The court refused ___ ___ their decision.", correct: ["overturn", "to overturn"] },
+    { key: "intimacy", type: "de-en", q: "Intimität · Intimität(en) · Intimitäten", correct: ["intimacy"] },
+    { key: "intimacy", type: "en-de", q: "intimacy", correct: ["Intimität", "Intimität(en)", "Intimitäten", "Vertrautheit"] },
+    { key: "intimacy", type: "luecke", q: "___ is important to many people.", correct: ["intimacy"] },
+    { key: "sentence", type: "de-en", q: "Strafe · Urteil", correct: ["sentence"] },
+    { key: "sentence", type: "en-de", q: "sentence", correct: ["Strafe", "Urteil"] },
+    { key: "sentence", type: "luecke", q: "For murder you usually get a very long ___.", correct: ["sentence"] },
+    { key: "convenience store", type: "de-en", q: "Laden an der Ecke", correct: ["convenience store"] },
+    { key: "convenience store", type: "en-de", q: "convenience store (AE)", correct: ["Laden an der Ecke"] },
+    { key: "convenience store", type: "luecke", q: "We bought some snacks at the ___ ___.", correct: ["convenience store"] },
+    { key: "scuffle", type: "de-en", q: "Handgemenge · Handgreiflichkeiten", correct: ["scuffle"] },
+    { key: "scuffle", type: "en-de", q: "scuffle", correct: ["Handgemenge", "Handgreiflichkeiten"] },
+    { key: "vigilant", type: "de-en", q: "(sehr) aufmerksam · aufmerksam · sehr aufmerksam", correct: ["vigilant"] },
+    { key: "vigilant", type: "en-de", q: "vigilant", correct: ["(sehr) aufmerksam", "aufmerksam", "sehr aufmerksam", "wachsam"] },
+    { key: "vigilant", type: "luecke", q: "She told him to stay ___.", correct: ["vigilant"] },
+    { key: "weary", type: "de-en", q: "erschöpft · lustlos · müde", correct: ["weary"] },
+    { key: "weary", type: "en-de", q: "weary", correct: ["erschöpft", "lustlos", "müde"] },
+    { key: "weary", type: "luecke", q: "The long walk had made him ___.", correct: ["weary"] },
+    { key: "holster", type: "de-en", q: "(Pistolen)halfter · halfter", correct: ["holster"] },
+    { key: "holster", type: "en-de", q: "holster", correct: ["(Pistolen)halfter", "halfter"] },
+    { key: "holster", type: "luecke", q: "The policeman carried his gun in a ___.", correct: ["holster"] },
+    { key: "dangle", type: "de-en", q: "baumeln · herabhängen", correct: ["dangle", "to dangle"] },
+    { key: "dangle", type: "en-de", q: "to dangle", correct: ["baumeln", "herabhängen"] },
+    { key: "dangle", type: "luecke", q: "He let his hand ___ freely.", correct: ["dangle", "to dangle"] },
+    { key: "Little Red Riding Hood", type: "de-en", q: "Rotkäppchen", correct: ["Little Red Riding Hood"] },
+    { key: "Little Red Riding Hood", type: "en-de", q: "Little Red Riding Hood", correct: ["Rotkäppchen"] },
+    { key: "Little Red Riding Hood", type: "luecke", q: "___ ___ ___ ___ is my favourite fairy tale.", correct: ["Little Red Riding Hood"] },
+    { key: "jiggle", type: "de-en", q: "schütteln · wackeln · wippen", correct: ["jiggle", "to jiggle"] },
+    { key: "jiggle", type: "en-de", q: "to jiggle", correct: ["schütteln", "wackeln", "wippen", "zappeln"] },
+    { key: "paw", type: "de-en", q: "Pfote · Pranke · Tatze", correct: ["paw"] },
+    { key: "paw", type: "en-de", q: "paw", correct: ["Pfote", "Pranke", "Tatze"] },
+    { key: "crinkle", type: "de-en", q: "(zer)knittern · knittern · runzeln", correct: ["crinkle", "to crinkle"] },
+    { key: "crinkle", type: "en-de", q: "to crinkle", correct: ["(zer)knittern", "knittern", "runzeln", "rümpfen", "zerknittern"] },
+    { key: "tinkle", type: "de-en", q: "klimpern · klingen · klirren", correct: ["tinkle", "to tinkle"] },
+    { key: "tinkle", type: "en-de", q: "to tinkle", correct: ["klimpern", "klingen", "klirren"] }
+  ];
+  var TEST_SIZE = Math.min(15, POOL.length);
+
+  var TYPE_LABELS = { "de-en": "Deutsch → Englisch", "en-de": "Englisch → Deutsch", "sentence": "Lückensatz", };
+
+  // ---------- Notenschlüssel (Prozent-Schwellen) – bei Bedarf an den schulinternen Schlüssel anpassen ----------
+  var GRADE_THRESHOLDS = [
+    { min: 0.92, grade: "1" },
+    { min: 0.81, grade: "2" },
+    { min: 0.67, grade: "3" },
+    { min: 0.50, grade: "4" },
+    { min: 0.30, grade: "5" },
+    { min: 0, grade: "6" }
+  ];
+
+  function gradeFor(percent) {
+    for (var i = 0; i < GRADE_THRESHOLDS.length; i++) {
+      if (percent >= GRADE_THRESHOLDS[i].min) return GRADE_THRESHOLDS[i].grade;
+    }
+    return "6";
+  }
+
+  function normalize(str) {
+    return String(str || "").trim().replace(/\s+/g, " ").toLowerCase();
+  }
+
+  // ---------- Bewertung (Nutzerregeln 15.09.2026) ----------
+  // Zwei Punkte, wenn das Wort stimmt. Ein Punkt, wenn es erkennbar dasselbe
+  // Wort ist, aber falsch geschrieben. Artikel und Gross-/Kleinschreibung
+  // zaehlen nicht mit - "das Souvenir" und "Souvenir" sind dieselbe Antwort.
+  var ARTIKEL = /^(der|die|das|den|dem|ein|eine|the|a|an)\s+/;
+
+  function ohneArtikel(str) {
+    return normalize(str).replace(ARTIKEL, "");
+  }
+
+  function abstand(a, b) {
+    var m = a.length, n = b.length, i, j, vor = [], jetzt = [];
+    for (j = 0; j <= n; j++) vor[j] = j;
+    for (i = 1; i <= m; i++) {
+      jetzt = [i];
+      for (j = 1; j <= n; j++) {
+        jetzt[j] = Math.min(vor[j] + 1, jetzt[j - 1] + 1,
+                            vor[j - 1] + (a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1));
+      }
+      vor = jetzt;
+    }
+    return vor[n];
+  }
+
+  // Wie weit darf danebengeschrieben sein? Kurze Woerter gar nicht - sonst
+  // wuerde aus "sad" ein akzeptiertes "bad".
+  function toleranz(wort) {
+    if (wort.length < 4) return 0;
+    if (wort.length < 8) return 1;
+    return 2;
+  }
+
+  // Ein Synonym genuegt (Nutzerregel 15.09.2026). Aus "der Turnschuh; der
+  // Trainer / die Trainerin" werden Turnschuh, Trainer, Trainerin - jede
+  // einzelne Antwort zaehlt voll. Klammern werden beidseitig aufgeloest:
+  // "Frau (Anrede)" -> Frau, "wuerde(n)" -> wuerde und wuerden.
+  function varianten(str) {
+    var roh = String(str || ""), kandidaten = [roh], raus = [], i, j, teile;
+    if (roh.indexOf("(") !== -1) {
+      kandidaten.push(roh.replace(/\s*\([^)]*\)/g, ""));   // Klammer weg
+      kandidaten.push(roh.replace(/[()]/g, ""));             // Klammer aufloesen
+      kandidaten.push(roh.replace(/^[^(]*\(([^)]*)\).*$/, "$1"));  // nur der Klammerinhalt
+    }
+    for (i = 0; i < kandidaten.length; i++) {
+      teile = kandidaten[i].split(/[;\/,]/);
+      for (j = 0; j < teile.length; j++) {
+        var n = normalize(teile[j]), a = ohneArtikel(teile[j]);
+        if (n && raus.indexOf(n) === -1) raus.push(n);
+        if (a && raus.indexOf(a) === -1) raus.push(a);
+      }
+    }
+    return raus;
+  }
+
+  function alleVarianten(correctList) {
+    var raus = [], i, j, v;
+    for (i = 0; i < correctList.length; i++) {
+      v = varianten(correctList[i]);
+      for (j = 0; j < v.length; j++) if (raus.indexOf(v[j]) === -1) raus.push(v[j]);
+    }
+    return raus;
+  }
+
+  function punkteFuer(given, correctList) {
+    var g = normalize(given), gA = ohneArtikel(given);
+    if (!g) return 0;
+    var moeglich = alleVarianten(correctList), i, c;
+    for (i = 0; i < moeglich.length; i++) {
+      if (g === moeglich[i] || gA === moeglich[i]) return 2;
+    }
+    for (i = 0; i < moeglich.length; i++) {
+      c = moeglich[i];
+      if (!c.length || gA.charAt(0) !== c.charAt(0)) continue;
+      if (abstand(gA, c) <= toleranz(c)) return 1;
+    }
+    return 0;
+  }
+
+  // Schluessel je Vokabel, damit dasselbe Wort nicht zweimal drankommt.
+  function vokabelSchluessel(item) {
+    // Bevorzugt der ausdrueckliche key aus der Wortliste. Ohne ihn wuerden
+    // gebeugte Formen auseinanderfallen ("has got" gegen "have got") und
+    // dieselbe Vokabel zweimal drankommen.
+    if (item.key) return item.key;
+    return item.type === "en-de" ? ohneArtikel(item.q) : ohneArtikel(item.correct[0]);
+  }
+
+  var ITEMS = [];
+  var idx = 0;
+  var correctCount = 0;
+  var punkteGesamt = 0;
+  var answered = false;
+  var results = []; // "correct" | "wrong" per item
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function pickItems() {
+    var gemischt = shuffle(POOL), gesehen = {}, raus = [], i, k;
+    for (i = 0; i < gemischt.length && raus.length < TEST_SIZE; i++) {
+      k = vokabelSchluessel(gemischt[i]);
+      if (gesehen[k]) continue;
+      gesehen[k] = true;
+      raus.push(gemischt[i]);
+    }
+    return raus;
+  }
+
+  function show(id) {
+    ["startScreen", "gameWrap", "resultScreen"].forEach(function (s) {
+      document.getElementById(s).classList.toggle("hidden", s !== id);
+    });
+  }
+
+  function renderLocksRow() {
+    var row = document.getElementById("locksRow");
+    row.innerHTML = "";
+    ITEMS.forEach(function (_, i) {
+      var span = document.createElement("span");
+      if (results[i] === "correct") { span.textContent = "🔓"; span.className = "correct"; }
+      else if (results[i] === "half") { span.textContent = "🔓"; span.className = "half"; }
+      else if (results[i] === "wrong") { span.textContent = "🔒"; span.className = "wrong"; }
+      else if (i === idx) { span.textContent = "🔒"; span.className = "current"; }
+      else { span.textContent = "🔒"; }
+      row.appendChild(span);
+    });
+  }
+
+  function startTest() {
+    ITEMS = pickItems();
+    idx = 0;
+    correctCount = 0;
+    punkteGesamt = 0;
+    results = [];
+    show("gameWrap");
+    nextQuestion();
+  }
+
+  function nextQuestion() {
+    if (idx >= ITEMS.length) {
+      finishTest();
+      return;
+    }
+    answered = false;
+    renderLocksRow();
+    var item = ITEMS[idx];
+    document.getElementById("qType").textContent = TYPE_LABELS[item.type] || "";
+    document.getElementById("questionEl").textContent = item.q;
+    document.getElementById("feedbackEl").textContent = "";
+    document.getElementById("feedbackEl").className = "feedback";
+    document.getElementById("roomEmoji").textContent = "🚪";
+
+    var input = document.getElementById("answerInput");
+    input.value = "";
+    input.className = "answer-input";
+    input.disabled = false;
+    document.getElementById("submitBtn").disabled = false;
+    setTimeout(function () { input.focus(); }, 50);
+  }
+
+  function onAnswer(item) {
+    if (answered) return;
+    answered = true;
+    var input = document.getElementById("answerInput");
+    var punkte = punkteFuer(input.value, item.correct);
+    var correct = punkte === 2;
+
+    input.disabled = true;
+    document.getElementById("submitBtn").disabled = true;
+
+    var fb = document.getElementById("feedbackEl");
+    var card = document.querySelector(".card");
+    punkteGesamt += punkte;
+    if (correct) {
+      correctCount++;
+      results[idx] = "correct";
+      input.className = "answer-input correct";
+      document.getElementById("roomEmoji").textContent = "🔓";
+      fb.textContent = "Schloss geöffnet!  2 Punkte";
+      fb.className = "feedback good";
+    } else if (punkte === 1) {
+      results[idx] = "half";
+      input.className = "answer-input correct";
+      document.getElementById("roomEmoji").textContent = "🔓";
+      fb.textContent = "Fast! Richtig ist: " + item.correct[0] + "  —  1 Punkt für den Schreibfehler";
+      fb.className = "feedback good";
+    } else {
+      results[idx] = "wrong";
+      input.className = "answer-input wrong";
+      document.getElementById("roomEmoji").textContent = "🔒";
+      fb.textContent = "Schloss bleibt zu. Richtig wäre: " + item.correct[0];
+      fb.className = "feedback bad";
+      card.classList.add("shake");
+      setTimeout(function () { card.classList.remove("shake"); }, 500);
+    }
+    renderLocksRow();
+    setTimeout(function () { idx++; nextQuestion(); }, punkte === 2 ? 1100 : 2200);
+  }
+
+  function finishTest() {
+    var maximum = ITEMS.length * 2;
+    var percent = punkteGesamt / maximum;
+    var grade = gradeFor(percent);
+    document.getElementById("gradeBig").textContent = grade;
+    document.getElementById("pointsRow").textContent = punkteGesamt + " / " + maximum + " Punkte";
+    document.getElementById("percentRow").textContent = Math.round(percent * 100) + " %";
+    show("resultScreen");
+  }
+
+  document.getElementById("startBtn").onclick = startTest;
+  document.getElementById("restartBtn").onclick = function () { show("startScreen"); };
+  document.getElementById("answerForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    onAnswer(ITEMS[idx]);
+  });
+
+  show("startScreen");
+})();
+</script>
+</body>
+</html>
