@@ -44,7 +44,9 @@
   .fb{margin-top:1rem;padding:1rem;border-radius:12px;font-size:1.02rem}
   .fb.ok{background:var(--showbg);border-left:6px solid var(--show)}
   .fb.no{background:var(--tellbg);border-left:6px solid var(--tell)}
-  .fb b{display:block;margin-bottom:.3rem;font-size:1.08rem}
+  .fb b{display:block;margin-bottom:.2rem;font-size:1.08rem}
+  .fb i{display:block;margin-bottom:.35rem;font-weight:700;font-style:normal;
+        color:var(--accent);font-size:.98rem}
   .hud{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin:.2rem 0 .9rem}
   .pill{background:var(--tint);color:var(--accent);border-radius:999px;
         padding:.34rem .8rem;font-size:.9rem;font-weight:700}
@@ -74,8 +76,9 @@
 <!-- ============ START ============ -->
 <section id="start">
   <h1>Telling or Showing?</h1>
-  <p class="lead">15 Sätze aus <i>„Kick the Moon“</i> und <i>„Eleven“</i>.
-     Sagt der Text direkt, wie jemand ist — oder zeigt er es?</p>
+  <p class="lead">15 Belege zu <b>Rachel</b> und <b>Ilyas</b>, den Hauptfiguren von
+     <i>„Eleven“</i> und <i>„Kick the Moon“</i>. Sagt der Text das Merkmal —
+     oder zeigt er es?</p>
   <div class="card">
     <div class="btns">
       <div class="big tell" style="cursor:default">TELLING<small>Der Text sagt es direkt.<br>„She is shy.“</small></div>
@@ -144,51 +147,68 @@
    und Texte/Textblaetter/M1_Eleven_Textblatt.pdf.
    ---------------------------------------------------------------- */
 var ITEMS = [
-  {q:"Blond spikes stick out in a comic book explosion around his head.",
-   src:"Kick the Moon, ll. 2–3 · über Lee", a:"telling",
-   why:"Das Aussehen wird direkt beschrieben. Im Erwartungshorizont zählt „Aussehen“ zur direkten Charakterisierung."},
-  {q:"I fling out my arms, and my cape whips and billows like the sail of a mighty ship.",
-   src:"Kick the Moon, ll. 18–19 · Ilyas", a:"showing",
-   why:"Eine Handlung. Dass er die große Geste liebt, musst du selbst erschließen."},
-  {q:"My voice drops really low, and I do the squinting thing heroes do.",
-   src:"Kick the Moon, ll. 21–22 · Ilyas", a:"showing",
-   why:"Stimme und Geste — der Text zeigt sein Spiel, statt es zu benennen."},
-  {q:"The back of my neck starts to prickle.",
-   src:"Kick the Moon, ll. 37–38 · Ilyas", a:"showing",
-   why:"Eine körperliche Reaktion. Das Wort „Scham“ fällt nicht."},
-  {q:"‘Cos they’re not superheroes,’ I say in a small voice, palms growing sweaty.",
-   src:"Kick the Moon, l. 77 · Ilyas", a:"showing",
-   why:"Wie er spricht, verrät ihn — nicht was er sagt."},
-  {q:"Daveon backs up so fast he nearly sits in the bin.",
-   src:"Kick the Moon, l. 87 · über Lee", a:"showing",
-   why:"Die Wirkung auf andere. Wie bedrohlich Lee ist, zeigt Daveons Reaktion."},
-  {q:"Humiliation spreads over me like a rash.",
-   src:"Kick the Moon, l. 92 · Ilyas", a:"telling",
-   why:"Das Gefühl wird beim Namen genannt: humiliation."},
-  {q:"My lower lip trembles, and I bite down hard.",
-   src:"Kick the Moon, ll. 92–93 · Ilyas", a:"showing",
-   why:"Zwei Handlungen. Dass er nicht weinen will, steht nicht da — man sieht es."},
-  {q:"A lipsticked scar zigzags across her forehead, and huge plastic glasses sit at the end of her nose.",
-   src:"Kick the Moon, ll. 57–59 · über Alice", a:"telling",
-   why:"Reine Beschreibung des Aussehens — direkte Charakterisierung."},
-  {q:"If I can’t be Superman, I’m going to be someone better.",
-   src:"Kick the Moon, ll. 149–150 · Ilyas", a:"telling",
-   why:"Er sagt selbst, was er vorhat. Eine direkte Aussage über sich."},
-  {q:"And you don’t feel eleven at all. You feel like you’re still ten.",
-   src:"Eleven, ll. 5–6 · Rachel", a:"telling",
-   why:"Sie benennt ihren inneren Zustand geradeheraus."},
+  // ---------------- Rachel, „Eleven" ----------------
   {q:"Maybe because I’m skinny, maybe because she doesn’t like me …",
    src:"Eleven, l. 33 · Rachel", a:"telling",
-   why:"Sie nennt eine Eigenschaft von sich: skinny."},
+   merkmal:"Aussehen: schmal, zierlich",
+   why:"Sie nennt eine eigene körperliche Eigenschaft. Aussehen steht im Erwartungshorizont unter direct characterization."},
+  {q:"And you don’t feel eleven at all. You feel like you’re still ten.",
+   src:"Eleven, ll. 5–6 · Rachel", a:"telling",
+   merkmal:"Stimmung: fühlt sich nicht wie elf",
+   why:"Sie benennt ihren inneren Zustand geradeheraus — du musst nichts erschließen."},
+  {q:"… all of a sudden I’m feeling sick inside.",
+   src:"Eleven, l. 42 · Rachel", a:"telling",
+   merkmal:"Stimmung: Anspannung wird körperlich",
+   why:"Das Gefühl steht im Text. Stimmungen, die die Figur selbst benennt, sind direct."},
+  {q:"Because she’s older and the teacher, she’s right and I’m not.",
+   src:"Eleven, l. 40 · Rachel", a:"telling",
+   merkmal:"Selbsteinschätzung: hält ihre Ohnmacht für eine Regel",
+   why:"Sie sagt selbst, wie sie ihre Lage sieht. Dass diese Regel falsch ist, steht auf einem anderen Blatt — das gehört in Aufgabe 3."},
   {q:"… but when I open my mouth nothing comes out.",
    src:"Eleven, l. 36 · Rachel", a:"showing",
-   why:"Eine Handlung — genauer: das Ausbleiben einer Handlung. Ihre Ohnmacht wird gezeigt."},
-  {q:"‘That’s not, I don’t, you’re not … Not mine,’ I finally say in a little voice.",
-   src:"Eleven, ll. 37–38 · Rachel", a:"showing",
-   why:"Die stockende Rede und die kleine Stimme zeigen, wie es ihr geht."},
+   merkmal:"Unter Druck verliert sie die Sprache",
+   why:"Eine Handlung — genauer: ihr Ausbleiben. Das Wort „ohnmächtig“ fällt nicht, du schließt es."},
   {q:"I squeeze them shut tight and bite down on my teeth real hard.",
    src:"Eleven, l. 44 · Rachel", a:"showing",
-   why:"Handlungen gegen die Tränen. Das Wort „weinen“ vermeidet der Text hier."}
+   merkmal:"Sie beherrscht sich, um nicht vor der Klasse zu weinen",
+   why:"Zwei Handlungen gegen die Tränen. Die Scham musst du daraus erschließen."},
+  {q:"I move my pencil and books and eraser as far from it as possible. I even move my chair a little to the right.",
+   src:"Eleven, ll. 50–51 · Rachel", a:"showing",
+   merkmal:"Ihr Widerstand ist körperlich und stumm",
+   why:"Sie widerspricht nicht — sie rückt ab. Verhalten statt Worte: indirect."},
+  {q:"I take it off right away and give it to her.",
+   src:"Eleven, l. 80 · Rachel", a:"showing",
+   merkmal:"Keine Genugtuung — sie fügt sich sofort",
+   why:"Am Ende bekommt sie recht, aber sie triumphiert nicht. Das zeigt die Handlung, niemand sagt es."},
+  // ---------------- Ilyas, „Kick the Moon" ----------------
+  {q:"After five years of obsessive practice, you’d expect nothing less.",
+   src:"Kick the Moon, ll. 26–27 · Ilyas", a:"telling",
+   merkmal:"Eigenschaft: jahrelange, besessene Übung",
+   why:"Er sagt selbst, wie viel Arbeit darin steckt. Ausgesprochene Eigenschaften sind direct."},
+  {q:"Humiliation spreads over me like a rash.",
+   src:"Kick the Moon, l. 92 · Ilyas", a:"telling",
+   merkmal:"Stimmung: Demütigung",
+   why:"Das Gefühl wird beim Namen genannt — humiliation. Der Vergleich macht es anschaulich, direct bleibt es trotzdem."},
+  {q:"If I can’t be Superman, I’m going to be someone better.",
+   src:"Kick the Moon, ll. 149–150 · Ilyas", a:"telling",
+   merkmal:"Haltung: er entwirft sich neu, statt aufzugeben",
+   why:"Sein Entschluss steht als Satz da. Er sagt ihn über sich selbst."},
+  {q:"My voice drops really low, and I do the squinting thing heroes do.",
+   src:"Kick the Moon, ll. 21–22 · Ilyas", a:"showing",
+   merkmal:"Er geht in der Rolle vollständig auf",
+   why:"Stimme und Geste. Wie sehr ihm das bedeutet, zeigt der Text — er sagt es nicht."},
+  {q:"The back of my neck starts to prickle.",
+   src:"Kick the Moon, ll. 37–38 · Ilyas", a:"showing",
+   merkmal:"Die Unsicherheit setzt ein, bevor er versteht, was los ist",
+   why:"Eine Körperreaktion. Was sie bedeutet, erschließt du — er benennt es nicht."},
+  {q:"‘Cos they’re not superheroes,’ I say in a small voice, palms growing sweaty.",
+   src:"Kick the Moon, l. 77 · Ilyas", a:"showing",
+   merkmal:"Seine Stimme wird klein, sobald er sich rechtfertigen muss",
+   why:"Wie er spricht, verrät ihn — nicht was er sagt. Rede und Körper: indirect."},
+  {q:"My lower lip trembles, and I bite down hard.",
+   src:"Kick the Moon, ll. 92–93 · Ilyas", a:"showing",
+   merkmal:"Er kämpft gegen die Tränen — wie Rachel",
+   why:"Zwei Handlungen. Dass er nicht weinen will, steht erst im nächsten Satz — hier wird es gezeigt."}
 ];
 
 var BELEGE = ["📘","🖊️","📎","🔍","💬","👣","🪩","🧵","📐","🎭"];
@@ -270,7 +290,7 @@ function antworten(wahl){
     runde.serie = 0;
     kopf = "Das ist " + it.a.toUpperCase() + ".";
   }
-  fb.innerHTML = "<b>" + kopf + "</b>" + it.why;
+  fb.innerHTML = "<b>" + kopf + "</b><i>" + it.merkmal + "</i><br>" + it.why;
   fb.classList.remove("hidden");
   $("next").textContent = (runde.i + 1 < runde.liste.length) ? "Weiter ▶" : "Ergebnis ansehen ▶";
   $("next").classList.remove("hidden");

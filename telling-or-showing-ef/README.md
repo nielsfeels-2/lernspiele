@@ -16,33 +16,46 @@ Begründung und Zeilenangabe.
   Vorrat; drei richtige in Folge machen es golden. Sterne für die Runde,
   ein teilbarer Ergebnis-Code am Ende, eine Sammlung, die über Sessions wächst.
 
-## Inhalt — und woher er stammt
+## Inhalt — abgeleitet aus zwei Charakterisierungen
 
-**Alle 15 Zitate sind wörtlich aus den beiden im Unterricht gelesenen Texten**,
-mit der Zeilenzählung des jeweiligen Schülermaterials:
+**Die Items sind nicht frei gewählt.** Grundlage ist
+`…/UV EF1-1 Growing up/CHARAKTERISIERUNGEN_Eleven_KickTheMoon.md`: zwei
+vollständige Charakterisierungen der **Hauptfiguren** — Rachel („Eleven") und
+Ilyas („Kick the Moon") — aufgebaut nach dem Raster des Fachschafts-EWH
+(Kategorie → Merkmal → Beleg, getrennt nach direct und indirect). Aus diesen
+Belegtabellen sind die 15 Items rückwärts gezogen.
 
-| Text | Quelle | Items |
-|---|---|---|
-| Muhammad Khan, *Kick the Moon* (Extract 1) | `…/Texte/M6_KickTheMoon_Extract1.md` · Camden Town EF, S. 12–14 | 9 |
-| Sandra Cisneros, *Eleven* | `…/Texte/Textblaetter/M1_Eleven_Textblatt.pdf` | 6 |
+Jedes Item stiftet also ein **Merkmal der Hauptfigur**; das Feedback nennt es.
+Beschreibungen von Nebenfiguren kommen nicht vor — die Klausuraufgabe lautet
+„characterizing **the protagonist**".
 
-Verteilung: **6× telling · 9× showing.** Bewusst nicht auf 50/50 gezwungen —
-die Auswahl folgt dem, was in den Texten eindeutig belegbar ist, statt Items zu
-erfinden oder umzudeuten.
+| Figur | Text | direct | indirect |
+|---|---|---|---|
+| Rachel | Sandra Cisneros, *Eleven* | 4 | 4 |
+| Ilyas | Muhammad Khan, *Kick the Moon* (Extract 1) | 3 | 4 |
+
+Quellen: `…/Texte/Textblaetter/M1_Eleven_Textblatt.pdf` ·
+`…/Texte/M6_KickTheMoon_Extract1.md` (Camden Town EF, S. 12–14).
+Zeilenangaben nach dem jeweiligen Schülermaterial.
 
 **„Powder" kommt nicht vor.** Die Stunde ist ausgefallen, der Kurs kennt den Text
 nicht (Stand 30.09.2026, siehe `00_RESTPLAN_bis_Klausur.md` v4).
 
+### Korrektur am 30.09.2026
+
+Die erste Fassung hatte Sätze genommen und mit *telling*/*showing* etikettiert,
+ohne vorher zu charakterisieren. Zwei Items betrafen dadurch gar nicht die
+Hauptfigur: Lees Haare (ll. 2–3) und Alice' Harry-Potter-Kostüm (ll. 57–59).
+Beide sind raus. Äußerlichkeiten **gehören** zur Charakterisierung — der EWH
+führt „Aussehen" unter direct —, aber es müssen die der Hauptfigur sein;
+Rachels „skinny" (l. 33) steht deshalb drin.
+
 ### Gegenprobe
 
 Jedes Zitat wurde als Wortfolge gegen den Quelltext geprüft — Fußnotenziffern,
-Zeilennummern und Anführungszeichen herausgerechnet. Prüfskript: `12_SCRIPTS/ef_zitate_pruefen.py` —
-bei Änderungen am Item-Pool erneut laufen lassen. Beim ersten
-Durchlauf fielen zwei Abweichungen auf und wurden korrigiert:
-
-- `’Cos they’re not superheroes` — die Auslassung am Wortanfang fehlte
-- bei beiden Zitaten war der Satz vorzeitig mit einem Punkt beendet, wo das
-  Original weitergeht
+Zeilennummern, Anführungszeichen und Silbentrennung am Zeilenende
+herausgerechnet. Prüfskript: `12_SCRIPTS/ef_zitate_pruefen.py` —
+bei Änderungen am Item-Pool erneut laufen lassen.
 
 ## Einordnung im Erwartungshorizont
 
