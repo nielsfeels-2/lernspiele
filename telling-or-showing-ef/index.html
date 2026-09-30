@@ -26,7 +26,10 @@
   .lead{color:var(--muted);margin:.2rem 0 1rem}
   .card{background:var(--card);border-radius:14px;padding:1.1rem;
         box-shadow:0 1px 3px rgba(0,0,0,.09)}
-  .quote{font-size:1.32rem;line-height:1.45;margin:.2rem 0 .1rem}
+  .trait{font-size:1.30rem;line-height:1.35;font-weight:800;margin:.1rem 0 .5rem}
+  .askline{color:var(--muted);font-size:.94rem;margin:.1rem 0 .6rem}
+  .quote{font-size:1.18rem;line-height:1.45;margin:.2rem 0 .1rem;font-style:italic;
+         border-left:4px solid var(--accent);padding-left:.7rem}
   .src{color:var(--muted);font-size:.92rem;margin-top:.7rem}
   .btns{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin:1.1rem 0 0}
   button{font:inherit;border:0;border-radius:14px;cursor:pointer}
@@ -76,8 +79,8 @@
 <!-- ============ START ============ -->
 <section id="start">
   <h1>Telling or Showing?</h1>
-  <p class="lead">15 Belege zu <b>Rachel</b> und <b>Ilyas</b>, den Hauptfiguren von
-     <i>„Eleven“</i> und <i>„Kick the Moon“</i>. Sagt der Text das Merkmal —
+  <p class="lead">15 Behauptungen über <b>Rachel</b> und <b>Ilyas</b>, dazu je ein Beleg aus
+     <i>„Eleven“</i> bzw. <i>„Kick the Moon“</i>. Sagt der Text das Merkmal —
      oder zeigt er es?</p>
   <div class="card">
     <div class="btns">
@@ -105,6 +108,8 @@
   </div>
   <div class="bar"><i id="fill"></i></div>
   <div class="card">
+    <p class="trait" id="trait"></p>
+    <p class="askline">Der Beleg dafür — sagt der Text das Merkmal, oder zeigt er es?</p>
     <p class="quote" id="quote"></p>
     <p class="src" id="src"></p>
     <div class="btns">
@@ -148,67 +153,66 @@
    ---------------------------------------------------------------- */
 var ITEMS = [
   // ---------------- Rachel, „Eleven" ----------------
-  {q:"Maybe because I’m skinny, maybe because she doesn’t like me …",
-   src:"Eleven, l. 33 · Rachel", a:"telling",
-   merkmal:"Aussehen: schmal, zierlich",
-   why:"Sie nennt eine eigene körperliche Eigenschaft. Aussehen steht im Erwartungshorizont unter direct characterization."},
-  {q:"And you don’t feel eleven at all. You feel like you’re still ten.",
-   src:"Eleven, ll. 5–6 · Rachel", a:"telling",
-   merkmal:"Stimmung: fühlt sich nicht wie elf",
-   why:"Sie benennt ihren inneren Zustand geradeheraus — du musst nichts erschließen."},
-  {q:"… all of a sudden I’m feeling sick inside.",
-   src:"Eleven, l. 42 · Rachel", a:"telling",
-   merkmal:"Stimmung: Anspannung wird körperlich",
-   why:"Das Gefühl steht im Text. Stimmungen, die die Figur selbst benennt, sind direct."},
-  {q:"Because she’s older and the teacher, she’s right and I’m not.",
-   src:"Eleven, l. 40 · Rachel", a:"telling",
-   merkmal:"Selbsteinschätzung: hält ihre Ohnmacht für eine Regel",
-   why:"Sie sagt selbst, wie sie ihre Lage sieht. Dass diese Regel falsch ist, steht auf einem anderen Blatt — das gehört in Aufgabe 3."},
-  {q:"… but when I open my mouth nothing comes out.",
-   src:"Eleven, l. 36 · Rachel", a:"showing",
-   merkmal:"Unter Druck verliert sie die Sprache",
-   why:"Eine Handlung — genauer: ihr Ausbleiben. Das Wort „ohnmächtig“ fällt nicht, du schließt es."},
-  {q:"I squeeze them shut tight and bite down on my teeth real hard.",
-   src:"Eleven, l. 44 · Rachel", a:"showing",
-   merkmal:"Sie beherrscht sich, um nicht vor der Klasse zu weinen",
-   why:"Zwei Handlungen gegen die Tränen. Die Scham musst du daraus erschließen."},
-  {q:"I move my pencil and books and eraser as far from it as possible. I even move my chair a little to the right.",
-   src:"Eleven, ll. 50–51 · Rachel", a:"showing",
-   merkmal:"Ihr Widerstand ist körperlich und stumm",
-   why:"Sie widerspricht nicht — sie rückt ab. Verhalten statt Worte: indirect."},
-  {q:"I take it off right away and give it to her.",
-   src:"Eleven, l. 80 · Rachel", a:"showing",
-   merkmal:"Keine Genugtuung — sie fügt sich sofort",
-   why:"Am Ende bekommt sie recht, aber sie triumphiert nicht. Das zeigt die Handlung, niemand sagt es."},
+  {trait:"Rachel wird an diesem Tag elf.",
+   q:"Today I’m eleven.", src:"Eleven, l. 82", a:"telling",
+   why:"Das Alter steht im Text. Alter, Herkunft und Aussehen sind im Erwartungshorizont direct characterization."},
+  {trait:"Rachel ist schmal und zierlich.",
+   q:"Maybe because I’m skinny …", src:"Eleven, l. 33", a:"telling",
+   why:"Aussehen — und sie sagt es selbst. Auch das führt der Erwartungshorizont unter direct."},
+  {trait:"Rachel hält Autorität für gleichbedeutend damit, recht zu haben.",
+   q:"Because she’s older and the teacher, she’s right and I’m not.",
+   src:"Eleven, l. 40", a:"telling",
+   why:"Eine ausgesprochene Einstellung. Sie formuliert die Regel, nach der sie sich richtet — direct."},
+  {trait:"Rachel denkt genau und bildhaft über das Älterwerden nach.",
+   q:"… like an onion or like the rings inside a tree trunk or like my little wooden dolls that fit one inside the other.",
+   src:"Eleven, ll. 14–16", a:"showing",
+   why:"Niemand nennt sie klug. Wie sie denkt, zeigt es — indirect über ihre Gedanken."},
+  {trait:"Rachel kümmert sich um ihre Mutter, wenn die traurig ist.",
+   q:"That’s what I tell Mama when she’s sad and needs to cry.",
+   src:"Eleven, ll. 12–13", a:"showing",
+   why:"Eine Gewohnheit, kein Etikett. Dass sie fürsorglich ist, erschließt du aus dem, was sie tut."},
+  {trait:"Gegen eine Erwachsene bringt Rachel kein Wort heraus.",
+   q:"… but when I open my mouth nothing comes out.",
+   src:"Eleven, l. 36", a:"showing",
+   why:"Eine Handlung, genauer: ihr Ausbleiben. Das Wort „sprachlos“ fällt nicht."},
+  {trait:"Rachel widerspricht nicht — sie weicht aus.",
+   q:"I move my pencil and books and eraser as far from it as possible. I even move my chair a little to the right.",
+   src:"Eleven, ll. 50–51", a:"showing",
+   why:"Verhalten statt Worte. Ihr Widerstand ist körperlich und stumm."},
+  {trait:"Rachel lehnt sich nur in Gedanken auf.",
+   q:"… how long till I can take the red sweater and throw it over the schoolyard fence.",
+   src:"Eleven, ll. 52–53", a:"showing",
+   why:"Sie plant es, sie tut es nicht. Der Unterschied macht sie aus — gesagt wird er nicht."},
   // ---------------- Ilyas, „Kick the Moon" ----------------
-  {q:"After five years of obsessive practice, you’d expect nothing less.",
-   src:"Kick the Moon, ll. 26–27 · Ilyas", a:"telling",
-   merkmal:"Eigenschaft: jahrelange, besessene Übung",
-   why:"Er sagt selbst, wie viel Arbeit darin steckt. Ausgesprochene Eigenschaften sind direct."},
-  {q:"Humiliation spreads over me like a rash.",
-   src:"Kick the Moon, l. 92 · Ilyas", a:"telling",
-   merkmal:"Stimmung: Demütigung",
-   why:"Das Gefühl wird beim Namen genannt — humiliation. Der Vergleich macht es anschaulich, direct bleibt es trotzdem."},
-  {q:"If I can’t be Superman, I’m going to be someone better.",
-   src:"Kick the Moon, ll. 149–150 · Ilyas", a:"telling",
-   merkmal:"Haltung: er entwirft sich neu, statt aufzugeben",
-   why:"Sein Entschluss steht als Satz da. Er sagt ihn über sich selbst."},
-  {q:"My voice drops really low, and I do the squinting thing heroes do.",
-   src:"Kick the Moon, ll. 21–22 · Ilyas", a:"showing",
-   merkmal:"Er geht in der Rolle vollständig auf",
-   why:"Stimme und Geste. Wie sehr ihm das bedeutet, zeigt der Text — er sagt es nicht."},
-  {q:"The back of my neck starts to prickle.",
-   src:"Kick the Moon, ll. 37–38 · Ilyas", a:"showing",
-   merkmal:"Die Unsicherheit setzt ein, bevor er versteht, was los ist",
-   why:"Eine Körperreaktion. Was sie bedeutet, erschließt du — er benennt es nicht."},
-  {q:"‘Cos they’re not superheroes,’ I say in a small voice, palms growing sweaty.",
-   src:"Kick the Moon, l. 77 · Ilyas", a:"showing",
-   merkmal:"Seine Stimme wird klein, sobald er sich rechtfertigen muss",
-   why:"Wie er spricht, verrät ihn — nicht was er sagt. Rede und Körper: indirect."},
-  {q:"My lower lip trembles, and I bite down hard.",
-   src:"Kick the Moon, ll. 92–93 · Ilyas", a:"showing",
-   merkmal:"Er kämpft gegen die Tränen — wie Rachel",
-   why:"Zwei Handlungen. Dass er nicht weinen will, steht erst im nächsten Satz — hier wird es gezeigt."}
+  {trait:"Ilyas übt seine Superman-Darstellung seit Jahren besessen.",
+   q:"After five years of obsessive practice, you’d expect nothing less.",
+   src:"Kick the Moon, ll. 26–27", a:"telling",
+   why:"Er benennt die Eigenschaft selbst: obsessive. Ausgesprochene Eigenschaften sind direct."},
+  {trait:"Ilyas hat aufgegeben, seinen Namen richtigstellen zu wollen.",
+   q:"But I’m done telling them it’s Illy-yaas, because then I just get called ‘silly arse’.",
+   src:"Kick the Moon, ll. 33–35", a:"telling",
+   why:"Er sagt, dass er aufgegeben hat, und warum. Eine Haltung im Klartext."},
+  {trait:"Ilyas hat gelernt, Gefühle zu unterdrücken — von seinem Vater.",
+   q:"Boys don’t cry – that’s what Dad says.",
+   src:"Kick the Moon, l. 93", a:"telling",
+   why:"Er nennt die Regel, nach der er sich richtet, und ihre Herkunft. Direct."},
+  {trait:"Ilyas gibt nicht auf, sondern entwirft sich neu.",
+   q:"If I can’t be Superman, I’m going to be someone better.",
+   src:"Kick the Moon, ll. 149–150", a:"telling",
+   why:"Sein Entschluss steht als Satz da — er spricht ihn über sich selbst aus."},
+  {trait:"Ilyas ist das Kostüm jahrelanges Sparen wert.",
+   q:"The kind that costs two Eids worth of pocket money and an IOU on a third.",
+   src:"Kick the Moon, ll. 11–13", a:"showing",
+   why:"Da steht ein Preis, kein Charakterzug. Wie viel ihm Superman bedeutet, rechnest du dir aus."},
+  {trait:"Ilyas ist nachtragend und rächt sich im Kleinen.",
+   q:"I shrug. ‘Mary Poppins?’",
+   src:"Kick the Moon, l. 52 · Ryan hatte ihm in Year 4 den Stift geklaut (ll. 49–51)",
+   a:"showing",
+   why:"Eine Antwort von vier Wörtern. Dass es Rache ist, ergibt sich erst aus dem, was davor steht."},
+  {trait:"Ilyas nimmt sich selbst nicht zu ernst, auch wenn es eng wird.",
+   q:"Houston, we don’t need a diaper.",
+   src:"Kick the Moon, l. 41", a:"showing",
+   why:"Niemand nennt ihn humorvoll. Der Witz mitten in der Panik zeigt es."}
 ];
 
 var BELEGE = ["📘","🖊️","📎","🔍","💬","👣","🪩","🧵","📐","🎭"];
@@ -252,7 +256,8 @@ function starten(){
 
 function frage(){
   var it = runde.liste[runde.i];
-  $("quote").textContent = it.q;
+  $("trait").textContent = it.trait;
+  $("quote").textContent = "„" + it.q + "“";
   $("src").textContent = it.src;
   $("pos").textContent = (runde.i + 1) + " / " + runde.liste.length;
   $("score").textContent = runde.richtig + " richtig";
@@ -290,7 +295,7 @@ function antworten(wahl){
     runde.serie = 0;
     kopf = "Das ist " + it.a.toUpperCase() + ".";
   }
-  fb.innerHTML = "<b>" + kopf + "</b><i>" + it.merkmal + "</i><br>" + it.why;
+  fb.innerHTML = "<b>" + kopf + "</b>" + it.why;
   fb.classList.remove("hidden");
   $("next").textContent = (runde.i + 1 < runde.liste.length) ? "Weiter ▶" : "Ergebnis ansehen ▶";
   $("next").classList.remove("hidden");

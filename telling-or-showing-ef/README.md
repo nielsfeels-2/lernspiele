@@ -41,14 +41,28 @@ Zeilenangaben nach dem jeweiligen Schülermaterial.
 **„Powder" kommt nicht vor.** Die Stunde ist ausgefallen, der Kurs kennt den Text
 nicht (Stand 30.09.2026, siehe `00_RESTPLAN_bis_Klausur.md` v4).
 
-### Korrektur am 30.09.2026
+**Jedes Item trägt die Behauptung, das Zitat ist der Beleg.** Oben steht das
+Merkmal („Ilyas ist nachtragend und rächt sich im Kleinen."), darunter die
+Stelle — gefragt wird, ob der Text das Merkmal *sagt* oder *zeigt*. Das ist
+derselbe Schritt, den Aufgabe 2 der Klausur verlangt.
 
-Die erste Fassung hatte Sätze genommen und mit *telling*/*showing* etikettiert,
-ohne vorher zu charakterisieren. Zwei Items betrafen dadurch gar nicht die
-Hauptfigur: Lees Haare (ll. 2–3) und Alice' Harry-Potter-Kostüm (ll. 57–59).
-Beide sind raus. Äußerlichkeiten **gehören** zur Charakterisierung — der EWH
-führt „Aussehen" unter direct —, aber es müssen die der Hauptfigur sein;
-Rachels „skinny" (l. 33) steht deshalb drin.
+### Zwei Korrekturen am 30.09.2026
+
+**(1) Nebenfiguren statt Hauptfigur.** Die erste Fassung hatte Sätze genommen
+und etikettiert, ohne vorher zu charakterisieren. Zwei Items betrafen dadurch
+Lee und Alice, nicht den Protagonisten. Äußerlichkeiten **gehören** zur
+Charakterisierung — der EWH führt „Aussehen" unter direct, Rachels „skinny"
+(l. 33) steht deshalb drin —, aber es müssen die der Hauptfigur sein.
+
+**(2) Stimmung statt Eigenschaft.** Die zweite Fassung fragte unter anderem zu
+„Humiliation spreads over me like a rash" (l. 92). Der Satz sagt, dass Ilyas
+sich gerade gedemütigt fühlt — das würde jeder. Für die Charakterisierung gibt
+er nichts her, das „Merkmal" wäre eine Umformulierung. Alle Items, zu denen sich
+kein Merkmal *jenseits* der Stelle formulieren lässt, sind raus: momentane
+Körperreaktionen (prickelnder Nacken, zitternde Lippe, „feeling sick inside").
+An ihrer Stelle stehen jetzt Belege für Haltungen und Verhaltensmuster —
+Ilyas' jahrelanges Sparen, seine kleine Rache an Ryan, Rachels Trost für ihre
+Mutter, ihre Auflehnung, die nur im Kopf stattfindet.
 
 ### Gegenprobe
 
