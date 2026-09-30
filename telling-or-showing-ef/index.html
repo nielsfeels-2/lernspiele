@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Telling or Showing? — EF Englisch</title>
+<style>
+  :root{
+    --ink:#1A1A1A; --muted:#5D5D66; --paper:#FBFAF7; --card:#FFFFFF;
+    --accent:#4C4A8F; --tint:#E9E8F3; --band:#2E5458;
+    --tell:#1F5FA8; --tellbg:#E4EDF8;
+    --show:#1F7A5A; --showbg:#E3F1EB;
+    --gold:#B8860B; --goldbg:#FBF3DC;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--paper); color:var(--ink);
+    font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    touch-action:manipulation; padding:0 0 env(safe-area-inset-bottom);
+  }
+  .band{background:var(--band);color:#fff;padding:.5rem 1rem;font-size:.82rem;
+        font-weight:700;letter-spacing:.04em}
+  .wrap{max-width:820px;margin:0 auto;padding:1rem}
+  h1{font-size:1.6rem;margin:.4rem 0 .2rem}
+  .lead{color:var(--muted);margin:.2rem 0 1rem}
+  .card{background:var(--card);border-radius:14px;padding:1.1rem;
+        box-shadow:0 1px 3px rgba(0,0,0,.09)}
+  .quote{font-size:1.32rem;line-height:1.45;margin:.2rem 0 .1rem}
+  .src{color:var(--muted);font-size:.92rem;margin-top:.7rem}
+  .btns{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin:1.1rem 0 0}
+  button{font:inherit;border:0;border-radius:14px;cursor:pointer}
+  .big{min-height:96px;font-size:1.22rem;font-weight:800;padding:.8rem;
+       border:3px solid transparent;transition:transform .06s}
+  .big:active{transform:scale(.97)}
+  .big.tell{background:var(--tellbg);color:var(--tell);border-color:var(--tell)}
+  .big.show{background:var(--showbg);color:var(--show);border-color:var(--show)}
+  .big small{display:block;font-size:.84rem;font-weight:600;opacity:.85;margin-top:.25rem}
+  .big[disabled]{opacity:.45}
+  .go{background:var(--accent);color:#fff;min-height:84px;width:100%;
+      font-size:1.2rem;font-weight:800;padding:.8rem}
+  .ghost{background:var(--tint);color:var(--accent);min-height:56px;padding:.6rem 1rem;
+         font-weight:700;width:100%;margin-top:.7rem}
+  .fb{margin-top:1rem;padding:1rem;border-radius:12px;font-size:1.02rem}
+  .fb.ok{background:var(--showbg);border-left:6px solid var(--show)}
+  .fb.no{background:var(--tellbg);border-left:6px solid var(--tell)}
+  .fb b{display:block;margin-bottom:.3rem;font-size:1.08rem}
+  .hud{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin:.2rem 0 .9rem}
+  .pill{background:var(--tint);color:var(--accent);border-radius:999px;
+        padding:.34rem .8rem;font-size:.9rem;font-weight:700}
+  .pill.streak{background:var(--goldbg);color:var(--gold)}
+  .bar{height:10px;background:var(--tint);border-radius:999px;overflow:hidden;margin:.1rem 0 1rem}
+  .bar>i{display:block;height:100%;background:var(--accent);width:0;transition:width .25s}
+  .cards{display:flex;flex-wrap:wrap;gap:.4rem;margin:.6rem 0 0}
+  .chip{font-size:1.5rem;line-height:1;padding:.35rem .45rem;border-radius:10px;
+        background:var(--tint)}
+  .chip.g{background:var(--goldbg)}
+  .stars{font-size:2.2rem;letter-spacing:.15rem}
+  .code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:1.5rem;
+        font-weight:800;letter-spacing:.12em;background:var(--tint);
+        color:var(--accent);border-radius:12px;padding:.7rem 1rem;display:inline-block}
+  .note{color:var(--muted);font-size:.88rem;margin-top:1rem}
+  .hidden{display:none!important}
+  details{margin-top:1rem;background:var(--card);border-radius:12px;padding:.8rem 1rem}
+  summary{font-weight:700;cursor:pointer;min-height:32px}
+  details p{color:var(--muted)}
+  @media (max-width:430px){ .btns{grid-template-columns:1fr} .quote{font-size:1.15rem} }
+</style>
+</head>
+<body>
+<div class="band">EF ENGLISCH · UV 1 „GROWING UP“ · CHARACTERISATION</div>
+<div class="wrap">
+
+<!-- ============ START ============ -->
+<section id="start">
+  <h1>Telling or Showing?</h1>
+  <p class="lead">15 Sätze aus <i>„Kick the Moon“</i> und <i>„Eleven“</i>.
+     Sagt der Text direkt, wie jemand ist — oder zeigt er es?</p>
+  <div class="card">
+    <div class="btns">
+      <div class="big tell" style="cursor:default">TELLING<small>Der Text sagt es direkt.<br>„She is shy.“</small></div>
+      <div class="big show" style="cursor:default">SHOWING<small>Der Text zeigt es.<br>„She looked at the floor.“</small></div>
+    </div>
+    <button class="go" id="go" style="margin-top:1rem">Los geht’s ▶</button>
+    <button class="ghost" id="resume">Sammlung ansehen</button>
+  </div>
+  <details>
+    <summary>Für Eltern und Lehrkräfte</summary>
+    <p>Geübt wird die Unterscheidung von <b>direkter</b> und <b>indirekter
+    Charakterisierung</b> — Teil 2 der Klausur. Alle Zitate stammen wörtlich aus den
+    beiden im Unterricht gelesenen Texten, mit Zeilenangabe. Keine Anmeldung, keine
+    Namen, keine Datenübertragung: Der Spielstand liegt nur auf diesem Gerät.</p>
+  </details>
+</section>
+
+<!-- ============ SPIEL ============ -->
+<section id="game" class="hidden">
+  <div class="hud">
+    <span class="pill" id="pos">1 / 15</span>
+    <span class="pill" id="score">0 richtig</span>
+    <span class="pill streak" id="streak">Serie 0</span>
+  </div>
+  <div class="bar"><i id="fill"></i></div>
+  <div class="card">
+    <p class="quote" id="quote"></p>
+    <p class="src" id="src"></p>
+    <div class="btns">
+      <button class="big tell" data-a="telling">TELLING<small>sagt es direkt</small></button>
+      <button class="big show" data-a="showing">SHOWING<small>zeigt es</small></button>
+    </div>
+    <div id="fb" class="fb hidden"></div>
+    <button class="go hidden" id="next" style="margin-top:1rem">Weiter ▶</button>
+  </div>
+  <div class="cards" id="collected"></div>
+</section>
+
+<!-- ============ ENDE ============ -->
+<section id="end" class="hidden">
+  <h1 id="endTitle">Runde geschafft</h1>
+  <div class="card">
+    <div class="stars" id="stars"></div>
+    <p class="lead" id="endLine"></p>
+    <p style="margin:.2rem 0 .4rem"><b>Zeig das jemandem:</b></p>
+    <span class="code" id="code"></span>
+    <p class="note" id="openLoop"></p>
+    <button class="go" id="again" style="margin-top:1rem">Noch eine Runde ▶</button>
+    <button class="ghost" id="back">Zurück zum Start</button>
+  </div>
+  <div class="card" style="margin-top:1rem">
+    <b>Deine Belegsammlung</b>
+    <div class="cards" id="album"></div>
+    <p class="note" id="albumNote"></p>
+  </div>
+</section>
+
+</div>
+<script>
+"use strict";
+/* ----------------------------------------------------------------
+   Alle Zitate woertlich aus den Unterrichtstexten, mit Zeilenangabe:
+   M6 Muhammad Khan, "Kick the Moon", Extract 1 (Camden Town EF, S. 12-14)
+   M1 Sandra Cisneros, "Eleven" (Textblatt, Zeilenzaehlung des Blattes)
+   Geprueft am 30.09.2026 gegen Texte/M6_KickTheMoon_Extract1.md
+   und Texte/Textblaetter/M1_Eleven_Textblatt.pdf.
+   ---------------------------------------------------------------- */
+var ITEMS = [
+  {q:"Blond spikes stick out in a comic book explosion around his head.",
+   src:"Kick the Moon, ll. 2–3 · über Lee", a:"telling",
+   why:"Das Aussehen wird direkt beschrieben. Im Erwartungshorizont zählt „Aussehen“ zur direkten Charakterisierung."},
+  {q:"I fling out my arms, and my cape whips and billows like the sail of a mighty ship.",
+   src:"Kick the Moon, ll. 18–19 · Ilyas", a:"showing",
+   why:"Eine Handlung. Dass er die große Geste liebt, musst du selbst erschließen."},
+  {q:"My voice drops really low, and I do the squinting thing heroes do.",
+   src:"Kick the Moon, ll. 21–22 · Ilyas", a:"showing",
+   why:"Stimme und Geste — der Text zeigt sein Spiel, statt es zu benennen."},
+  {q:"The back of my neck starts to prickle.",
+   src:"Kick the Moon, ll. 37–38 · Ilyas", a:"showing",
+   why:"Eine körperliche Reaktion. Das Wort „Scham“ fällt nicht."},
+  {q:"‘Cos they’re not superheroes,’ I say in a small voice, palms growing sweaty.",
+   src:"Kick the Moon, l. 77 · Ilyas", a:"showing",
+   why:"Wie er spricht, verrät ihn — nicht was er sagt."},
+  {q:"Daveon backs up so fast he nearly sits in the bin.",
+   src:"Kick the Moon, l. 87 · über Lee", a:"showing",
+   why:"Die Wirkung auf andere. Wie bedrohlich Lee ist, zeigt Daveons Reaktion."},
+  {q:"Humiliation spreads over me like a rash.",
+   src:"Kick the Moon, l. 92 · Ilyas", a:"telling",
+   why:"Das Gefühl wird beim Namen genannt: humiliation."},
+  {q:"My lower lip trembles, and I bite down hard.",
+   src:"Kick the Moon, ll. 92–93 · Ilyas", a:"showing",
+   why:"Zwei Handlungen. Dass er nicht weinen will, steht nicht da — man sieht es."},
+  {q:"A lipsticked scar zigzags across her forehead, and huge plastic glasses sit at the end of her nose.",
+   src:"Kick the Moon, ll. 57–59 · über Alice", a:"telling",
+   why:"Reine Beschreibung des Aussehens — direkte Charakterisierung."},
+  {q:"If I can’t be Superman, I’m going to be someone better.",
+   src:"Kick the Moon, ll. 149–150 · Ilyas", a:"telling",
+   why:"Er sagt selbst, was er vorhat. Eine direkte Aussage über sich."},
+  {q:"And you don’t feel eleven at all. You feel like you’re still ten.",
+   src:"Eleven, ll. 5–6 · Rachel", a:"telling",
+   why:"Sie benennt ihren inneren Zustand geradeheraus."},
+  {q:"Maybe because I’m skinny, maybe because she doesn’t like me …",
+   src:"Eleven, l. 33 · Rachel", a:"telling",
+   why:"Sie nennt eine Eigenschaft von sich: skinny."},
+  {q:"… but when I open my mouth nothing comes out.",
+   src:"Eleven, l. 36 · Rachel", a:"showing",
+   why:"Eine Handlung — genauer: das Ausbleiben einer Handlung. Ihre Ohnmacht wird gezeigt."},
+  {q:"‘That’s not, I don’t, you’re not … Not mine,’ I finally say in a little voice.",
+   src:"Eleven, ll. 37–38 · Rachel", a:"showing",
+   why:"Die stockende Rede und die kleine Stimme zeigen, wie es ihr geht."},
+  {q:"I squeeze them shut tight and bite down on my teeth real hard.",
+   src:"Eleven, l. 44 · Rachel", a:"showing",
+   why:"Handlungen gegen die Tränen. Das Wort „weinen“ vermeidet der Text hier."}
+];
+
+var BELEGE = ["📘","🖊️","📎","🔍","💬","👣","🪩","🧵","📐","🎭"];
+var GOLD = "🏅";
+var KEY = "ef-telling-showing-v1";
+
+function laden(){
+  try{
+    var r = JSON.parse(localStorage.getItem(KEY) || "{}");
+    if(!r || typeof r !== "object") r = {};
+    if(!Array.isArray(r.album)) r.album = [];
+    if(typeof r.best !== "number") r.best = 0;
+    if(typeof r.runden !== "number") r.runden = 0;
+    if(typeof r.serie !== "number") r.serie = 0;
+    return r;
+  }catch(e){ return {album:[], best:0, runden:0, serie:0}; }
+}
+function sichern(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+
+var S = laden();
+var runde = null;
+
+function $(id){ return document.getElementById(id); }
+function mischen(a){
+  var b = a.slice(), i, j, t;
+  for(i = b.length - 1; i > 0; i--){ j = Math.floor(Math.random()*(i+1)); t=b[i]; b[i]=b[j]; b[j]=t; }
+  return b;
+}
+function zeigen(welche){
+  ["start","game","end"].forEach(function(id){
+    $(id).classList.toggle("hidden", id !== welche);
+  });
+  window.scrollTo(0,0);
+}
+
+function starten(){
+  runde = { liste: mischen(ITEMS), i: 0, richtig: 0, serie: 0, beste: 0, neue: [] };
+  zeigen("game");
+  frage();
+}
+
+function frage(){
+  var it = runde.liste[runde.i];
+  $("quote").textContent = it.q;
+  $("src").textContent = it.src;
+  $("pos").textContent = (runde.i + 1) + " / " + runde.liste.length;
+  $("score").textContent = runde.richtig + " richtig";
+  $("streak").textContent = "Serie " + runde.serie;
+  $("fill").style.width = (runde.i / runde.liste.length * 100) + "%";
+  $("fb").classList.add("hidden");
+  $("next").classList.add("hidden");
+  Array.prototype.forEach.call(document.querySelectorAll("#game .big"), function(b){
+    b.disabled = false;
+  });
+}
+
+function antworten(wahl){
+  var it = runde.liste[runde.i];
+  var ok = wahl === it.a;
+  Array.prototype.forEach.call(document.querySelectorAll("#game .big"), function(b){
+    b.disabled = true;
+  });
+  var fb = $("fb");
+  fb.className = "fb " + (ok ? "ok" : "no");
+  var kopf;
+  if(ok){
+    runde.richtig++;
+    runde.serie++;
+    if(runde.serie > runde.beste) runde.beste = runde.serie;
+    // Variable Belohnung: jede richtige Antwort gibt einen Beleg,
+    // drei in Folge machen ihn golden. Nichts wird je weggenommen.
+    var gold = runde.serie > 0 && runde.serie % 3 === 0;
+    var stueck = gold ? GOLD : BELEGE[Math.floor(Math.random()*BELEGE.length)];
+    runde.neue.push(stueck);
+    S.album.push(stueck);
+    sichern();
+    kopf = gold ? "Richtig — und drei in Folge! " + GOLD : "Richtig! " + stueck;
+  }else{
+    runde.serie = 0;
+    kopf = "Das ist " + it.a.toUpperCase() + ".";
+  }
+  fb.innerHTML = "<b>" + kopf + "</b>" + it.why;
+  fb.classList.remove("hidden");
+  $("next").textContent = (runde.i + 1 < runde.liste.length) ? "Weiter ▶" : "Ergebnis ansehen ▶";
+  $("next").classList.remove("hidden");
+  $("score").textContent = runde.richtig + " richtig";
+  $("streak").textContent = "Serie " + runde.serie;
+  malenSammlung($("collected"), runde.neue);
+}
+
+function weiter(){
+  runde.i++;
+  if(runde.i < runde.liste.length){ frage(); } else { beenden(); }
+}
+
+function malenSammlung(ziel, liste){
+  ziel.innerHTML = "";
+  liste.forEach(function(s){
+    var d = document.createElement("span");
+    d.className = "chip" + (s === GOLD ? " g" : "");
+    d.textContent = s;
+    ziel.appendChild(d);
+  });
+}
+
+function beenden(){
+  S.runden++;
+  if(runde.richtig > S.best) S.best = runde.richtig;
+  if(runde.beste > S.serie) S.serie = runde.beste;
+  sichern();
+
+  var n = runde.liste.length;
+  var sterne = runde.richtig >= n - 1 ? 3 : (runde.richtig >= n - 4 ? 2 : 1);
+  $("stars").textContent = "⭐".repeat(sterne) + "☆".repeat(3 - sterne);
+  $("endTitle").textContent = runde.richtig === n ? "Alles richtig!" : "Runde geschafft";
+  $("endLine").textContent = runde.richtig + " von " + n + " richtig · längste Serie "
+    + runde.beste + " · dein Rekord: " + S.best + " von " + n + ".";
+  $("code").textContent = "TS-" + runde.richtig + "/" + n + "-S" + runde.beste;
+
+  var fehlt = 3 - (sterne);
+  var offen;
+  if(sterne === 3){
+    offen = "Nächstes Ziel: eine Runde ohne einen einzigen Fehler — und die "
+          + GOLD + "-Serie fünfmal in einer Runde.";
+  }else{
+    offen = "Noch " + fehlt + " Stern" + (fehlt === 1 ? "" : "e") + " bis zur vollen Wertung. "
+          + "Die Sätze kommen in neuer Reihenfolge.";
+  }
+  $("openLoop").textContent = offen;
+
+  malenSammlung($("album"), S.album.slice(-40));
+  var golden = S.album.filter(function(x){ return x === GOLD; }).length;
+  $("albumNote").textContent = S.album.length + " Belege gesammelt, davon " + golden
+    + " goldene · " + S.runden + " Runden gespielt.";
+
+  // Ethik: Sessionbremse nach drei Runden
+  if(S.runden % 3 === 0){
+    $("openLoop").textContent = "Super für heute — drei Runden sind genug. "
+      + "Leg das Gerät weg und schau dir die Sätze im Text noch einmal an. "
+      + $("openLoop").textContent;
+  }
+  zeigen("end");
+}
+
+$("go").addEventListener("click", starten);
+$("again").addEventListener("click", starten);
+$("back").addEventListener("click", function(){ zeigen("start"); });
+$("next").addEventListener("click", weiter);
+$("resume").addEventListener("click", function(){
+  malenSammlung($("album"), S.album.slice(-40));
+  var golden = S.album.filter(function(x){ return x === GOLD; }).length;
+  $("stars").textContent = "";
+  $("endTitle").textContent = "Deine Sammlung";
+  $("endLine").textContent = S.album.length === 0
+    ? "Noch nichts gesammelt — spiel eine Runde."
+    : "Rekord: " + S.best + " von " + ITEMS.length + " · längste Serie " + S.serie + ".";
+  $("code").textContent = "TS-" + S.best + "/" + ITEMS.length + "-S" + S.serie;
+  $("openLoop").textContent = "";
+  $("albumNote").textContent = S.album.length + " Belege, davon " + golden + " goldene.";
+  zeigen("end");
+});
+Array.prototype.forEach.call(document.querySelectorAll("#game .big"), function(b){
+  b.addEventListener("click", function(){ antworten(b.getAttribute("data-a")); });
+});
+</script>
+</body>
+</html>
