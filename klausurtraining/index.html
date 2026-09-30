@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Klausurtraining Englisch · Oberstufe</title>
+<style>
+  :root{
+    --ink:#1A1A1A; --muted:#5D5D66; --paper:#FBFAF7; --card:#FFFFFF;
+    --accent:#4C4A8F; --tint:#E9E8F3; --band:#2E5458;
+    --live:#1F7A5A; --livebg:#E3F1EB;
+    --soon:#8A6A1F; --soonbg:#FBF3DC;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);
+    font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    touch-action:manipulation;padding:0 0 env(safe-area-inset-bottom)}
+  .band{background:var(--band);color:#fff;padding:.5rem 1rem;font-size:.82rem;
+        font-weight:700;letter-spacing:.04em}
+  .wrap{max-width:900px;margin:0 auto;padding:1rem}
+  h1{font-size:1.75rem;margin:.5rem 0 .2rem}
+  .lead{color:var(--muted);margin:.2rem 0 1.1rem}
+  h2{font-size:1.1rem;margin:1.6rem 0 .2rem;letter-spacing:.02em}
+  h2 small{display:block;font-size:.86rem;font-weight:400;color:var(--muted);
+           margin-top:.15rem}
+  .filters{display:flex;gap:.5rem;flex-wrap:wrap;margin:.2rem 0 .4rem}
+  button{font:inherit;border:0;border-radius:999px;cursor:pointer}
+  .chip{background:var(--tint);color:var(--accent);padding:.6rem 1.05rem;
+        font-weight:700;min-height:48px}
+  .chip[aria-pressed="true"]{background:var(--accent);color:#fff}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:.7rem}
+  .mod{display:block;text-decoration:none;color:inherit;background:var(--card);
+       border-radius:14px;padding:.95rem 1rem;box-shadow:0 1px 3px rgba(0,0,0,.09);
+       border-left:5px solid var(--accent);min-height:132px}
+  a.mod:active{transform:scale(.99)}
+  .mod.soon{border-left-color:#C9C6D8;opacity:.72;cursor:default}
+  .nr{font-size:.78rem;font-weight:800;color:var(--accent);letter-spacing:.06em}
+  .nm{font-size:1.12rem;font-weight:800;margin:.16rem 0 .3rem;line-height:1.25}
+  .kr{font-size:.9rem;color:var(--muted)}
+  .row{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.55rem;align-items:center}
+  .tag{font-size:.76rem;font-weight:700;border-radius:999px;padding:.22rem .6rem;
+       background:var(--tint);color:var(--accent)}
+  .tag.live{background:var(--livebg);color:var(--live)}
+  .tag.soon{background:var(--soonbg);color:var(--soon)}
+  .tag.done{background:var(--livebg);color:var(--live)}
+  details{margin:1.2rem 0 .2rem;background:var(--card);border-radius:12px;
+          padding:.85rem 1rem;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  summary{font-weight:700;cursor:pointer;min-height:32px}
+  details p,details li{color:var(--muted);font-size:.94rem}
+  table{border-collapse:collapse;width:100%;margin-top:.6rem;font-size:.9rem}
+  td{padding:.28rem .4rem;border-bottom:1px solid var(--tint);color:var(--muted)}
+  td.p{text-align:right;font-weight:700;color:var(--accent);white-space:nowrap}
+  .foot{color:var(--muted);font-size:.85rem;margin:1.6rem 0 .6rem}
+  .empty{color:var(--muted);padding:1rem;text-align:center}
+  @media (max-width:560px){ .grid{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<div class="band">ENGLISCH · OBERSTUFE · KLAUSURTRAINING</div>
+<div class="wrap">
+
+  <h1>Was willst du üben?</h1>
+  <p class="lead">Jedes Modul trainiert genau ein Kriterium des
+     Erwartungshorizonts — mit der Punktzahl, um die es dabei geht.</p>
+
+  <div class="filters" id="fBlock"></div>
+  <div class="filters" id="fJahr"></div>
+
+  <div id="listen"></div>
+
+  <details>
+    <summary>Warum diese Einteilung?</summary>
+    <p>In jeder Klausur der Oberstufe sind <b>110 Punkte</b> zu holen:
+    <b>44</b> für den Inhalt und <b>66</b> für die Darstellung. Die
+    Darstellungsleistung ist in jeder Klausur, jedem Jahrgang und jeder
+    Aufgabenart <b>dieselbe</b> — deshalb lohnt sich das Üben hier am meisten.</p>
+    <table>
+      <tr><td>1 Aufgabenbezug — Intention und Adressat</td><td class="p">6</td></tr>
+      <tr><td>2 Textsortenmerkmale</td><td class="p">4</td></tr>
+      <tr><td>3 Struktur</td><td class="p">5</td></tr>
+      <tr><td>4 Ökonomie</td><td class="p">4</td></tr>
+      <tr><td>5 Belegtechnik — Verweise und Zitate</td><td class="p">3</td></tr>
+      <tr><td>6 Eigenständigkeit — vom Wortlaut lösen</td><td class="p">5</td></tr>
+      <tr><td>7 allgemeiner und thematischer Wortschatz</td><td class="p">6</td></tr>
+      <tr><td>8 Textbesprechungs- und Textproduktionswortschatz</td><td class="p">4</td></tr>
+      <tr><td>9 Satzbau</td><td class="p">7</td></tr>
+      <tr><td>10–12 Wortschatz · Grammatik · Orthografie</td><td class="p">22</td></tr>
+    </table>
+    <p style="margin-top:.7rem">Der <b>Inhalt</b> hängt dagegen davon ab, was
+    gefragt ist — und wie weit ihr seid. In der EF ist die Analyse noch die
+    Charakterisierung; später kommen Reden, Cartoons und Sachtexte dazu.
+    Deshalb kannst du die Inhaltsmodule nach Jahrgang filtern.</p>
+  </details>
+
+  <details>
+    <summary>Was die Übungen können — und was nicht</summary>
+    <p>Bei Schreibaufgaben prüft die App, ob die <b>Bestandteile</b> da sind:
+    Steht eine Zeilenangabe dabei? Ist das Zitat wirklich wortwörtlich? Sind
+    Titel, Autor und Jahr genannt?</p>
+    <p><b>Ob dein Satz gut ist, entscheidet sie nicht.</b> Dafür gibt es das
+    Kriterienraster und deine Lehrkraft. Es gibt hier keine Noten.</p>
+    <p>Keine Anmeldung, keine Namen, keine Datenübertragung. Dein Fortschritt
+    bleibt auf diesem Gerät.</p>
+  </details>
+
+  <p class="foot" id="stand"></p>
+</div>
+
+<script>
+"use strict";
+/* Module. status: "live" (Ordner vorhanden) oder "soon" (geplant).
+   key: localStorage-Schluessel des Moduls - gleicher Origin, der Hub liest
+   ihn nur, um Fortschritt anzuzeigen, und schreibt nie hinein. */
+var MODULE = [
+  // ---- jahrgangsunabhaengig: Darstellungsleistung und Operatoren ----
+  {nr:"3.1", name:"Zitieren", block:"Belegen", jahr:"alle", status:"soon",
+   kr:"Kriterium 5 · Belegtechnik · 3 Punkte",
+   was:"Zitat einbetten, Zeilenangabe setzen, wortwörtlich bleiben",
+   format:"Schreiben + Klicken", href:"../klausurtraining-31-zitieren/"},
+  {nr:"3.2", name:"Behauptung – Beleg – Wirkung", block:"Belegen", jahr:"alle",
+   status:"soon", kr:"Kriterium 5 · Belegtechnik · 3 Punkte",
+   was:"Welcher Teil des Dreischritts fehlt?", format:"Klicken"},
+  {nr:"2.1", name:"Einleitungssätze", block:"Aufbau", jahr:"alle", status:"soon",
+   kr:"Kriterien 1 + 2 · 10 Punkte",
+   was:"Titel · Autor · Jahr · Textsorte · Thema — und keine Absichtserklärung",
+   format:"Schreiben"},
+  {nr:"2.2", name:"Absätze ordnen", block:"Aufbau", jahr:"alle", status:"soon",
+   kr:"Kriterium 3 · Struktur · 5 Punkte",
+   was:"Aufbau einer Analyse — die conclusion nicht vergessen", format:"Sortieren"},
+  {nr:"2.3", name:"Connectives", block:"Aufbau", jahr:"alle", status:"soon",
+   kr:"Kriterium 3 · Struktur · 5 Punkte",
+   was:"Verknüpfen statt aufzählen", format:"Lücken"},
+  {nr:"1.1", name:"Operatoren", block:"Aufgabe verstehen", jahr:"alle",
+   status:"soon", kr:"Kriterium 1 · Aufgabenbezug · 6 Punkte",
+   was:"Was verlangt analyse, comment, outline, examine, assess?",
+   format:"Zuordnen"},
+  {nr:"1.2", name:"AFB erkennen", block:"Aufgabe verstehen", jahr:"alle",
+   status:"soon", kr:"Kriterium 1 · Aufgabenbezug · 6 Punkte",
+   was:"Welche Teilaufgabe will welche Leistung?", format:"Zuordnen"},
+  {nr:"5.1", name:"Paraphrasieren", block:"Sprache", jahr:"alle", status:"soon",
+   kr:"Kriterium 6 · Eigenständigkeit · 5 Punkte",
+   was:"Vom Wortlaut des Textes lösen", format:"Klicken"},
+  {nr:"5.2", name:"Textbesprechungswortschatz", block:"Sprache", jahr:"alle",
+   status:"soon", kr:"Kriterium 8 · 4 Punkte",
+   was:"the author conveys · emphasises · suggests …", format:"Lücken"},
+  {nr:"5.3", name:"Fehler spotten", block:"Sprache", jahr:"alle", status:"soon",
+   kr:"Kriterien 10–12 · Sprachrichtigkeit · 22 Punkte",
+   was:"Tempus im Plot, fehlende Zeilenangabe, Absichtserklärung",
+   format:"Markieren"},
+  // ---- Inhaltsmodule, nach Jahrgang ----
+  {nr:"I·A", name:"Charakterisierung: telling or showing?", block:"Inhalt",
+   jahr:"EF", status:"live", kr:"Aufgabe 2 · Analyse · 17 Punkte",
+   was:"Direkte und indirekte Charakterisierung unterscheiden",
+   format:"Klicken", href:"../telling-or-showing-ef/",
+   key:"ef-telling-showing-v1"},
+  {nr:"I·B", name:"Summary", block:"Inhalt", jahr:"alle", status:"soon",
+   kr:"Aufgabe 1 · Comprehension · 12 Punkte",
+   was:"Auswahl nach Relevanz, Präsens, keine Wertung", format:"Klicken"},
+  {nr:"I·C", name:"Comment — der Bauplan", block:"Inhalt", jahr:"alle",
+   status:"soon", kr:"Aufgabe 3 · Evaluation · 15 Punkte",
+   was:"Aussage erklären → Position → Gründe mit Beleg → Fazit",
+   format:"Schreiben + Klicken"},
+  {nr:"I·D", name:"Redeanalyse", block:"Inhalt", jahr:"Q1/Q2", status:"soon",
+   kr:"Aufgabe 2 · Analyse · 17 Punkte",
+   was:"Rhetorische Mittel — mit Wirkung, nicht als Liste", format:"Klicken"},
+  {nr:"I·E", name:"Cartoon-Analyse", block:"Inhalt", jahr:"Q1/Q2", status:"soon",
+   kr:"Aufgabe 2 · Analyse · 17 Punkte",
+   was:"Beschreiben → Symbole → Aussage → Wertung", format:"Klicken"},
+  {nr:"I·F", name:"Sprachmittlung", block:"Inhalt", jahr:"Q1/Q2", status:"soon",
+   kr:"Klausurteil B · 50 Punkte",
+   was:"Auswahl nach Zweck, nicht vollständig übertragen", format:"Klicken"}
+];
+
+var BLOECKE = ["Alle", "Aufgabe verstehen", "Aufbau", "Belegen", "Sprache", "Inhalt"];
+var JAHRE = ["Alle Jahrgänge", "EF", "Q1/Q2"];
+var wahlBlock = "Alle", wahlJahr = "Alle Jahrgänge";
+
+function $(id){ return document.getElementById(id); }
+
+function fortschritt(m){
+  if(!m.key) return null;
+  try{
+    var r = JSON.parse(localStorage.getItem(m.key) || "null");
+    if(!r) return null;
+    if(typeof r.runden === "number" && r.runden > 0){
+      return r.runden + (r.runden === 1 ? " Runde" : " Runden") + " gespielt";
+    }
+  }catch(e){}
+  return null;
+}
+
+function passt(m){
+  if(wahlBlock !== "Alle" && m.block !== wahlBlock) return false;
+  if(wahlJahr === "Alle Jahrgänge") return true;
+  return m.jahr === "alle" || m.jahr === wahlJahr;
+}
+
+function karte(m){
+  var live = m.status === "live";
+  var el = document.createElement(live ? "a" : "div");
+  el.className = "mod" + (live ? "" : " soon");
+  if(live) el.href = m.href;
+  var p = fortschritt(m);
+  el.innerHTML =
+    '<div class="nr">' + m.nr + " · " + m.block.toUpperCase() + "</div>" +
+    '<div class="nm">' + m.name + "</div>" +
+    '<div class="kr">' + m.was + "</div>" +
+    '<div class="row">' +
+      '<span class="tag">' + m.kr + "</span>" +
+      '<span class="tag">' + m.format + "</span>" +
+      (m.jahr !== "alle" ? '<span class="tag">' + m.jahr + "</span>" : "") +
+      (live ? '<span class="tag live">jetzt üben ▶</span>'
+            : '<span class="tag soon">in Arbeit</span>') +
+      (p ? '<span class="tag done">' + p + "</span>" : "") +
+    "</div>";
+  return el;
+}
+
+function malen(){
+  var ziel = $("listen");
+  ziel.innerHTML = "";
+  var sichtbar = MODULE.filter(passt);
+  // live zuerst, sonst Reihenfolge der Liste
+  sichtbar.sort(function(a, b){
+    if(a.status === b.status) return 0;
+    return a.status === "live" ? -1 : 1;
+  });
+  if(sichtbar.length === 0){
+    ziel.innerHTML = '<p class="empty">Für diese Auswahl gibt es noch nichts.</p>';
+    return;
+  }
+  var g = document.createElement("div");
+  g.className = "grid";
+  sichtbar.forEach(function(m){ g.appendChild(karte(m)); });
+  ziel.appendChild(g);
+}
+
+function filterbau(wohin, werte, aktuell, setzen){
+  var box = $(wohin);
+  box.innerHTML = "";
+  werte.forEach(function(w){
+    var b = document.createElement("button");
+    b.className = "chip";
+    b.textContent = w;
+    b.setAttribute("aria-pressed", String(w === aktuell()));
+    b.addEventListener("click", function(){
+      setzen(w);
+      filterbau("fBlock", BLOECKE, function(){ return wahlBlock; },
+                function(v){ wahlBlock = v; });
+      filterbau("fJahr", JAHRE, function(){ return wahlJahr; },
+                function(v){ wahlJahr = v; });
+      malen();
+    });
+    box.appendChild(b);
+  });
+}
+
+filterbau("fBlock", BLOECKE, function(){ return wahlBlock; },
+          function(v){ wahlBlock = v; });
+filterbau("fJahr", JAHRE, function(){ return wahlJahr; },
+          function(v){ wahlJahr = v; });
+malen();
+
+var fertig = MODULE.filter(function(m){ return m.status === "live"; }).length;
+$("stand").textContent = fertig + " von " + MODULE.length
+  + " Modulen sind fertig. Die übrigen kommen nach und nach dazu.";
+</script>
+</body>
+</html>
