@@ -226,6 +226,23 @@ var PROFIL = [
   a:4, why:"Das rundet ab und zieht ein Fazit — Schlussteil."}
 ];
 
+/* ---------- Markierungscode beim Lesen (Worksheet 3) ---------- */
+var CODE = ["F — facts", "A — appearance", "B — behaviour", "R — relationships"];
+var MARKIEREN = [
+ {satz:"Marek has been in our class since September.", a:0,
+  who:"Z. 1", why:"Eine Tatsache über ihn — F."},
+ {satz:"He is the tallest boy in the room and always wears the same grey hoodie.", a:1,
+  who:"Z. 1–2", why:"Größe und Kleidung — A."},
+ {satz:"At break he stands by the window with his headphones on.", a:2,
+  who:"Z. 3", why:"Was er tut — B. Daraus schließt man später auf den Charakter."},
+ {satz:"He lives with his grandmother.", a:0,
+  who:"Z. 10", why:"Familienverhältnis als Tatsache — F. Wie er zu ihr steht, stünde unter R."},
+ {satz:"Marek simply handed her his own jumper and walked away.", a:2,
+  who:"Z. 8", why:"Eine Handlung — B."},
+ {satz:"He never talks about it, but once he said to me, “It is easier when you do not count the days.”", a:3,
+  who:"Z. 11–12", why:"Er vertraut sich dem Erzähler an — das sagt etwas über ihre Beziehung, R."}
+];
+
 /* ---------- Bereich 2: formal English + Belege ---------- */
 var FORMAL = [
  {kurz:"He doesn't talk about his parents.", lang:"He does not talk about his parents."},
@@ -278,7 +295,16 @@ var TENSE = [
   why:"Ein Dauerzustand, kein Vorgang im Moment — Simple Present."},
  {satz:"Be quiet! The baby ___ (to sleep).",
   a:"is sleeping", alt:["sleeps"], typ:"progressive",
-  why:"<b>Be quiet!</b> verweist auf jetzt — Present Progressive."}
+  why:"<b>Be quiet!</b> verweist auf jetzt — Present Progressive."},
+ {satz:"Mia ___ (not / to like) coffee.",
+  a:"does not like", alt:["doesn't like","does not likes"], typ:"simple",
+  why:"Eine dauerhafte Vorliebe — Simple Present. Verneint mit <b>does not</b>, und das Verb bleibt in der Grundform. In formal English ausgeschrieben, nicht <i>doesn’t</i>."},
+ {satz:"I ___ (to stay) with my grandparents this week.",
+  a:"am staying", alt:["stay"], typ:"progressive",
+  why:"<b>this week</b> klingt nach Routine, ist aber <b>vorübergehend</b> — deshalb Progressive. Signalwörter helfen, entscheidend ist der Sinn."},
+ {satz:"We ___ (not / to use) our phones during lessons.",
+  a:"do not use", alt:["don't use"], typ:"simple",
+  why:"Eine Regel, die immer gilt — Simple Present. Bei <i>we</i> verneint man mit <b>do not</b>."}
 ];
 
 /* ---------- Bereich 4: Wortstellung ---------- */
@@ -304,24 +330,43 @@ var ORDER = [
 ];
 
 /* ---------- Bereich 5: Blog-Antwort ---------- */
+var BLOGTEILE = ["Empathy", "Problem benennen", "Ratschlag", "Supportive ending"];
+var BLOGZUORDNUNG = [
+ {satz:"I am sorry to hear that things have become so difficult at home.",
+  a:0, why:"Mitgefühl zuerst — damit beginnt jede gute Antwort."},
+ {satz:"It sounds as if you feel torn between your parents’ hopes and your own time.",
+  a:1, why:"Hier wird das Problem in eigenen Worten benannt. Das zeigt, dass du verstanden hast."},
+ {satz:"You could pick a quiet moment at the weekend and tell them how much the pressure affects you.",
+  a:2, why:"Ein konkreter, machbarer Vorschlag — <i>You could …</i> ist genau dafür da."},
+ {satz:"I am sure you can find a solution together.",
+  a:3, why:"Zuversichtlicher Schluss. Die Antwort endet nicht mit dem Problem."},
+ {satz:"I can understand why you feel jealous — that happens to a lot of people.",
+  a:0, why:"Das Gefühl wird ernst genommen und eingeordnet. Empathy."},
+ {satz:"If I were you, I would talk to him before the next argument starts.",
+  a:2, why:"<i>If I were you, I would …</i> — ein Ratschlag."},
+ {satz:"On the one hand he has the right to other friendships, on the other hand you need to feel safe.",
+  a:2, why:"Beide Seiten in einem Satz. Das gehört zum Ratschlagteil — ein Rat, der nur eine Seite sieht, ist keiner."},
+ {satz:"I hope this helps. Good luck!",
+  a:3, why:"Die Schlussformel. Kurz, freundlich, ermutigend."}
+];
 var BLOG = [
  {satz:"“That is not a real problem. Just stop worrying about it.”",
-  a:1, why:"Das Problem wird kleingeredet. In der Aufgabe steht ausdrücklich <i>be empathetic</i> — erst ernst nehmen, dann raten."},
+  a:1, why:"Das Problem wird kleingeredet. Verlangt ist Mitgefühl — erst ernst nehmen, dann raten."},
  {satz:"“I can understand why you feel like this — a lot of people would.”",
   a:0, why:"Genau so beginnt eine gute Antwort: das Gefühl anerkennen, bevor der Rat kommt."},
  {satz:"“You could try to talk to them when nobody is stressed, maybe at the weekend.”",
-  a:0, why:"Ein konkreter, machbarer Vorschlag. Räte sollen umsetzbar sein, nicht allgemein."},
+  a:0, why:"Ein konkreter, machbarer Vorschlag. Ratschläge sollen umsetzbar sein, nicht allgemein."},
  {satz:"“Your parents are completely wrong and you should just do what you want.”",
-  a:1, why:"Die Aufgabe verlangt <i>consider both sides</i>. Eine Seite für schuldig zu erklären, erfüllt das nicht."},
+  a:1, why:"Nur eine Seite. Zu einem guten Rat gehört, dass du auch die andere Sicht bedenkst."},
  {satz:"“On the one hand they want the best for you, on the other hand you need time for yourself.”",
-  a:0, why:"Beide Seiten in einem Satz — das ist der Kern von <i>consider both sides</i>."},
+  a:0, why:"Beide Seiten in einem Satz — genau das ist gemeint."},
  {satz:"“I had exactly the same problem and here is what happened to me …”",
   a:1, why:"Die Antwort dreht sich jetzt um dich. Kurz Verständnis zeigen ist gut, die eigene Geschichte erzählen nicht."}
 ];
 
 /* ================= Bereiche ================= */
 var BEREICHE = [
- {id:"profil", titel:"Character profile", kurz:"Welcher Baustein ist das?",
+ {id:"profil", titel:"Character profile", kurz:"Bausteine und Markierungscode",
   pkt:"Aufgabe 4 der Arbeit", lern:'\
 <h3>Die sechs Bausteine</h3>\
 <ol class="steps">\
@@ -336,6 +381,19 @@ var BEREICHE = [
 • Mindestens <b>drei Zitate</b> mit Zeilenangabe — jede Behauptung belegen.<br>\
 • <b>Langformen</b> benutzen: <i>does not</i> statt <i>doesn’t</i>.<br>\
 • Mit <b>Konnektoren</b> verbinden: <i>although, however, therefore, in addition</i>.</div>\
+<h3>Beim Lesen markieren</h3>\
+<p>Bevor du planst, gehst du den Text einmal durch und markierst:<br>\
+<b>F</b> facts · <b>A</b> appearance · <b>B</b> behaviour · <b>R</b> relationships ·\
+ <b>Q</b> zitierfähige Stelle</p>\
+<h3>Das Muster für jeden Absatz</h3>\
+<p><b>CLAIM</b> — eine genaue Eigenschaft benennen.<br>\
+<b>EVIDENCE</b> — Zitat oder klarer Textverweis.<br>\
+<b>EXPLANATION</b> — was das zeigt.</p>\
+<p class="note"><i>Marek is attentive.</i> → <i>He hands Lena his jumper (l. 8).</i> →\
+ <i>This shows that he notices when somebody needs help.</i></p>\
+<div class="warnbox"><b>Ein Zitat allein reicht nicht — erklär es.</b></div>\
+<p class="note"><b>Satzanfänge:</b> <i>The character is presented as … · This becomes\
+ clear when … · This shows that … · Furthermore … · However … · Overall …</i></p>\
 <p class="note">Schreib im <b>Simple Present</b> — auch wenn die Geschichte in der Vergangenheit spielt.</p>'},
  {id:"beleg", titel:"Belegen und Langformen", kurz:"Zitat zur Behauptung finden",
   pkt:"zählt in Aufgabe 4", lern:'\
@@ -350,14 +408,23 @@ var BEREICHE = [
  <i>isn’t</i>, <b>cannot</b> statt <i>can’t</i>, <b>have</b> statt <i>’ve</i>.</p>'},
  {id:"tense", titel:"Present Simple oder Progressive", kurz:"Verb in die richtige Form",
   pkt:"Aufgabe 2 · 6 Punkte", lern:'\
-<h3>Woran du es erkennst</h3>\
-<p><b>Simple Present</b> — was immer, oft oder nie passiert.<br>\
-Signalwörter: <i>every day, usually, always, never, often, on Mondays</i>.<br>\
-Bei <b>he / she / it</b> kommt ein <b>-s</b> dran.</p>\
-<p><b>Present Progressive</b> — was gerade jetzt läuft.<br>\
-Signalwörter: <i>now, right now, at the moment, Look!, Listen!</i>.<br>\
-Form: <b>am / is / are</b> + Verb + <b>-ing</b>.</p>\
-<div class="warnbox"><b>Stolperstellen:</b> <i>write → writing</i> (das -e fällt weg),\
+<h3>Immer dieselben drei Schritte</h3>\
+<ol class="steps">\
+<li><b>Signalwort unterstreichen.</b><br>\
+<i>always · usually · often · sometimes · never · every day / week / Monday</i><br>\
+<i>now · right now · at the moment · Look! · Listen!</i></li>\
+<li><b>Entscheiden:</b> Routine oder Tatsache → <b>Simple Present</b>.<br>\
+Passiert gerade jetzt → <b>Present Progressive</b>.</li>\
+<li><b>Form prüfen.</b> he/she/it + <b>-s</b> · am/is/are + Verb + <b>-ing</b></li>\
+</ol>\
+<div class="warnbox"><b>Signalwörter helfen — entscheidend ist der Sinn.</b><br>\
+<i>I am staying with my grandparents this week.</i> → Progressive, weil es\
+ vorübergehend ist, obwohl <i>this week</i> nach Routine klingt.<br>\
+<i>Mia does not like coffee.</i> → Simple Present, weil es eine dauerhafte\
+ Vorliebe ist.</div>\
+<p class="note"><b>Verneinung:</b> <i>does not like</i> · <i>are not watching</i>.\
+ In formal English ausgeschrieben, nicht <i>doesn’t</i>.</p>\
+<div class="warnbox"><b>Schreibweise:</b> <i>write → writing</i> (-e fällt weg),\
  <i>sit → sitting</i> (Konsonant verdoppelt), <i>catch → catches</i> (-es nach -ch).</div>'},
  {id:"order", titel:"Wortstellung", kurz:"Satz richtig bauen",
   pkt:"Aufgabe 3 · 10 Punkte", lern:'\
@@ -367,17 +434,27 @@ Form: <b>am / is / are</b> + Verb + <b>-ing</b>.</p>\
 <div class="warnbox">Zwischen Verb und Objekt kommt <b>nichts</b> dazwischen.<br>\
 Häufigkeitsadverbien (<i>always, never, often, usually</i>) stehen <b>vor</b> dem\
  Vollverb — aber <b>nach</b> <i>am/is/are</i>.</div>'},
- {id:"blog", titel:"Blog: Rat geben", kurz:"Was gehört in eine gute Antwort?",
+ {id:"blog", titel:"Blog: Rat geben", kurz:"Welcher Teil der Antwort ist das?",
   pkt:"Aufgabe 1 · 15 Punkte", lern:'\
-<h3>Was die Aufgabe verlangt</h3>\
-<p>Du sollst raten — aber mitfühlend, und ohne eine Seite einfach abzuhaken.\
- Daraus folgen drei Dinge:</p>\
+<h3>Erst verstehen, dann planen, dann schreiben</h3>\
+<p><b>1 Verstehen</b> — Was ist das Problem? Wie fühlt sich die Person?<br>\
+<b>2 Planen</b> — mindestens zwei realistische Ratschläge überlegen.<br>\
+<b>3 Schreiben</b> — in dieser Reihenfolge.<br>\
+<b>4 Prüfen</b> — hast du das Problem wirklich beantwortet?</p>\
+<h3>Der Aufbau der Antwort</h3>\
 <ol class="steps">\
-<li><b>Verständnis zeigen</b> — das Gefühl ernst nehmen, bevor du rätst.</li>\
-<li><b>Beide Seiten bedenken</b> — auch die der anderen Person im Problem.</li>\
-<li><b>Konkret raten</b> — ein Vorschlag, den man morgen umsetzen kann.</li>\
+<li><b>Empathy</b> — das Gefühl ernst nehmen.</li>\
+<li><b>Problem benennen</b> — zeigen, dass du verstanden hast, worum es geht.</li>\
+<li><b>Zwei bis drei Ratschläge</b> — konkret, und beide Seiten bedenken.</li>\
+<li><b>Supportive ending</b> — zuversichtlich schließen.</li>\
 </ol>\
-<p class="note">Anrede und Schlussformel nicht vergessen: <i>Dear … / Best wishes, Simon</i>.</p>'}
+<div class="warnbox"><b>Useful language</b><br>\
+<i>I am sorry to hear that … · I can understand why you feel …</i><br>\
+<i>You could … · Why don’t you …? · If I were you, I would …</i><br>\
+<i>On the one hand … · On the other hand …</i><br>\
+<i>I hope this helps. · Good luck! · I am sure you can find a solution.</i></div>\
+<p class="note">Umfang: etwa <b>100–120 Wörter</b>. Anrede und Schlussformel\
+ nicht vergessen.</p>'}
 ];
 
 var KEY = "ka-e10-lovelife-v1";
@@ -429,7 +506,11 @@ function lernen(b){
 
 /* ---------- Übungen ---------- */
 function bauen(b){
-  if(b.id === "profil") return mischen(PROFIL).slice(0,6).map(function(d){ return {typ:"profil", d:d}; });
+  if(b.id === "profil"){
+    var l0 = mischen(PROFIL).slice(0,4).map(function(d){ return {typ:"profil", d:d}; });
+    mischen(MARKIEREN).slice(0,3).forEach(function(d){ l0.push({typ:"mark", d:d}); });
+    return mischen(l0);
+  }
   if(b.id === "beleg"){
     var l = mischen(BELEG).map(function(d){ return {typ:"beleg", d:d}; });
     mischen(FORMAL).slice(0,3).forEach(function(d){ l.push({typ:"formal", d:d}); });
@@ -437,7 +518,9 @@ function bauen(b){
   }
   if(b.id === "tense") return mischen(TENSE).slice(0,6).map(function(d){ return {typ:"tense", d:d}; });
   if(b.id === "order") return mischen(ORDER).slice(0,5).map(function(d){ return {typ:"order", d:d}; });
-  return mischen(BLOG).slice(0,6).map(function(d){ return {typ:"blog", d:d}; });
+  var lb = mischen(BLOGZUORDNUNG).slice(0,4).map(function(d){ return {typ:"blogteil", d:d}; });
+  mischen(BLOG).slice(0,3).forEach(function(d){ lb.push({typ:"blog", d:d}); });
+  return mischen(lb);
 }
 function starten(b){
   runde = {b:b, liste:bauen(b), i:0, richtig:0};
@@ -478,6 +561,15 @@ function frage(){
       '<button class="ghost" id="reset">Nochmal von vorn</button>';
     zeichneOrder(it);
     $("reset").addEventListener("click", function(){ it.gewaehlt = []; zeichneOrder(it); });
+  } else if(it.typ === "mark"){
+    b.innerHTML = '<p class="satz">' + esc(it.d.satz) + "</p>" +
+      '<p class="ask">Beim Lesen markierst du mit dem Code. Was ist das hier? '
+      + "<span style='color:var(--muted)'>(" + esc(it.d.who) + ")</span></p>" +
+      CODE.map(function(c,i){ return '<button class="opt" data-v="'+i+'">'+esc(c)+"</button>"; }).join("");
+  } else if(it.typ === "blogteil"){
+    b.innerHTML = '<p class="satz">' + esc(it.d.satz) + "</p>" +
+      '<p class="ask">Welcher Teil der Antwort ist das?</p>' +
+      BLOGTEILE.map(function(c,i){ return '<button class="opt" data-v="'+i+'">'+esc(c)+"</button>"; }).join("");
   } else {
     b.innerHTML = '<p class="satz">' + esc(it.d.satz) + "</p>" +
       '<p class="ask">Gehört dieser Satz in eine gute Antwort?</p>' +
@@ -523,6 +615,8 @@ function pruefe(v){
   if($("tip")) $("tip").disabled = true;
 
   if(it.typ === "profil"){ ok = v === it.d.a; richtig = TEILE[it.d.a]; }
+  else if(it.typ === "mark"){ ok = v === it.d.a; richtig = CODE[it.d.a]; }
+  else if(it.typ === "blogteil"){ ok = v === it.d.a; richtig = BLOGTEILE[it.d.a]; }
   else if(it.typ === "beleg"){ ok = v === it.d.a; richtig = it.d.opts[it.d.a]; }
   else if(it.typ === "blog"){ ok = v === it.d.a; richtig = it.d.a === 0 ? "Ja" : "Nein"; }
   else if(it.typ === "formal"){
