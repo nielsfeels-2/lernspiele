@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Zitieren · Klausurtraining Englisch</title>
+<style>
+  :root{
+    --ink:#1A1A1A; --muted:#5D5D66; --paper:#FBFAF7; --card:#FFFFFF;
+    --accent:#4C4A8F; --tint:#E9E8F3; --band:#2E5458;
+    --ok:#1F7A5A; --okbg:#E3F1EB; --no:#A33; --nobg:#F8E7E7;
+    --gold:#B8860B; --goldbg:#FBF3DC;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);
+    font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    touch-action:manipulation;padding:0 0 env(safe-area-inset-bottom)}
+  .band{background:var(--band);color:#fff;padding:.5rem 1rem;font-size:.8rem;
+        font-weight:700;letter-spacing:.04em;display:flex;justify-content:space-between;gap:1rem}
+  .band a{color:#fff;text-decoration:none;opacity:.85;white-space:nowrap}
+  .wrap{max-width:860px;margin:0 auto;padding:1rem}
+  h1{font-size:1.7rem;margin:.5rem 0 .2rem}
+  h2{font-size:1.15rem;margin:1.3rem 0 .4rem}
+  .lead{color:var(--muted);margin:.2rem 0 1rem}
+  .card{background:var(--card);border-radius:14px;padding:1.05rem;
+        box-shadow:0 1px 3px rgba(0,0,0,.09);margin-bottom:.9rem}
+  button{font:inherit;border:0;border-radius:14px;cursor:pointer}
+  .go{background:var(--accent);color:#fff;min-height:76px;width:100%;
+      font-size:1.14rem;font-weight:800;padding:.8rem}
+  .ghost{background:var(--tint);color:var(--accent);min-height:54px;padding:.6rem 1rem;
+         font-weight:700;width:100%;margin-top:.6rem}
+  .opt{display:block;width:100%;text-align:left;background:var(--tint);
+       color:var(--ink);min-height:68px;padding:.8rem 1rem;margin-bottom:.6rem;
+       font-size:1.02rem;border:3px solid transparent}
+  .opt:active{transform:scale(.995)}
+  .opt[disabled]{opacity:.5}
+  .opt.pick{border-color:var(--accent)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+  .two .opt{margin:0;min-height:86px;font-weight:800;text-align:center}
+  .quelle{background:#FFFDF6;border:1px solid #EDE6CF;border-radius:12px;
+          padding:.7rem .9rem;font-size:.95rem;line-height:1.5;max-height:11rem;
+          overflow:auto;white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace}
+  .satz{font-size:1.14rem;line-height:1.5;border-left:4px solid var(--accent);
+        padding-left:.75rem;margin:.3rem 0 .2rem}
+  .claim{font-size:1.12rem;font-weight:800;margin:.1rem 0 .45rem}
+  .ask{color:var(--muted);font-size:.93rem;margin:.1rem 0 .7rem}
+  textarea{width:100%;min-height:5.5rem;font:inherit;border:2px solid var(--tint);
+           border-radius:12px;padding:.7rem;resize:vertical;background:#fff}
+  textarea:focus{outline:none;border-color:var(--accent)}
+  .fb{margin-top:.9rem;padding:.9rem 1rem;border-radius:12px}
+  .fb.ok{background:var(--okbg);border-left:6px solid var(--ok)}
+  .fb.no{background:var(--nobg);border-left:6px solid var(--no)}
+  .fb b{display:block;margin-bottom:.25rem;font-size:1.06rem}
+  .krit{display:block;font-weight:700;color:var(--accent);font-size:.93rem;
+        margin-bottom:.3rem}
+  .checks{margin:.5rem 0 0;padding:0;list-style:none;font-size:.97rem}
+  .checks li{padding:.12rem 0}
+  .hud{display:flex;gap:.45rem;flex-wrap:wrap;margin:.2rem 0 .7rem}
+  .pill{background:var(--tint);color:var(--accent);border-radius:999px;
+        padding:.3rem .75rem;font-size:.87rem;font-weight:700}
+  .pill.g{background:var(--goldbg);color:var(--gold)}
+  .bar{height:9px;background:var(--tint);border-radius:999px;overflow:hidden;margin:0 0 .9rem}
+  .bar>i{display:block;height:100%;background:var(--accent);width:0;transition:width .25s}
+  .tagline{font-size:.82rem;font-weight:700;color:var(--accent);letter-spacing:.05em}
+  .stars{font-size:2.1rem;letter-spacing:.14rem}
+  .chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.5rem}
+  .chip{font-size:1.35rem;padding:.3rem .4rem;border-radius:10px;background:var(--tint)}
+  .chip.g{background:var(--goldbg)}
+  .hidden{display:none!important}
+  .note{color:var(--muted);font-size:.88rem;margin-top:.8rem}
+  ol.steps{margin:.3rem 0 0;padding-left:1.2rem}
+  ol.steps li{margin-bottom:.45rem}
+  code{background:var(--tint);border-radius:5px;padding:.08rem .3rem;font-size:.94em}
+  @media (max-width:430px){ .two{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<div class="band">
+  <span>KRITERIUM 5 · BELEGTECHNIK · 3 PUNKTE</span>
+  <a href="../klausurtraining/">← Auswahl</a>
+</div>
+<div class="wrap">
+
+<!-- ===== START ===== -->
+<section id="start">
+  <h1>Zitieren</h1>
+  <p class="lead">Direkt und sinngemäß belegen — und die Fehler erkennen, die in
+     der Korrektur Punkte kosten. Geübt wird an Abraham Lincolns
+     <i>Gettysburg Address</i> (1863) — gemeinfrei, 272 Wörter.</p>
+  <div class="card">
+    <h2 style="margin-top:0">So geht ein Beleg</h2>
+    <ol class="steps">
+      <li><b>Behauptung</b> — dein Satz, in deinen Worten.</li>
+      <li><b>Beleg</b> — das Zitat <i>im eigenen Satz eingebaut</i>, mit
+          Zeilenangabe: <code>(l. 18)</code> oder <code>(ll. 17–18)</code>.</li>
+      <li><b>Wirkung</b> — was der Beleg zeigt. Ohne diesen Schritt zählt er nicht.</li>
+    </ol>
+    <p class="note"><b>Zwei Arten zu belegen.</b> <b>Direkt:</b> die Worte des
+      Textes, in Anführungszeichen, Zeilenangabe dahinter. <b>Sinngemäß:</b> der
+      Inhalt in deinen Worten, <i>ohne</i> Anführungszeichen — die Zeilenangabe
+      bleibt, mit <code>cf.</code> davor.</p>
+    <p class="note" style="color:var(--accent);font-weight:700">
+      Nie zitieren ohne zu deuten. Nie deuten ohne zu belegen.</p>
+    <button class="go" id="go" style="margin-top:.9rem">Los geht’s ▶</button>
+    <button class="ghost" id="resume">Meine Ergebnisse</button>
+  </div>
+  <details class="card">
+    <summary style="font-weight:700;cursor:pointer">Für Eltern und Lehrkräfte</summary>
+    <p class="note">Trainiert wird Kriterium 5 der Darstellungsleistung
+      („belegt seine Aussagen durch eine funktionale Verwendung von Verweisen und
+      Zitaten", 3 Punkte). Bei den Schreibaufgaben prüft die App nur
+      <b>Bestandteile</b> — Anführungszeichen, Zeilenangabe, Wörtlichkeit des
+      Zitats. Sie vergibt keine Noten. Keine Anmeldung, keine Daten verlassen das
+      Gerät.</p>
+  </details>
+</section>
+
+<!-- ===== SPIEL ===== -->
+<section id="game" class="hidden">
+  <div class="hud">
+    <span class="pill" id="pos"></span>
+    <span class="pill" id="score"></span>
+    <span class="pill g" id="streak"></span>
+  </div>
+  <div class="bar"><i id="fill"></i></div>
+  <div class="card">
+    <div class="tagline" id="tagline"></div>
+    <div id="body"></div>
+    <div id="fb" class="fb hidden"></div>
+    <button class="go hidden" id="next" style="margin-top:.9rem">Weiter ▶</button>
+  </div>
+  <div class="chips" id="collected"></div>
+</section>
+
+<!-- ===== ENDE ===== -->
+<section id="end" class="hidden">
+  <h1 id="endTitle">Geschafft</h1>
+  <div class="card">
+    <div class="stars" id="stars"></div>
+    <p class="lead" id="endLine"></p>
+    <p style="margin:.2rem 0 .3rem"><b>Zeig das jemandem:</b></p>
+    <span class="pill" id="code" style="font-size:1.2rem;padding:.5rem 1rem"></span>
+    <p class="note" id="openLoop"></p>
+    <button class="go" id="again" style="margin-top:.9rem">Noch eine Runde ▶</button>
+    <button class="ghost" id="back">Zurück zum Anfang</button>
+    <button class="ghost" id="hub" onclick="location.href='../klausurtraining/'">Andere Übung wählen</button>
+  </div>
+  <div class="card">
+    <b>Gesammelt</b>
+    <div class="chips" id="album"></div>
+    <p class="note" id="albumNote"></p>
+  </div>
+</section>
+
+</div>
+<script>
+"use strict";
+/* ==================================================================
+   MODUL 3.1 · ZITIEREN
+   Kriterium 5 der Darstellungsleistung (Belegtechnik), 3 Punkte.
+   Spezifikation: 14_LERNAPPS/KLAUSURTRAINING-SPEZIFIKATION.md
+
+   Quelltext: Abraham Lincoln, Gettysburg Address, 19.11.1863 (Bliss-Fassung),
+   woertlich uebernommen von nps.gov. Gemeinfrei.
+
+   ▲ Quelltexte dieses Moduls werden gegen die Sperrliste geprueft
+   (12_SCRIPTS/klausurtexte_sperrliste.py). Welcher Text warum gesperrt ist,
+   steht dort und im README - absichtlich nicht hier, denn diese Datei ist
+   oeffentlich und im Seitenquelltext lesbar.
+   Die Gettysburg Address ist so bekannt, dass sie als unbekannter
+   Klausurtext ohnehin ausscheidet - deshalb auf Dauer sicher.
+   ================================================================== */
+
+var QUELLE = [
+ "",
+ "Four score and seven years ago our fathers brought forth on this",
+ "continent, a new nation conceived in liberty, and dedicated to the",
+ "proposition that all men are created equal. Now we are engaged in a",
+ "great civil war, testing whether that nation or any nation so",
+ "conceived and so dedicated, can long endure. We are met on a great",
+ "battlefield of that war. We have come to dedicate a portion of that",
+ "field as a final resting place for those who here gave their lives,",
+ "that that nation might live. It is altogether fitting and proper that",
+ "we should do this. But, in a larger sense, we can not dedicate — we",
+ "can not consecrate — we can not hallow, this ground. The brave men",
+ "living and dead who struggled here, have consecrated it far above our",
+ "poor power to add or detract. The world will little note, nor long",
+ "remember what we say here but it can never forget what they did here.",
+ "It is for us the living rather to be dedicated here to the unfinished",
+ "work which they who fought here have thus far so nobly advanced. It is",
+ "rather for us to be here dedicated to the great task remaining before",
+ "us — that from these honored dead we take increased devotion to that",
+ "cause for which they gave the last full measure of devotion — that we",
+ "here highly resolve that these dead shall not have died in vain — that",
+ "this nation under God shall have a new birth of freedom — and that",
+ "government of the people by the people for the people shall not perish",
+ "from the earth."
+];
+
+function quelltext(von, bis){
+  var out = [], i;
+  for(i = von; i <= bis; i++){ out.push((i % 5 === 0 ? i : " ") + "  " + QUELLE[i]); }
+  return out.join("\n");
+}
+var GANZ = QUELLE.join(" ");
+
+/* ---------- Teil A: direkt oder sinngemäß? ---------- */
+var A = [
+ {satz:"Lincoln calls the young nation „conceived in liberty“ (l. 2).",
+  a:"direkt", why:"Die Worte des Textes stehen in Anführungszeichen, dahinter die Zeile."},
+ {satz:"Lincoln points out that the war is a test of whether such a nation can survive at all (cf. ll. 3–5).",
+  a:"sinngemäß", why:"Der Inhalt in eigenen Worten, keine Anführungszeichen — und trotzdem ein Beleg, erkennbar am cf."},
+ {satz:"The speaker describes what is left to do as „the great task remaining before us“ (ll. 16–17).",
+  a:"direkt", why:"Wörtlich zitiert und in einen eigenen Satz eingebaut — so soll es aussehen."},
+ {satz:"He argues that the dead have consecrated the ground far more than any speech could (cf. ll. 10–12).",
+  a:"sinngemäß", why:"Eine längere Passage zusammengefasst. Genau dafür ist die sinngemäße Wiedergabe da."},
+ {satz:"Lincoln ends with the hope that „government of the people by the people for the people shall not perish from the earth“ (ll. 21–22).",
+  a:"direkt", why:"Ein längeres Zitat, aber als Schlusspointe gerechtfertigt — und sauber eingebaut."},
+ {satz:"The speaker doubts that his own words will be remembered (cf. ll. 12–13).",
+  a:"sinngemäß", why:"Kein Wort des Textes steht hier — also keine Anführungszeichen, aber eine Zeilenangabe."}
+];
+
+/* ---------- Teil B: Fehler finden ---------- */
+var FEHLER = [
+ "Die Zeilenangabe fehlt.",
+ "Das Zitat ist nicht wörtlich.",
+ "Das Zitat steht allein — es ist nicht in einen eigenen Satz eingebaut.",
+ "Das Zitat ist nicht gedeutet — die Wirkung fehlt.",
+ "Sinngemäß wiedergegeben, aber in Anführungszeichen gesetzt.",
+ "Das Zitat ist zu lang."
+];
+var B = [
+ {satz:"Lincoln calls the young nation „conceived in liberty“.",
+  a:0, why:"Ohne Zeilenangabe kann die Korrektur den Beleg nicht prüfen. Jeder Beleg trägt sie — auch der sinngemäße."},
+ {satz:"The speaker uses an anaphora: „we can not dedicate — we can not consecrate — we can not hallow“ (ll. 9–10).",
+  a:3, why:"Das Mittel ist benannt und belegt, aber nicht gedeutet. Ein Stilmittel ohne Wirkung zählt in der Analyse nicht."},
+ {satz:"„It is altogether fitting and proper that we should do this.“ (ll. 8–9)",
+  a:2, why:"Ein Zitat ist kein Satz. Es gehört in deinen eigenen Satz eingebaut — sonst fehlt die Behauptung davor."},
+ {satz:"Lincoln says the nation was „conceived in freedom“ (l. 2).",
+  a:1, why:"Im Text steht „conceived in liberty“. Wer zitiert, schreibt ab — Wort für Wort."},
+ {satz:"Lincoln „argues that the dead have consecrated the ground“ (ll. 10–12).",
+  a:4, why:"Das sind nicht Lincolns Worte, sondern deine. Dann gehören die Anführungszeichen weg und ein cf. davor."},
+ {satz:"Lincoln turns to the living: „It is for us the living rather to be dedicated here to the unfinished work which they who fought here have thus far so nobly advanced. It is rather for us to be here dedicated to the great task remaining before us“ (ll. 14–17).",
+  a:5, why:"Fünf Wörter hätten gereicht. Lange Blockzitate kosten Platz und Punkte — Kriterium 4, Ökonomie."}
+];
+
+/* ---------- Teil C: selbst einbetten ---------- */
+var C = [
+ {claim:"Lincoln beschreibt den Krieg als Prüfung für die Nation.", von:3, bis:5},
+ {claim:"Lincoln hält seine eigene Rede für weniger wichtig als die Tat der Gefallenen.", von:12, bis:13},
+ {claim:"Lincoln schließt mit einem Ziel, nicht mit einem Rückblick.", von:20, bis:22}
+];
+
+var BELEGE = ["📎","🖊️","📘","🔍","📐","🧷"], GOLD = "🏅";
+var KEY = "kt-31-v1";
+
+/* ================== Hilfsfunktionen ================== */
+function $(id){ return document.getElementById(id); }
+function mischen(a){ var b=a.slice(),i,j,t;
+  for(i=b.length-1;i>0;i--){ j=Math.floor(Math.random()*(i+1)); t=b[i];b[i]=b[j];b[j]=t; }
+  return b; }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+function worte(s){
+  s = String(s).replace(/[“”„‟»«]/g,'"').replace(/[’‘‚]/g,"'")
+       .replace(/[–—]/g,"-").replace(/\s+/g," ");
+  var roh = s.toLowerCase().match(/[a-z']+/g) || [];
+  var out = [], i, w;
+  for(i=0;i<roh.length;i++){ w = roh[i].replace(/^'+|'+$/g,""); if(w) out.push(w); }
+  return out;
+}
+var QUELLWORTE = worte(GANZ);
+function istWoertlich(zitat){
+  var n = worte(zitat); if(n.length < 2) return false;
+  var i, j, ok;
+  for(i=0;i+n.length<=QUELLWORTE.length;i++){
+    ok = true;
+    for(j=0;j<n.length;j++){ if(QUELLWORTE[i+j] !== n[j]){ ok = false; break; } }
+    if(ok) return true;
+  }
+  return false;
+}
+var ZEILE = /\((?:cf\.\s*)?ll?\.\s*\d+(?:\s*[–\-,]\s*\d+)?\)/;
+function zitatAus(text){
+  var m = String(text).match(/[“„"]([^“”„"]{2,})[”“"]/);
+  return m ? m[1] : null;
+}
+
+/* ================== Zustand ================== */
+function laden(){
+  try{
+    var r = JSON.parse(localStorage.getItem(KEY) || "{}");
+    if(!r || typeof r !== "object") r = {};
+    if(!Array.isArray(r.album)) r.album = [];
+    if(typeof r.best !== "number") r.best = 0;
+    if(typeof r.runden !== "number") r.runden = 0;
+    return r;
+  }catch(e){ return {album:[], best:0, runden:0}; }
+}
+function sichern(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+var S = laden(), runde = null;
+
+function zeigen(w){ ["start","game","end"].forEach(function(id){
+  $(id).classList.toggle("hidden", id !== w); }); window.scrollTo(0,0); }
+
+/* ================== Runde ================== */
+function bauen(){
+  var liste = [];
+  mischen(A).slice(0,4).forEach(function(x){ liste.push({typ:"A", d:x}); });
+  mischen(B).slice(0,4).forEach(function(x){ liste.push({typ:"B", d:x}); });
+  mischen(C).slice(0,2).forEach(function(x){ liste.push({typ:"C", d:x}); });
+  return mischen(liste);
+}
+function starten(){
+  runde = {liste:bauen(), i:0, richtig:0, serie:0, beste:0, neue:[]};
+  zeigen("game"); frage();
+}
+
+function frage(){
+  var it = runde.liste[runde.i], b = $("body");
+  $("pos").textContent = (runde.i+1) + " / " + runde.liste.length;
+  $("score").textContent = runde.richtig + " richtig";
+  $("streak").textContent = "Serie " + runde.serie;
+  $("fill").style.width = (runde.i / runde.liste.length * 100) + "%";
+  $("fb").classList.add("hidden"); $("next").classList.add("hidden");
+
+  if(it.typ === "A"){
+    $("tagline").textContent = "DIREKT ODER SINNGEMÄSS?";
+    b.innerHTML = '<p class="satz">' + esc(it.d.satz) + "</p>" +
+      '<p class="ask">Wie belegt dieser Satz?</p>' +
+      '<div class="two">' +
+        '<button class="opt" data-v="direkt">direktes Zitat</button>' +
+        '<button class="opt" data-v="sinngemäß">sinngemäß</button>' +
+      "</div>";
+  } else if(it.typ === "B"){
+    $("tagline").textContent = "FINDE DEN FEHLER";
+    var opts = mischen(FEHLER.map(function(f,i){ return {f:f, i:i}; })).slice(0,4);
+    if(!opts.some(function(o){ return o.i === it.d.a; })){
+      opts[0] = {f:FEHLER[it.d.a], i:it.d.a};
+      opts = mischen(opts);
+    }
+    it.opts = opts;
+    b.innerHTML = '<p class="satz">' + esc(it.d.satz) + "</p>" +
+      '<p class="ask">Ein Fehler steckt drin. Welcher?</p>' +
+      opts.map(function(o){
+        return '<button class="opt" data-v="' + o.i + '">' + esc(o.f) + "</button>";
+      }).join("");
+  } else {
+    $("tagline").textContent = "SELBER BELEGEN";
+    b.innerHTML = '<p class="claim">' + esc(it.d.claim) + "</p>" +
+      '<p class="ask">Schreib <b>einen</b> englischen Satz, der diese Behauptung ' +
+      'mit einem <b>direkten Zitat</b> belegt — eingebaut, mit Zeilenangabe.</p>' +
+      '<div class="quelle">' + esc(quelltext(it.d.von, it.d.bis)) + "</div>" +
+      '<textarea id="eingabe" placeholder="Lincoln states that …"></textarea>' +
+      '<button class="go" id="pruefen" style="margin-top:.6rem">Prüfen</button>';
+    $("pruefen").addEventListener("click", pruefen);
+  }
+  Array.prototype.forEach.call(b.querySelectorAll(".opt"), function(btn){
+    btn.addEventListener("click", function(){ antwort(btn.getAttribute("data-v")); });
+  });
+}
+
+function belohnen(ok){
+  if(ok){
+    runde.richtig++; runde.serie++;
+    if(runde.serie > runde.beste) runde.beste = runde.serie;
+    var gold = runde.serie % 3 === 0;
+    var st = gold ? GOLD : BELEGE[Math.floor(Math.random()*BELEGE.length)];
+    runde.neue.push(st); S.album.push(st); sichern();
+    return gold ? "Richtig — drei in Folge! " + GOLD : "Richtig! " + st;
+  }
+  runde.serie = 0;
+  return "Noch nicht.";
+}
+function fertigMitFrage(kopf, krit, text, ok){
+  var fb = $("fb");
+  fb.className = "fb " + (ok ? "ok" : "no");
+  fb.innerHTML = "<b>" + kopf + "</b><span class='krit'>" + krit + "</span>" + text;
+  fb.classList.remove("hidden");
+  $("next").textContent = (runde.i+1 < runde.liste.length) ? "Weiter ▶" : "Ergebnis ▶";
+  $("next").classList.remove("hidden");
+  $("score").textContent = runde.richtig + " richtig";
+  $("streak").textContent = "Serie " + runde.serie;
+  malenChips($("collected"), runde.neue);
+}
+
+function antwort(v){
+  var it = runde.liste[runde.i], ok, krit, text;
+  Array.prototype.forEach.call($("body").querySelectorAll(".opt"),
+    function(b){ b.disabled = true; });
+  if(it.typ === "A"){
+    ok = (v === it.d.a);
+    krit = "Kriterium 5 · Belegtechnik";
+    text = (ok ? "" : "Richtig wäre: <b>" + it.d.a + "</b>. ") + it.d.why;
+  } else {
+    ok = (Number(v) === it.d.a);
+    krit = "Kriterium 5 · Belegtechnik";
+    text = (ok ? "" : "Der Fehler ist: <b>" + esc(FEHLER[it.d.a]) + "</b> ") + it.d.why;
+  }
+  fertigMitFrage(belohnen(ok), krit, text, ok);
+}
+
+function pruefen(){
+  var it = runde.liste[runde.i];
+  var text = $("eingabe").value || "";
+  var zitat = zitatAus(text);
+  var hatZitat = !!zitat;
+  var hatZeile = ZEILE.test(text);
+  var woertlich = hatZitat && istWoertlich(zitat);
+  var eingebaut = hatZitat &&
+    worte(text.replace(/[“„"][^“”„"]*[”“"]/g, " ")).length >= 3;
+  var alles = hatZitat && hatZeile && woertlich && eingebaut;
+
+  $("pruefen").disabled = true;
+  $("eingabe").disabled = true;
+
+  var zeile = function(gut, ja, nein){
+    return "<li>" + (gut ? "✓ " : "✗ ") + (gut ? ja : nein) + "</li>";
+  };
+  var liste = "<ul class='checks'>" +
+    zeile(hatZitat, "Zitat in Anführungszeichen", "Kein Zitat in Anführungszeichen gefunden") +
+    zeile(hatZeile, "Zeilenangabe, z. B. (l. 18)", "Zeilenangabe fehlt — ohne sie ist der Beleg nicht prüfbar") +
+    zeile(woertlich, "Zitat ist wortwörtlich", hatZitat
+        ? "Das Zitat steht so nicht im Text — Wort für Wort abschreiben"
+        : "Wörtlichkeit nicht prüfbar, es fehlt das Zitat") +
+    zeile(eingebaut, "in einen eigenen Satz eingebaut",
+        "Das Zitat steht fast allein — bau es in deinen Satz ein") +
+    "</ul>";
+
+  fertigMitFrage(belohnen(alles), "Kriterium 5 · Belegtechnik",
+    liste + "<p class='note'><b>Geprüft wurden die Bestandteile.</b> Ob dein Satz " +
+    "gut klingt und ob die Deutung stimmt, entscheidest du am Kriterienraster — " +
+    "das kann dir diese App nicht abnehmen.</p>", alles);
+}
+
+function weiter(){
+  runde.i++;
+  if(runde.i < runde.liste.length){ frage(); } else { beenden(); }
+}
+function malenChips(ziel, liste){
+  ziel.innerHTML = "";
+  liste.forEach(function(s){
+    var d = document.createElement("span");
+    d.className = "chip" + (s === GOLD ? " g" : "");
+    d.textContent = s; ziel.appendChild(d);
+  });
+}
+function beenden(){
+  S.runden++;
+  if(runde.richtig > S.best) S.best = runde.richtig;
+  sichern();
+  var n = runde.liste.length;
+  var sterne = runde.richtig >= n-1 ? 3 : (runde.richtig >= n-3 ? 2 : 1);
+  $("stars").textContent = "⭐".repeat(sterne) + "☆".repeat(3-sterne);
+  $("endTitle").textContent = runde.richtig === n ? "Alles richtig!" : "Runde geschafft";
+  $("endLine").textContent = runde.richtig + " von " + n + " · längste Serie "
+    + runde.beste + " · dein Rekord: " + S.best + " von " + n + ".";
+  $("code").textContent = "ZIT-" + runde.richtig + "/" + n;
+  $("openLoop").textContent = sterne === 3
+    ? "Nächstes Ziel: eine Runde ohne Fehler — und fünf goldene Belege."
+    : "Die Aufgaben werden jedes Mal neu gemischt. Noch "
+      + (3 - sterne) + " Stern" + (3-sterne === 1 ? "" : "e") + " bis zur vollen Wertung.";
+  if(S.runden % 3 === 0){
+    $("openLoop").textContent = "Super für heute — drei Runden sind genug. "
+      + $("openLoop").textContent;
+  }
+  malenChips($("album"), S.album.slice(-40));
+  var g = S.album.filter(function(x){ return x === GOLD; }).length;
+  $("albumNote").textContent = S.album.length + " Belege gesammelt, davon " + g
+    + " goldene · " + S.runden + " Runden.";
+  zeigen("end");
+}
+
+$("go").addEventListener("click", starten);
+$("again").addEventListener("click", starten);
+$("back").addEventListener("click", function(){ zeigen("start"); });
+$("next").addEventListener("click", weiter);
+$("resume").addEventListener("click", function(){
+  malenChips($("album"), S.album.slice(-40));
+  var g = S.album.filter(function(x){ return x === GOLD; }).length;
+  $("stars").textContent = "";
+  $("endTitle").textContent = "Deine Ergebnisse";
+  $("endLine").textContent = S.runden === 0 ? "Noch nichts gespielt."
+    : "Rekord: " + S.best + " von 10 · " + S.runden + " Runden.";
+  $("code").textContent = "ZIT-" + S.best + "/10";
+  $("openLoop").textContent = "";
+  $("albumNote").textContent = S.album.length + " Belege, davon " + g + " goldene.";
+  zeigen("end");
+});
+</script>
+</body>
+</html>
