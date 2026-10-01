@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Klassenarbeit üben · Englisch 10 · Love life</title>
+<style>
+  :root{
+    --ink:#1A1A1A; --muted:#5D5D66; --paper:#FBFAF7; --card:#FFFFFF;
+    --accent:#1F5FA8; --tint:#E4EDF8; --band:#2E5458;
+    --ok:#1F7A5A; --okbg:#E3F1EB; --no:#A33; --nobg:#F8E7E7;
+    --warn:#8A6A1F; --warnbg:#FBF3DC;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);
+    font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    touch-action:manipulation;padding:0 0 env(safe-area-inset-bottom)}
+  .band{background:var(--band);color:#fff;padding:.5rem 1rem;font-size:.8rem;
+        font-weight:700;letter-spacing:.04em;display:flex;justify-content:space-between;gap:1rem}
+  .band a{color:#fff;text-decoration:none;opacity:.9;white-space:nowrap}
+  .wrap{max-width:860px;margin:0 auto;padding:1rem}
+  h1{font-size:1.7rem;margin:.5rem 0 .2rem}
+  h2{font-size:1.18rem;margin:1.2rem 0 .4rem}
+  h3{font-size:1rem;margin:1rem 0 .3rem;color:var(--accent)}
+  .lead{color:var(--muted);margin:.2rem 0 1rem}
+  .card{background:var(--card);border-radius:14px;padding:1.05rem;
+        box-shadow:0 1px 3px rgba(0,0,0,.09);margin-bottom:.9rem}
+  button{font:inherit;border:0;border-radius:14px;cursor:pointer}
+  .go{background:var(--accent);color:#fff;min-height:72px;width:100%;
+      font-size:1.1rem;font-weight:800;padding:.75rem}
+  .ghost{background:var(--tint);color:var(--accent);min-height:52px;padding:.6rem 1rem;
+         font-weight:700;width:100%;margin-top:.55rem}
+  .menu{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+  .menu button{background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.09);
+    border-left:5px solid var(--accent);text-align:left;padding:.9rem 1rem;
+    min-height:112px;color:inherit}
+  .menu .t{font-size:1.06rem;font-weight:800;display:block;margin-bottom:.25rem}
+  .menu .s{font-size:.88rem;color:var(--muted);font-weight:400;display:block}
+  .menu .p{font-size:.76rem;font-weight:700;color:var(--accent);display:block;
+           margin-top:.4rem}
+  .opt{display:block;width:100%;text-align:left;background:var(--tint);
+       color:var(--ink);min-height:62px;padding:.75rem 1rem;margin-bottom:.55rem;
+       font-size:1rem;border:3px solid transparent}
+  .opt[disabled]{opacity:.55}
+  .text{background:#FFFDF6;border:1px solid #EDE6CF;border-radius:12px;
+        padding:.75rem .9rem;font-size:.97rem;line-height:1.75;white-space:pre-wrap;
+        font-family:ui-monospace,Menlo,monospace;max-height:16rem;overflow:auto}
+  .satz{font-size:1.1rem;line-height:1.5;border-left:4px solid var(--accent);
+        padding-left:.75rem;margin:.3rem 0 .2rem}
+  .ask{color:var(--muted);font-size:.93rem;margin:.1rem 0 .7rem}
+  .chips{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0}
+  .word{background:var(--tint);color:var(--ink);padding:.6rem .85rem;font-weight:700;
+        border-radius:10px;min-height:46px;font-size:1rem}
+  .slot{min-height:56px;background:#fff;border:2px dashed #CBD6E6;border-radius:12px;
+        padding:.5rem;display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}
+  input[type=text]{width:100%;font:inherit;border:2px solid var(--tint);
+    border-radius:10px;padding:.6rem .7rem;background:#fff}
+  input[type=text]:focus{outline:none;border-color:var(--accent)}
+  textarea{width:100%;min-height:12rem;font:inherit;border:2px solid var(--tint);
+    border-radius:12px;padding:.7rem;background:#fff;resize:vertical}
+  textarea:focus{outline:none;border-color:var(--accent)}
+  .fb{margin-top:.9rem;padding:.9rem 1rem;border-radius:12px}
+  .fb.ok{background:var(--okbg);border-left:6px solid var(--ok)}
+  .fb.no{background:var(--nobg);border-left:6px solid var(--no)}
+  .fb.warn{background:var(--warnbg);border-left:6px solid var(--warn)}
+  .fb b{display:block;margin-bottom:.25rem;font-size:1.05rem}
+  .checks{margin:.5rem 0 0;padding:0;list-style:none}
+  .checks li{padding:.18rem 0;font-size:.98rem}
+  .hud{display:flex;gap:.45rem;flex-wrap:wrap;margin:.2rem 0 .7rem}
+  .pill{background:var(--tint);color:var(--accent);border-radius:999px;
+        padding:.3rem .75rem;font-size:.87rem;font-weight:700}
+  .bar{height:9px;background:var(--tint);border-radius:999px;overflow:hidden;margin:0 0 .9rem}
+  .bar>i{display:block;height:100%;background:var(--accent);width:0;transition:width .25s}
+  ol.steps{margin:.3rem 0 0;padding-left:1.25rem}
+  ol.steps li{margin-bottom:.5rem}
+  ol.steps b{color:var(--accent)}
+  .note{color:var(--muted);font-size:.89rem;margin-top:.7rem}
+  .warnbox{background:var(--warnbg);border-radius:10px;padding:.6rem .8rem;
+           font-size:.92rem;margin-top:.7rem}
+  .hidden{display:none!important}
+  .stars{font-size:2rem;letter-spacing:.14rem}
+  code{background:var(--tint);border-radius:5px;padding:.08rem .3rem;font-size:.93em}
+  @media (max-width:560px){ .menu{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<div class="band">
+  <span>ENGLISCH 10 · E-KURS · KLASSENARBEIT 1</span>
+  <a href="#" id="heim">Übersicht</a>
+</div>
+<div class="wrap">
+
+<!-- ========== MENÜ ========== -->
+<section id="start">
+  <h1>Für die Arbeit üben</h1>
+  <p class="lead">Vier Bereiche — genau die, die in der Arbeit drankommen.
+     Fang mit dem an, was dir am unsichersten vorkommt.</p>
+  <div class="menu" id="menu"></div>
+  <div class="card" style="margin-top:1rem">
+    <b>Wie das hier funktioniert</b>
+    <p class="note">In jedem Bereich steht zuerst kurz, <b>wie es geht</b>.
+      Danach kommen Aufgaben, und zu jeder bekommst du eine Rückmeldung mit
+      Begründung — nicht nur richtig oder falsch.</p>
+    <p class="note">Am Ende gibt es den <b>Schreibtrainer</b>: Du schreibst ein
+      ganzes Character profile, und die Seite sagt dir, welche Bausteine drin
+      sind und welche fehlen. <b>Noten gibt es hier keine.</b></p>
+    <p class="note">Nichts wird übertragen, nichts gespeichert außer auf diesem
+      Gerät. Du kannst alles so oft wiederholen, wie du willst.</p>
+  </div>
+</section>
+
+<!-- ========== LERNEN ========== -->
+<section id="lernen" class="hidden">
+  <h1 id="lTitel"></h1>
+  <div class="card" id="lInhalt"></div>
+  <button class="go" id="lGo">Jetzt üben ▶</button>
+  <button class="ghost" id="lBack">Zurück zur Übersicht</button>
+</section>
+
+<!-- ========== ÜBEN ========== -->
+<section id="game" class="hidden">
+  <div class="hud">
+    <span class="pill" id="pos"></span>
+    <span class="pill" id="score"></span>
+  </div>
+  <div class="bar"><i id="fill"></i></div>
+  <div class="card">
+    <div id="body"></div>
+    <div id="fb" class="fb hidden"></div>
+    <button class="go hidden" id="next" style="margin-top:.9rem">Weiter ▶</button>
+  </div>
+  <button class="ghost" id="gBack">Abbrechen</button>
+</section>
+
+<!-- ========== ERGEBNIS ========== -->
+<section id="end" class="hidden">
+  <h1>Durch</h1>
+  <div class="card">
+    <div class="stars" id="stars"></div>
+    <p class="lead" id="endLine"></p>
+    <div id="endTipp"></div>
+    <button class="go" id="again">Diesen Bereich nochmal ▶</button>
+    <button class="ghost" id="eBack">Zur Übersicht</button>
+  </div>
+</section>
+
+<!-- ========== SCHREIBTRAINER ========== -->
+<section id="write" class="hidden">
+  <h1>Schreibtrainer: Character profile</h1>
+  <p class="lead">Schreib ein vollständiges Character profile über <b>Marek</b>.
+     Richtwert: 150–250 Wörter. Danach prüft die Seite, welche Bausteine drin sind.</p>
+  <div class="card">
+    <b>Der Text</b>
+    <div class="text" id="wText"></div>
+  </div>
+  <div class="card">
+    <b>Dein Profil</b>
+    <p class="note" style="margin-top:.2rem">Denk an die sechs Bausteine,
+      an mindestens drei Zitate, an Langformen und an Konnektoren.</p>
+    <textarea id="wIn" placeholder="The text introduces Marek, a sixteen-year-old boy who …"></textarea>
+    <button class="go" id="wGo" style="margin-top:.6rem">Prüfen</button>
+    <div id="wFb" class="hidden"></div>
+    <button class="ghost" id="wBack">Zur Übersicht</button>
+  </div>
+</section>
+
+</div>
+<script>
+"use strict";
+/* ==================================================================
+   KLASSENARBEIT 1 · ENGLISCH 10 E-KURS · UV 10-1 „Love life"
+   Arbeit am 05.10.2026. Geprueft werden: Blog-Antwort, Simple Present /
+   Present Progressive, Wortstellung, Character profile.
+
+   ▲ WICHTIG: In dieser App steht KEIN Material aus der Klassenarbeit.
+   Der Uebungstext ueber Marek ist eigens fuer diese Seite geschrieben,
+   die Grammatikaufgaben ebenfalls. Regel R0, geprueft mit
+   12_SCRIPTS/klausurtexte_sperrliste.py.
+   ================================================================== */
+
+var TEXT = [
+ "",
+ "Marek has been in our class since September. He is sixteen, the tallest",
+ "boy in the room, and he always wears the same grey hoodie, even in",
+ "summer. At break he stands by the window with his headphones on and",
+ "watches the yard.",
+ "Most people think he is unfriendly. He hardly ever speaks first, and",
+ "when a teacher asks him something, he answers in three words. But last",
+ "week Lena forgot her sports kit and started crying in the changing",
+ "room. Marek simply handed her his own jumper and walked away before",
+ "she could thank him.",
+ "He lives with his grandmother. His parents work abroad, and he visits",
+ "them twice a year. He never talks about it, but once he said to me, “It",
+ "is easier when you do not count the days.”",
+ "Since then I have stopped believing that quiet people have nothing to",
+ "say."
+];
+function textMitZeilen(){
+  var o = [], i;
+  for(i = 1; i < TEXT.length; i++){
+    o.push((i < 10 ? " " : "") + i + "  " + TEXT[i]);
+  }
+  return o.join("\n");
+}
+
+/* ---------- Bereich 1: Character profile ---------- */
+var TEILE = ["introductory sentence", "general information", "outward appearance",
+             "relationship, traits and behaviour", "concluding sentence"];
+var PROFIL = [
+ {satz:"The text, written from the perspective of a classmate, introduces Marek, a boy who is new to the class.",
+  a:0, why:"Der Einleitungssatz nennt, worum es geht und wen man charakterisiert — ohne schon zu werten."},
+ {satz:"Marek is sixteen years old and has been in the class since September.",
+  a:1, why:"Alter, Klasse, seit wann — das sind die general information."},
+ {satz:"He is the tallest boy in the room and always wears the same grey hoodie.",
+  a:2, why:"Größe und Kleidung: outward appearance."},
+ {satz:"He lives with his grandmother because his parents work abroad.",
+  a:1, why:"Familienverhältnisse gehören zu den general information — wie er zu ihnen steht, wäre der nächste Baustein."},
+ {satz:"Although he seems unfriendly at first, he helps Lena without expecting thanks.",
+  a:3, why:"Verhalten gegenüber anderen und was es über ihn zeigt — der große Mittelteil."},
+ {satz:"All in all, Marek is presented as a boy whose silence is often mistaken for coldness.",
+  a:4, why:"Der Schlusssatz fasst zusammen und wertet — er bringt nichts Neues."},
+ {satz:"He hardly ever speaks first and answers teachers in three words.",
+  a:3, why:"Sein Verhalten. Daraus schließt man auf den Charakter."},
+ {satz:"At the end the narrator says that he has changed his mind about quiet people.",
+  a:4, why:"Das rundet ab und zieht ein Fazit — Schlussteil."}
+];
+
+/* ---------- Bereich 2: formal English + Belege ---------- */
+var FORMAL = [
+ {kurz:"He doesn't talk about his parents.", lang:"He does not talk about his parents."},
+ {kurz:"She's crying in the changing room.", lang:"She is crying in the changing room."},
+ {kurz:"They're not his real friends.", lang:"They are not his real friends."},
+ {kurz:"He can't show his feelings.", lang:"He cannot show his feelings."},
+ {kurz:"It isn't easy for him.", lang:"It is not easy for him."},
+ {kurz:"We've seen him alone every day.", lang:"We have seen him alone every day."}
+];
+var BELEG = [
+ {claim:"Marek is helpful, even towards people who are not his friends.",
+  opts:["“Marek simply handed her his own jumper and walked away before she could thank him” (ll. 8–9).",
+        "“He is sixteen, the tallest boy in the room” (l. 1).",
+        "“Most people think he is unfriendly” (l. 5)."],
+  a:0, why:"Nur die erste Stelle zeigt eine Handlung, aus der Hilfsbereitschaft folgt. Die zweite ist Aussehen, die dritte die Meinung der anderen."},
+ {claim:"Marek keeps other people at a distance.",
+  opts:["“He lives with his grandmother” (l. 10).",
+        "“At break he stands by the window with his headphones on” (l. 3).",
+        "“Since then I have stopped believing that quiet people have nothing to say” (ll. 13–14)."],
+  a:1, why:"Kopfhörer auf und abseits stehen — das belegt die Distanz. Die anderen beiden Stellen sagen etwas über die Familie bzw. über den Erzähler."},
+ {claim:"The narrator changes his opinion of Marek.",
+  opts:["“He never talks about it” (l. 11).",
+        "“He answers in three words” (l. 6).",
+        "“Since then I have stopped believing that quiet people have nothing to say” (ll. 13–14)."],
+  a:2, why:"Die Behauptung ist über den Erzähler — also braucht der Beleg eine Stelle über ihn, nicht über Marek."}
+];
+
+/* ---------- Bereich 3: Simple Present / Present Progressive ---------- */
+var TENSE = [
+ {satz:"Every morning Tom ___ (to catch) the bus at half past seven.",
+  a:"catches", alt:["catch"], typ:"simple",
+  why:"<b>Every morning</b> ist ein Signalwort für das Simple Present. Bei he/she/it kommt ein <b>-s</b> dran: <i>catches</i>."},
+ {satz:"Look! It ___ (to rain) again.",
+  a:"is raining", alt:["s raining","'s raining"], typ:"progressive",
+  why:"<b>Look!</b> zeigt: gerade jetzt. Present Progressive — <i>am/is/are</i> + <i>-ing</i>."},
+ {satz:"My sister usually ___ (to cook) on Sundays.",
+  a:"cooks", alt:["cook"], typ:"simple",
+  why:"<b>usually</b> steht für eine Gewohnheit — Simple Present, mit <b>-s</b> bei my sister."},
+ {satz:"Listen! Somebody ___ (to knock) at the door.",
+  a:"is knocking", alt:["s knocking"], typ:"progressive",
+  why:"<b>Listen!</b> heißt: in diesem Moment. Present Progressive."},
+ {satz:"We ___ (to go) to the cinema every Friday.",
+  a:"go", alt:["goes"], typ:"simple",
+  why:"<b>every Friday</b> — Gewohnheit, also Simple Present. Bei <i>we</i> ohne -s."},
+ {satz:"At the moment Lena ___ (to write) a message to Marek.",
+  a:"is writing", alt:["writes"], typ:"progressive",
+  why:"<b>At the moment</b> — es läuft gerade. Achtung bei <i>write</i>: das -e fällt weg, <i>writing</i>."},
+ {satz:"Marek ___ (to live) with his grandmother.",
+  a:"lives", alt:["is living"], typ:"simple",
+  why:"Ein Dauerzustand, kein Vorgang im Moment — Simple Present."},
+ {satz:"Be quiet! The baby ___ (to sleep).",
+  a:"is sleeping", alt:["sleeps"], typ:"progressive",
+  why:"<b>Be quiet!</b> verweist auf jetzt — Present Progressive."}
+];
+
+/* ---------- Bereich 4: Wortstellung ---------- */
+var ORDER = [
+ {teile:["He","plays","football","on Saturdays"],
+  loesung:"He plays football on Saturdays",
+  why:"Subjekt – Verb – Objekt – Zeit. Die Zeitangabe steht hinten, nicht zwischen Verb und Objekt."},
+ {teile:["She","is doing","her homework","right now"],
+  loesung:"She is doing her homework right now",
+  why:"Auch im Present Progressive gilt: erst das Objekt, dann die Zeitangabe."},
+ {teile:["We","always","have","dinner","at seven"],
+  loesung:"We always have dinner at seven",
+  why:"<b>always</b> steht vor dem Vollverb — aber nach <i>be</i>. Die Uhrzeit kommt ans Ende."},
+ {teile:["Marek","never","talks","about his parents"],
+  loesung:"Marek never talks about his parents",
+  why:"Häufigkeitsadverbien wie <i>never, often, usually</i> stehen direkt vor dem Vollverb."},
+ {teile:["They","are watching","a film","in the living room"],
+  loesung:"They are watching a film in the living room",
+  why:"Objekt vor Ortsangabe. Wenn Ort und Zeit zusammen vorkommen, steht der Ort zuerst."},
+ {teile:["I","visit","my grandmother","every weekend"],
+  loesung:"I visit my grandmother every weekend",
+  why:"Simple Present, Objekt vor Zeitangabe."}
+];
+
+/* ---------- Bereich 5: Blog-Antwort ---------- */
+var BLOG = [
+ {satz:"“That is not a real problem. Just stop worrying about it.”",
+  a:1, why:"Das Problem wird kleingeredet. In der Aufgabe steht ausdrücklich <i>be empathetic</i> — erst ernst nehmen, dann raten."},
+ {satz:"“I can understand why you feel like this — a lot of people would.”",
+  a:0, why:"Genau so beginnt eine gute Antwort: das Gefühl anerkennen, bevor der Rat kommt."},
+ {satz:"“You could try to talk to them when nobody is stressed, maybe at the weekend.”",
+  a:0, why:"Ein konkreter, machbarer Vorschlag. Räte sollen umsetzbar sein, nicht allgemein."},
+ {satz:"“Your parents are completely wrong and you should just do what you want.”",
+  a:1, why:"Die Aufgabe verlangt <i>consider both sides</i>. Eine Seite für schuldig zu erklären, erfüllt das nicht."},
+ {satz:"“On the one hand they want the best for you, on the other hand you need time for yourself.”",
+  a:0, why:"Beide Seiten in einem Satz — das ist der Kern von <i>consider both sides</i>."},
+ {satz:"“I had exactly the same problem and here is what happened to me …”",
+  a:1, why:"Die Antwort dreht sich jetzt um dich. Kurz Verständnis zeigen ist gut, die eigene Geschichte erzählen nicht."}
+];
+
+/* ================= Bereiche ================= */
+var BEREICHE = [
+ {id:"profil", titel:"Character profile", kurz:"Welcher Baustein ist das?",
+  pkt:"Aufgabe 4 der Arbeit", lern:'\
+<h3>Die sechs Bausteine</h3>\
+<ol class="steps">\
+<li><b>Introductory sentence</b> — Textsorte, Titel, Autor, wen du charakterisierst.</li>\
+<li><b>General information</b> — Alter, Schule, Familie, Herkunft.</li>\
+<li><b>Outward appearance</b> — wie die Person aussieht, was sie trägt.</li>\
+<li><b>Relationship to others, character traits, behaviour</b> — der längste Teil. Wie verhält sie sich, wie ist sie zu anderen, was folgt daraus?</li>\
+<li><b>Other aspects</b> — nur wenn der Text etwas hergibt.</li>\
+<li><b>Concluding sentence</b> — zusammenfassen und werten, nichts Neues.</li>\
+</ol>\
+<div class="warnbox"><b>Drei Regeln, die Punkte bringen:</b><br>\
+• Mindestens <b>drei Zitate</b> mit Zeilenangabe — jede Behauptung belegen.<br>\
+• <b>Langformen</b> benutzen: <i>does not</i> statt <i>doesn’t</i>.<br>\
+• Mit <b>Konnektoren</b> verbinden: <i>although, however, therefore, in addition</i>.</div>\
+<p class="note">Schreib im <b>Simple Present</b> — auch wenn die Geschichte in der Vergangenheit spielt.</p>'},
+ {id:"beleg", titel:"Belegen und Langformen", kurz:"Zitat zur Behauptung finden",
+  pkt:"zählt in Aufgabe 4", lern:'\
+<h3>Behauptung und Beleg</h3>\
+<p>Jede Aussage über die Figur braucht eine Stelle aus dem Text. Das Zitat kommt in\
+ Anführungszeichen, dahinter die Zeile: <code>(l. 8)</code> oder <code>(ll. 8–9)</code>.</p>\
+<p class="note">Der Beleg muss zu <i>genau dieser</i> Behauptung passen. Eine Stelle,\
+ die irgendwie auch über die Figur spricht, reicht nicht.</p>\
+<h3>Formal English</h3>\
+<p>In der Arbeit steht <i>make use of formal English (long forms)</i>. Also:\
+ <b>does not</b> statt <i>doesn’t</i>, <b>is not</b> statt <i>isn’t</i>,\
+ <b>cannot</b> statt <i>can’t</i>, <b>have</b> statt <i>’ve</i>.</p>'},
+ {id:"tense", titel:"Present Simple oder Progressive", kurz:"Verb in die richtige Form",
+  pkt:"Aufgabe 2 · 6 Punkte", lern:'\
+<h3>Woran du es erkennst</h3>\
+<p><b>Simple Present</b> — was immer, oft oder nie passiert.<br>\
+Signalwörter: <i>every day, usually, always, never, often, on Mondays</i>.<br>\
+Bei <b>he / she / it</b> kommt ein <b>-s</b> dran.</p>\
+<p><b>Present Progressive</b> — was gerade jetzt läuft.<br>\
+Signalwörter: <i>now, right now, at the moment, Look!, Listen!</i>.<br>\
+Form: <b>am / is / are</b> + Verb + <b>-ing</b>.</p>\
+<div class="warnbox"><b>Stolperstellen:</b> <i>write → writing</i> (das -e fällt weg),\
+ <i>sit → sitting</i> (Konsonant verdoppelt), <i>catch → catches</i> (-es nach -ch).</div>'},
+ {id:"order", titel:"Wortstellung", kurz:"Satz richtig bauen",
+  pkt:"Aufgabe 3 · 10 Punkte", lern:'\
+<h3>Die Reihenfolge</h3>\
+<p><b>Subjekt – Verb – Objekt – Ort – Zeit.</b><br>\
+<i>She</i> – <i>is doing</i> – <i>her homework</i> – <i>in her room</i> – <i>right now</i>.</p>\
+<div class="warnbox">Zwischen Verb und Objekt kommt <b>nichts</b> dazwischen.<br>\
+Häufigkeitsadverbien (<i>always, never, often, usually</i>) stehen <b>vor</b> dem\
+ Vollverb — aber <b>nach</b> <i>am/is/are</i>.</div>'},
+ {id:"blog", titel:"Blog: Rat geben", kurz:"Was gehört in eine gute Antwort?",
+  pkt:"Aufgabe 1 · 15 Punkte", lern:'\
+<h3>Was die Aufgabe verlangt</h3>\
+<p>In der Arbeit steht: <i>give advice … be empathetic and consider both sides of the issue</i>.\
+ Daraus folgen drei Dinge:</p>\
+<ol class="steps">\
+<li><b>Verständnis zeigen</b> — das Gefühl ernst nehmen, bevor du rätst.</li>\
+<li><b>Beide Seiten bedenken</b> — auch die der anderen Person im Problem.</li>\
+<li><b>Konkret raten</b> — ein Vorschlag, den man morgen umsetzen kann.</li>\
+</ol>\
+<p class="note">Anrede und Schlussformel nicht vergessen: <i>Dear … / Best wishes, Simon</i>.</p>'}
+];
+
+var KEY = "ka-e10-lovelife-v1";
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function mischen(a){ var b=a.slice(),i,j,t;
+  for(i=b.length-1;i>0;i--){ j=Math.floor(Math.random()*(i+1)); t=b[i];b[i]=b[j];b[j]=t; }
+  return b; }
+function norm(s){ return String(s).toLowerCase().replace(/[’']/g,"'")
+  .replace(/\s+/g," ").trim(); }
+
+function laden(){
+  try{ var r = JSON.parse(localStorage.getItem(KEY)||"{}");
+    return (r && typeof r === "object") ? r : {}; }catch(e){ return {}; }
+}
+function sichern(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+var S = laden(), runde = null;
+
+function zeigen(w){ ["start","lernen","game","end","write"].forEach(function(id){
+  $(id).classList.toggle("hidden", id !== w); }); window.scrollTo(0,0); }
+
+/* ---------- Menü ---------- */
+function menue(){
+  var m = $("menu"); m.innerHTML = "";
+  BEREICHE.forEach(function(b){
+    var el = document.createElement("button");
+    var g = S[b.id];
+    el.innerHTML = '<span class="t">' + b.titel + "</span>" +
+      '<span class="s">' + b.kurz + "</span>" +
+      '<span class="p">' + b.pkt + (g ? "  ·  zuletzt " + g.best + "/" + g.von : "") + "</span>";
+    el.addEventListener("click", function(){ lernen(b); });
+    m.appendChild(el);
+  });
+  var w = document.createElement("button");
+  w.innerHTML = '<span class="t">✍️ Schreibtrainer</span>' +
+    '<span class="s">Ein ganzes Character profile schreiben</span>' +
+    '<span class="p">mit Rückmeldung zu den Bausteinen</span>';
+  w.addEventListener("click", function(){ $("wText").textContent = textMitZeilen(); zeigen("write"); });
+  m.appendChild(w);
+  zeigen("start");
+}
+
+function lernen(b){
+  $("lTitel").textContent = b.titel;
+  $("lInhalt").innerHTML = b.lern;
+  $("lGo").onclick = function(){ starten(b); };
+  zeigen("lernen");
+}
+
+/* ---------- Übungen ---------- */
+function bauen(b){
+  if(b.id === "profil") return mischen(PROFIL).slice(0,6).map(function(d){ return {typ:"profil", d:d}; });
+  if(b.id === "beleg"){
+    var l = mischen(BELEG).map(function(d){ return {typ:"beleg", d:d}; });
+    mischen(FORMAL).slice(0,3).forEach(function(d){ l.push({typ:"formal", d:d}); });
+    return mischen(l);
+  }
+  if(b.id === "tense") return mischen(TENSE).slice(0,6).map(function(d){ return {typ:"tense", d:d}; });
+  if(b.id === "order") return mischen(ORDER).slice(0,5).map(function(d){ return {typ:"order", d:d}; });
+  return mischen(BLOG).slice(0,6).map(function(d){ return {typ:"blog", d:d}; });
+}
+function starten(b){
+  runde = {b:b, liste:bauen(b), i:0, richtig:0};
+  zeigen("game"); frage();
+}
+
+function frage(){
+  var it = runde.liste[runde.i], b = $("body");
+  $("pos").textContent = (runde.i+1) + " / " + runde.liste.length;
+  $("score").textContent = runde.richtig + " richtig";
+  $("fill").style.width = (runde.i / runde.liste.length * 100) + "%";
+  $("fb").classList.add("hidden"); $("next").classList.add("hidden");
+
+  if(it.typ === "profil"){
+    b.innerHTML = '<p class="satz">' + esc(it.d.satz) + "</p>" +
+      '<p class="ask">In welchen Baustein gehört dieser Satz?</p>' +
+      TEILE.map(function(t,i){ return '<button class="opt" data-v="'+i+'">'+esc(t)+"</button>"; }).join("");
+  } else if(it.typ === "beleg"){
+    b.innerHTML = '<p class="satz"><b>' + esc(it.d.claim) + "</b></p>" +
+      '<p class="ask">Welches Zitat belegt genau <i>diese</i> Behauptung?</p>' +
+      it.d.opts.map(function(o,i){ return '<button class="opt" data-v="'+i+'">'+esc(o)+"</button>"; }).join("");
+  } else if(it.typ === "formal"){
+    b.innerHTML = '<p class="satz">' + esc(it.d.kurz) + "</p>" +
+      '<p class="ask">Schreib den Satz in <b>formal English</b> (Langformen).</p>' +
+      '<input type="text" id="tip" autocapitalize="off" autocomplete="off">' +
+      '<button class="go" id="check" style="margin-top:.6rem">Prüfen</button>';
+  } else if(it.typ === "tense"){
+    b.innerHTML = '<p class="satz">' + esc(it.d.satz) + "</p>" +
+      '<p class="ask">Nur die Verbform eintragen.</p>' +
+      '<input type="text" id="tip" autocapitalize="off" autocomplete="off">' +
+      '<button class="go" id="check" style="margin-top:.6rem">Prüfen</button>';
+  } else if(it.typ === "order"){
+    it.gewaehlt = [];
+    b.innerHTML = '<p class="ask">Tippe die Teile in der richtigen Reihenfolge an.</p>' +
+      '<div class="slot" id="slot"></div>' +
+      '<div class="chips" id="pool"></div>' +
+      '<button class="go" id="check" style="margin-top:.6rem">Prüfen</button>' +
+      '<button class="ghost" id="reset">Nochmal von vorn</button>';
+    zeichneOrder(it);
+    $("reset").addEventListener("click", function(){ it.gewaehlt = []; zeichneOrder(it); });
+  } else {
+    b.innerHTML = '<p class="satz">' + esc(it.d.satz) + "</p>" +
+      '<p class="ask">Gehört dieser Satz in eine gute Antwort?</p>' +
+      '<button class="opt" data-v="0">Ja — so soll es sein</button>' +
+      '<button class="opt" data-v="1">Nein — das wäre ein Fehler</button>';
+  }
+  Array.prototype.forEach.call(b.querySelectorAll(".opt"), function(btn){
+    btn.addEventListener("click", function(){ pruefe(Number(btn.getAttribute("data-v"))); });
+  });
+  if($("check")) $("check").addEventListener("click", function(){ pruefe(null); });
+}
+
+function zeichneOrder(it){
+  var slot = $("slot"), pool = $("pool");
+  slot.innerHTML = ""; pool.innerHTML = "";
+  it.gewaehlt.forEach(function(w, idx){
+    var b = document.createElement("button");
+    b.className = "word"; b.textContent = w;
+    b.addEventListener("click", function(){ it.gewaehlt.splice(idx,1); zeichneOrder(it); });
+    slot.appendChild(b);
+  });
+  if(it.gewaehlt.length === 0){
+    var hint = document.createElement("span");
+    hint.className = "ask"; hint.style.margin = "0";
+    hint.textContent = "Hier entsteht dein Satz.";
+    slot.appendChild(hint);
+  }
+  if(!it.pool) it.pool = mischen(it.d.teile);
+  it.pool.forEach(function(w){
+    if(it.gewaehlt.indexOf(w) >= 0) return;
+    var b = document.createElement("button");
+    b.className = "word"; b.textContent = w;
+    b.addEventListener("click", function(){ it.gewaehlt.push(w); zeichneOrder(it); });
+    pool.appendChild(b);
+  });
+}
+
+function pruefe(v){
+  var it = runde.liste[runde.i], ok, richtig = "", zusatz = "";
+  Array.prototype.forEach.call($("body").querySelectorAll(".opt, .word"),
+    function(b){ b.disabled = true; });
+  if($("check")) $("check").disabled = true;
+  if($("tip")) $("tip").disabled = true;
+
+  if(it.typ === "profil"){ ok = v === it.d.a; richtig = TEILE[it.d.a]; }
+  else if(it.typ === "beleg"){ ok = v === it.d.a; richtig = it.d.opts[it.d.a]; }
+  else if(it.typ === "blog"){ ok = v === it.d.a; richtig = it.d.a === 0 ? "Ja" : "Nein"; }
+  else if(it.typ === "formal"){
+    var e = norm($("tip").value);
+    ok = e === norm(it.d.lang);
+    richtig = it.d.lang;
+    zusatz = "Kurzformen wie <i>doesn't</i> oder <i>'s</i> gelten in der Arbeit als "
+           + "nicht formal — sie kosten bei <i>formal English</i> Punkte.";
+  } else if(it.typ === "tense"){
+    var t = norm($("tip").value).replace(/\.$/,"");
+    ok = t === norm(it.d.a);
+    richtig = it.d.a;
+    zusatz = it.d.why;
+  } else {
+    ok = it.gewaehlt.join(" ") === it.d.loesung;
+    richtig = it.d.loesung + ".";
+  }
+  if(ok) runde.richtig++;
+
+  var fb = $("fb");
+  fb.className = "fb " + (ok ? "ok" : "no");
+  fb.innerHTML = "<b>" + (ok ? "Richtig!" : "Noch nicht.") + "</b>" +
+    (ok ? "" : "Richtig wäre: <b>" + esc(richtig) + "</b><br>") +
+    (it.typ === "tense" || it.typ === "formal" ? zusatz : it.d.why);
+  fb.classList.remove("hidden");
+  $("next").textContent = (runde.i+1 < runde.liste.length) ? "Weiter ▶" : "Ergebnis ▶";
+  $("next").classList.remove("hidden");
+  $("score").textContent = runde.richtig + " richtig";
+}
+
+function weiter(){
+  runde.i++;
+  if(runde.i < runde.liste.length){ frage(); } else { fertig(); }
+}
+function fertig(){
+  var n = runde.liste.length, r = runde.richtig;
+  S[runde.b.id] = {best:r, von:n};
+  sichern();
+  var sterne = r >= n-1 ? 3 : (r >= n-2 ? 2 : 1);
+  $("stars").textContent = "⭐".repeat(sterne) + "☆".repeat(3-sterne);
+  $("endLine").textContent = runde.b.titel + ": " + r + " von " + n + " richtig.";
+  $("endTipp").innerHTML = sterne === 3
+    ? '<p class="note">Das sitzt. Nimm dir den nächsten Bereich vor — oder den Schreibtrainer.</p>'
+    : '<p class="note">Geh die Erklärung oben nochmal durch und wiederhole den Bereich. '
+      + 'Die Aufgaben werden jedes Mal neu gemischt.</p>';
+  $("again").onclick = function(){ starten(runde.b); };
+  zeigen("end");
+}
+
+/* ---------- Schreibtrainer ---------- */
+var KONNEKTOREN = ["although","however","therefore","in addition","moreover",
+  "whereas","because","for example","for instance","on the one hand",
+  "on the other hand","furthermore","as a result","even though","while"];
+var KURZFORMEN = /\b\w+(?:n['’]t|['’](?:s|re|ve|ll|d|m))\b/gi;
+
+function pruefeProfil(){
+  var t = $("wIn").value || "";
+  var woerter = (t.match(/[A-Za-zÀ-ɏ']+/g) || []).length;
+  var zitate = (t.match(/[“"][^”"]{6,}[”"]/g) || []).length;
+  var zeilen = (t.match(/\(ll?\.\s*\d+/g) || []).length;
+  var kurz = t.match(KURZFORMEN) || [];
+  var konn = KONNEKTOREN.filter(function(k){
+    return new RegExp("\\b" + k.replace(/ /g,"\\s+") + "\\b","i").test(t); });
+  var absaetze = t.split(/\n\s*\n/).filter(function(p){ return p.trim().length > 30; }).length;
+  var nennung = /\bmarek\b/i.test(t);
+
+  function z(gut, ja, nein){
+    return "<li>" + (gut ? "✓ " : "✗ ") + (gut ? ja : nein) + "</li>";
+  }
+  var liste = "<ul class='checks'>" +
+    z(woerter >= 150, woerter + " Wörter — guter Umfang",
+      "Erst " + woerter + " Wörter. Richtwert sind 150–250.") +
+    z(nennung, "Die Figur wird beim Namen genannt",
+      "Der Name der Figur kommt nicht vor — der Einleitungssatz braucht ihn") +
+    z(zitate >= 3, zitate + " Zitate in Anführungszeichen",
+      "Erst " + zitate + " Zitate. Die Aufgabe verlangt mindestens drei.") +
+    z(zeilen >= 3, zeilen + " Zeilenangaben",
+      "Erst " + zeilen + " Zeilenangaben. Zu jedem Zitat gehört eine, z. B. (ll. 8–9).") +
+    z(kurz.length === 0, "Durchgehend Langformen",
+      kurz.length + "× Kurzform (" + esc(kurz.slice(0,3).join(", "))
+      + "…) — in formal English ausschreiben") +
+    z(konn.length >= 3, konn.length + " verschiedene Konnektoren",
+      "Erst " + konn.length + " Konnektoren. Nimm z. B. although, however, therefore.") +
+    z(absaetze >= 3, absaetze + " Absätze — der Text ist gegliedert",
+      "Nur " + absaetze + " Absatz/Absätze. Mach für jeden Baustein einen eigenen.") +
+    "</ul>";
+
+  var offen = [woerter>=150, nennung, zitate>=3, zeilen>=3, kurz.length===0,
+               konn.length>=3, absaetze>=3].filter(function(x){ return !x; }).length;
+  var fb = $("wFb");
+  fb.className = "fb " + (offen === 0 ? "ok" : (offen <= 2 ? "warn" : "no"));
+  fb.innerHTML = "<b>" + (offen === 0 ? "Alle Bestandteile sind da."
+      : offen + (offen === 1 ? " Punkt fehlt noch." : " Punkte fehlen noch.")) + "</b>"
+    + liste
+    + "<p class='note'><b>Was hier nicht geprüft wird:</b> ob deine Sätze stimmen, "
+    + "ob die Zitate zur Behauptung passen und ob du die Bausteine in der richtigen "
+    + "Reihenfolge hast. Das kann dir nur ein Mensch sagen — vergleich deinen Text "
+    + "mit der Liste der sechs Bausteine oben.</p>";
+  fb.classList.remove("hidden");
+}
+
+/* ---------- Verdrahtung ---------- */
+$("next").addEventListener("click", weiter);
+$("lBack").addEventListener("click", menue);
+$("gBack").addEventListener("click", menue);
+$("eBack").addEventListener("click", menue);
+$("wBack").addEventListener("click", menue);
+$("wGo").addEventListener("click", pruefeProfil);
+$("heim").addEventListener("click", function(e){ e.preventDefault(); menue(); });
+menue();
+</script>
+</body>
+</html>
