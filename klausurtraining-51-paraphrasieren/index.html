@@ -100,6 +100,19 @@
   .mark.an{background:#F4E2E2;border-bottom-color:var(--no);font-weight:700}
   .mark.war{background:var(--okbg);border-bottom-color:var(--ok)}
   .mark.verpasst{background:#FFF6D8;border-bottom-color:var(--gold)}
+  /* --- Bild (eigene SVG-Karikaturen) --- */
+  .bild{background:#fff;border:1px solid #E6E3D8;border-radius:12px;
+        padding:.5rem;margin:.2rem 0 .7rem}
+  .bild svg{display:block;width:100%;height:auto;max-height:46vh}
+  /* --- Schautext --- */
+  .quelle{background:#FFFDF6;border:1px solid #EDE6CF;border-radius:12px;
+          padding:.7rem .9rem;font-size:.95rem;line-height:1.6;max-height:40vh;
+          overflow:auto;white-space:pre-wrap;margin:.3rem 0 0;
+          font-family:ui-monospace,Menlo,monospace}
+  details.text{background:var(--card);border-radius:12px;padding:.7rem .9rem;
+               box-shadow:0 1px 3px rgba(0,0,0,.06);margin:0 0 .9rem}
+  details.text summary{font-weight:700;cursor:pointer;min-height:32px;
+                       color:var(--accent)}
   @media (max-width:430px){ .marktext{line-height:2.4} }
 </style>
 </head>
@@ -113,6 +126,28 @@
 <section id="start">
   <h1>Paraphrasieren</h1>
   <p class="lead">Kriterium 6 verlangt, dass du dich „löst sich vom Wortlaut des Ausgangstextes und formuliert eigenständig.“ — 5 Punkte. Es gibt zwei Wege, das zu verfehlen. Erkenne sie.</p>
+  <details class="text"><summary>📄 Abraham Lincoln, Gettysburg Address (1863) — gemeinfrei</summary><pre class="quelle">    Four score and seven years ago our fathers brought forth on this
+    continent, a new nation conceived in liberty, and dedicated to the
+    proposition that all men are created equal. Now we are engaged in a
+    great civil war, testing whether that nation or any nation so
+ 5  conceived and so dedicated, can long endure. We are met on a great
+    battlefield of that war. We have come to dedicate a portion of that
+    field as a final resting place for those who here gave their lives,
+    that that nation might live. It is altogether fitting and proper that
+    we should do this. But, in a larger sense, we can not dedicate — we
+10  can not consecrate — we can not hallow, this ground. The brave men
+    living and dead who struggled here, have consecrated it far above our
+    poor power to add or detract. The world will little note, nor long
+    remember what we say here but it can never forget what they did here.
+    It is for us the living rather to be dedicated here to the unfinished
+15  work which they who fought here have thus far so nobly advanced. It is
+    rather for us to be here dedicated to the great task remaining before
+    us — that from these honored dead we take increased devotion to that
+    cause for which they gave the last full measure of devotion — that we
+    here highly resolve that these dead shall not have died in vain — that
+20  this nation under God shall have a new birth of freedom — and that
+    government of the people by the people for the people shall not perish
+    from the earth.</pre></details>
   <div class="card">
     <h2 style="margin-top:0">Zwei Fehler, ein Kriterium</h2>
 <ol class="steps">
@@ -153,6 +188,28 @@
     <span class="pill g" id="streak"></span>
   </div>
   <div class="bar"><i id="fill"></i></div>
+  <details class="text"><summary>📄 Abraham Lincoln, Gettysburg Address (1863) — gemeinfrei</summary><pre class="quelle">    Four score and seven years ago our fathers brought forth on this
+    continent, a new nation conceived in liberty, and dedicated to the
+    proposition that all men are created equal. Now we are engaged in a
+    great civil war, testing whether that nation or any nation so
+ 5  conceived and so dedicated, can long endure. We are met on a great
+    battlefield of that war. We have come to dedicate a portion of that
+    field as a final resting place for those who here gave their lives,
+    that that nation might live. It is altogether fitting and proper that
+    we should do this. But, in a larger sense, we can not dedicate — we
+10  can not consecrate — we can not hallow, this ground. The brave men
+    living and dead who struggled here, have consecrated it far above our
+    poor power to add or detract. The world will little note, nor long
+    remember what we say here but it can never forget what they did here.
+    It is for us the living rather to be dedicated here to the unfinished
+15  work which they who fought here have thus far so nobly advanced. It is
+    rather for us to be here dedicated to the great task remaining before
+    us — that from these honored dead we take increased devotion to that
+    cause for which they gave the last full measure of devotion — that we
+    here highly resolve that these dead shall not have died in vain — that
+20  this nation under God shall have a new birth of freedom — and that
+    government of the people by the people for the people shall not perish
+    from the earth.</pre></details>
   <div class="card">
     <div class="tagline" id="tagline"></div>
     <div id="body"></div>
@@ -516,6 +573,15 @@ function optionen(it){
   return {liste:liste, richtig:richtig};
 }
 
+/* Karikaturen stecken als SVG in CFG.bilder und werden über it.bild geholt -
+   so steht jede Zeichnung einmal in der Datei, auch wenn sechs Items sie
+   brauchen. */
+function bildHtml(it){
+  if(!it.bild) return "";
+  var svg = (CFG.bilder || {})[it.bild];
+  return svg ? '<div class="bild">' + svg + "</div>" : "";
+}
+
 function zeigeWahl(it, b){
   var o = optionen(it);
   it._richtig = o.richtig;
@@ -525,7 +591,7 @@ function zeigeWahl(it, b){
       + it.satz.replace("___", '<span class="blank" id="blank">&nbsp;</span>')
       + "</p>";
   } else {
-    kopf = '<p class="stim">' + it.stimulus + "</p>";
+    kopf = bildHtml(it) + '<p class="stim">' + it.stimulus + "</p>";
   }
   b.innerHTML = kopf + '<p class="ask">' + it.frage + "</p>" +
     o.liste.map(function(t, i){
@@ -547,7 +613,7 @@ function zeigeWahl(it, b){
 
 function zeigeSortieren(it, b){
   reihe = []; offen = mischen(it.teile);
-  b.innerHTML = '<p class="ask">' + it.frage + "</p>" +
+  b.innerHTML = bildHtml(it) + '<p class="ask">' + it.frage + "</p>" +
     '<div class="slotlabel">DEINE REIHENFOLGE</div><div class="sortliste" id="gesetzt"></div>' +
     '<div class="slotlabel">NOCH OFFEN — TIPPE AN</div><div class="sortliste" id="pool"></div>';
   malenSortieren(it);
@@ -587,7 +653,7 @@ function malenSortieren(it){
 
 function zeigeMarkieren(it, b){
   markiert = {};
-  b.innerHTML = '<p class="ask">' + it.frage + "</p>" +
+  b.innerHTML = bildHtml(it) + '<p class="ask">' + it.frage + "</p>" +
     '<p class="marktext" id="mt">' + it.teile.map(function(t, i){
       return '<span class="mark" data-i="' + i + '">' + esc(t.t) + "</span>";
     }).join("") + "</p>";
@@ -602,7 +668,7 @@ function zeigeMarkieren(it, b){
 }
 
 function zeigeFreitext(it, b){
-  b.innerHTML = '<p class="stim">' + it.stimulus + "</p>" +
+  b.innerHTML = bildHtml(it) + '<p class="stim">' + it.stimulus + "</p>" +
     '<p class="ask">' + it.frage + "</p>" +
     '<textarea id="eingabe" placeholder="Schreib hier auf Englisch …"></textarea>';
   $("pruefen").classList.remove("hidden");

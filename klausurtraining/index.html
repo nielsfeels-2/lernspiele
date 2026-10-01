@@ -164,22 +164,27 @@ var MODULE = [
    was:"Direkte und indirekte Charakterisierung unterscheiden",
    format:"Klicken", href:"../telling-or-showing-ef/",
    key:"ef-telling-showing-v1"},
-  {nr:"I·B", name:"Summary", block:"Inhalt", jahr:"alle", status:"soon",
+  {nr:"I·B", name:"Summary", block:"Inhalt", jahr:"alle", status:"live",
    kr:"Aufgabe 1 · Comprehension · 12 Punkte",
-   was:"Auswahl nach Relevanz, Präsens, keine Wertung", format:"Klicken"},
+   was:"Auswahl nach Relevanz, Präsens, keine Wertung", format:"Klicken",
+   href:"../klausurtraining-ib-summary/", key:"kt-ib-v1"},
   {nr:"I·C", name:"Comment — der Bauplan", block:"Inhalt", jahr:"alle",
-   status:"soon", kr:"Aufgabe 3 · Evaluation · 15 Punkte",
+   status:"live", kr:"Aufgabe 3 · Evaluation · 15 Punkte",
    was:"Aussage erklären → Position → Gründe mit Beleg → Fazit",
-   format:"Schreiben + Klicken"},
-  {nr:"I·D", name:"Redeanalyse", block:"Inhalt", jahr:"Q1/Q2", status:"soon",
+   format:"Schreiben + Klicken",
+   href:"../klausurtraining-ic-comment/", key:"kt-ic-v1"},
+  {nr:"I·D", name:"Redeanalyse", block:"Inhalt", jahr:"Q1/Q2", status:"live",
    kr:"Aufgabe 2 · Analyse · 17 Punkte",
-   was:"Rhetorische Mittel — mit Wirkung, nicht als Liste", format:"Klicken"},
-  {nr:"I·E", name:"Cartoon-Analyse", block:"Inhalt", jahr:"Q1/Q2", status:"soon",
+   was:"Rhetorische Mittel — mit Wirkung, nicht als Liste", format:"Klicken",
+   href:"../klausurtraining-id-redeanalyse/", key:"kt-id-v1"},
+  {nr:"I·E", name:"Cartoon-Analyse", block:"Inhalt", jahr:"Q1/Q2", status:"live",
    kr:"Aufgabe 2 · Analyse · 17 Punkte",
-   was:"Beschreiben → Symbole → Aussage → Wertung", format:"Klicken"},
-  {nr:"I·F", name:"Sprachmittlung", block:"Inhalt", jahr:"Q1/Q2", status:"soon",
+   was:"Beschreiben → Symbole → Aussage → Wertung", format:"Klicken",
+   href:"../klausurtraining-ie-cartoon/", key:"kt-ie-v1"},
+  {nr:"I·F", name:"Sprachmittlung", block:"Inhalt", jahr:"Q1/Q2", status:"live",
    kr:"Klausurteil B · 50 Punkte",
-   was:"Auswahl nach Zweck, nicht vollständig übertragen", format:"Klicken"}
+   was:"Auswahl nach Zweck, nicht vollständig übertragen", format:"Klicken",
+   href:"../klausurtraining-if-sprachmittlung/", key:"kt-if-v1"}
 ];
 
 var BLOECKE = ["Alle", "Aufgabe verstehen", "Aufbau", "Belegen", "Sprache", "Inhalt"];
@@ -231,11 +236,14 @@ function malen(){
   var ziel = $("listen");
   ziel.innerHTML = "";
   var sichtbar = MODULE.filter(passt);
-  // live zuerst, sonst Reihenfolge der Liste
-  sichtbar.sort(function(a, b){
-    if(a.status === b.status) return 0;
-    return a.status === "live" ? -1 : 1;
-  });
+  // Nach Modulnummer, nicht nach Fertigstellung: 1.1 vor 1.2 vor 2.1 ...
+  // (Vorher stand "live zuerst" - seit alle Darstellungsmodule fertig sind,
+  // sah das aus wie eine zufaellige Reihenfolge.)
+  function rang(nr){
+    var m = /^(\d+)\.(\d+)$/.exec(String(nr));
+    return m ? Number(m[1]) * 100 + Number(m[2]) : 9900;
+  }
+  sichtbar.sort(function(a, b){ return rang(a.nr) - rang(b.nr); });
   if(sichtbar.length === 0){
     ziel.innerHTML = '<p class="empty">Für diese Auswahl gibt es noch nichts.</p>';
     return;
