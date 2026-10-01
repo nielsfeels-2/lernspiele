@@ -345,9 +345,9 @@ var BEREICHE = [
 <p class="note">Der Beleg muss zu <i>genau dieser</i> Behauptung passen. Eine Stelle,\
  die irgendwie auch über die Figur spricht, reicht nicht.</p>\
 <h3>Formal English</h3>\
-<p>In der Arbeit steht <i>make use of formal English (long forms)</i>. Also:\
- <b>does not</b> statt <i>doesn’t</i>, <b>is not</b> statt <i>isn’t</i>,\
- <b>cannot</b> statt <i>can’t</i>, <b>have</b> statt <i>’ve</i>.</p>'},
+<p>Ein Profil wird in gehobener Sprache geschrieben: ausgeschriebene Formen statt\
+ Kurzformen. Also: <b>does not</b> statt <i>doesn’t</i>, <b>is not</b> statt\
+ <i>isn’t</i>, <b>cannot</b> statt <i>can’t</i>, <b>have</b> statt <i>’ve</i>.</p>'},
  {id:"tense", titel:"Present Simple oder Progressive", kurz:"Verb in die richtige Form",
   pkt:"Aufgabe 2 · 6 Punkte", lern:'\
 <h3>Woran du es erkennst</h3>\
@@ -370,7 +370,7 @@ Häufigkeitsadverbien (<i>always, never, often, usually</i>) stehen <b>vor</b> d
  {id:"blog", titel:"Blog: Rat geben", kurz:"Was gehört in eine gute Antwort?",
   pkt:"Aufgabe 1 · 15 Punkte", lern:'\
 <h3>Was die Aufgabe verlangt</h3>\
-<p>In der Arbeit steht: <i>give advice … be empathetic and consider both sides of the issue</i>.\
+<p>Du sollst raten — aber mitfühlend, und ohne eine Seite einfach abzuhaken.\
  Daraus folgen drei Dinge:</p>\
 <ol class="steps">\
 <li><b>Verständnis zeigen</b> — das Gefühl ernst nehmen, bevor du rätst.</li>\
@@ -529,8 +529,8 @@ function pruefe(v){
     var e = norm($("tip").value);
     ok = e === norm(it.d.lang);
     richtig = it.d.lang;
-    zusatz = "Kurzformen wie <i>doesn't</i> oder <i>'s</i> gelten in der Arbeit als "
-           + "nicht formal — sie kosten bei <i>formal English</i> Punkte.";
+    zusatz = "Kurzformen wie <i>doesn't</i> oder <i>'s</i> gelten nicht als "
+           + "gehobene Sprache — sie kosten in der Bewertung Punkte.";
   } else if(it.typ === "tense"){
     var t = norm($("tip").value).replace(/\.$/,"");
     ok = t === norm(it.d.a);
