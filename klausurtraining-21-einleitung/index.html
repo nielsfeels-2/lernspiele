@@ -125,7 +125,7 @@
 
 <section id="start">
   <h1>Einleitungssätze</h1>
-  <p class="lead">Der erste Satz entscheidet, ob die Korrektur dich für sicher hält. Fünf Bestandteile gehören hinein — und eine Sorte Satz gehört ausdrücklich <b>nicht</b> hinein.</p>
+  <p class="lead">Der Einstieg einer Analyse besteht aus <b>zwei</b> Sätzen: dem Bibliografiesatz und dem In-order-to-Satz. Und aus einer Sorte Satz, die ausdrücklich <b>nicht</b> hineingehört.</p>
   
   <div class="card">
     <h2 style="margin-top:0">Die fünf Bestandteile</h2>
@@ -137,19 +137,37 @@
   <li><b>Jahr</b> (und bei Reden: Ort und Anlass)</li>
   <li><b>Thema</b> in einem Nebensatz: <i>… deals with / is concerned with …</i></li>
 </ol>
+<h2>Und dann der zweite Satz</h2>
+<p class="note">Der Einstieg besteht aus <b>zwei</b> Sätzen: erst der
+  Bibliografiesatz, dann der <b>In-order-to-Satz</b>. Er sagt, <b>wozu</b> der
+  Text seine Mittel einsetzt. So will es die Fachschaft:</p>
 <p class="note" style="color:var(--accent);font-weight:700">
-  Was nicht hineingehört: deine Absicht.</p>
+  <i>In order to convey his message of …, the author uses a clear line of
+  argument with illustrative examples and striking stylistic devices such as
+  anaphora and repetition.</i></p>
+<p class="note">Der Oberbegriff dafür heißt <b>communicative strategies</b> — er
+  meint die rhetorischen Mittel <b>und</b> den Aufbau (<i>line of argument</i>),
+  bei fiktionalen Texten dazu <i>tone · register · mode of presentation</i>.</p>
+<h2>Die eine Sorte Satz, die nicht hineindarf</h2>
 <p class="note">✗ <i>In the following I will analyse the rhetorical devices …</i><br>
   ✗ <i>In order to answer this question, the speech will be analysed …</i><br>
-  Auch das Passiv hilft nicht — es bleibt eine Absichtserklärung. Sie verbraucht
-  eine Zeile und sagt nichts, was die Korrektur nicht ohnehin weiß. Das kostet
-  bei Kriterium 2 (Textsortenmerkmale) <b>und</b> bei Kriterium 4 (Ökonomie).</p>
-<h2>So klingt es richtig</h2>
+  ✗ <i>The following analysis focuses on …</i></p>
+<p class="note" style="color:var(--accent);font-weight:700">
+  Der Unterschied liegt nicht an <i>In order to</i>, sondern an dem, was folgt.</p>
+<p class="note"><b>In order to + was der TEXT tut</b> ⇒ richtig, sogar
+  verlangt.<br>
+  <b>In order to + was ICH gleich tue</b> ⇒ Absichtserklärung. Auch das Passiv
+  hilft nicht. Sie verbraucht eine Zeile und sagt nichts, was die Korrektur
+  nicht ohnehin weiß — das kostet bei Kriterium 2 <b>und</b> bei Kriterium 4
+  (Ökonomie).</p>
+<h2>So klingt der ganze Einstieg</h2>
 <p class="note"><i>In his speech <b>The Gettysburg Address</b>, delivered at the
   Soldiers’ National Cemetery in 1863, Abraham Lincoln argues that the dead
-  oblige the living to finish their work.</i></p>
-<p class="note">Ein Satz. Textsorte, Titel, Jahr, Autor, Thema — und es geht
-  sofort zur Sache.</p>
+  oblige the living to finish their work. In order to turn mourning into a
+  duty, the speaker uses anaphora, antithesis and a strikingly plain
+  vocabulary.</i></p>
+<p class="note">Zwei Sätze. Textsorte, Titel, Jahr, Autor, Thema — und dann,
+  wozu der Text seine Mittel einsetzt.</p>
     <button class="go" id="go" style="margin-top:.9rem">Los geht’s ▶</button>
     <button class="ghost" id="resume">Meine Ergebnisse</button>
   </div>
@@ -248,7 +266,7 @@ var ITEMS = [
 {
 "typ": "wahl",
 "tag": "WAS FEHLT HIER?",
-"stimulus": "<i>„The Gettysburg Address“ (1863) by Abraham Lincoln.</i>",
+"stimulus": "<i>The Gettysburg Address (1863) by Abraham Lincoln.</i>",
 "frage": "Welcher Bestandteil fehlt?",
 "opt": [
 "das Thema",
@@ -281,11 +299,39 @@ var ITEMS = [
 "opt": [
 "Immer noch eine Absichtserklärung, nur im Passiv",
 "Der Satz ist grammatisch falsch",
-"Es fehlt ein Zitat",
-"Nichts — das ist ein guter Einleitungssatz"
+"<i>In order to</i> darf nie am Satzanfang stehen",
+"Nichts — das ist ein guter Einstieg"
 ],
 "a": 0,
-"why": "Das Passiv versteckt das <i>I will</i>, ändert aber nichts: Es ist eine Ankündigung, keine Aussage über den Text. Auch <i>In order to …</i> zählt dazu."
+"why": "Das Passiv versteckt das <i>I will</i>, ändert aber nichts: Es bleibt eine Ankündigung. <b>Nicht</b> das Problem ist <i>In order to</i> — diese Fügung verlangt die Fachschaft sogar. Entscheidend ist, was folgt: <i>In order to convey his message …, <b>the author</b> uses …</i>"
+},
+{
+"typ": "wahl",
+"tag": "IN ORDER TO — RICHTIG ODER NICHT?",
+"stimulus": "<i>In order to convey his message of hope, the author uses a clear line of argument and striking stylistic devices such as anaphora and repetition.</i>",
+"frage": "Darf dieser Satz in den Einstieg?",
+"opt": [
+"Ja — genau so will es die Fachschaft",
+"Nein — <i>In order to</i> ist eine Absichtserklärung",
+"Nein — es fehlt der Titel",
+"Nein — er nennt zu viele Mittel"
+],
+"a": 0,
+"why": "Das ist die <b>Musterformulierung</b>. Der Satz sagt, wozu der <b>Text</b> seine Mittel einsetzt — und nennt mit <i>line of argument</i> und <i>stylistic devices</i> beides, was zu <i>communicative strategies</i> gehört."
+},
+{
+"typ": "wahl",
+"tag": "IN ORDER TO — RICHTIG ODER NICHT?",
+"stimulus": "<i>In order to show how the speaker convinces his audience, I will look at three stylistic devices.</i>",
+"frage": "Darf dieser Satz in den Einstieg?",
+"opt": [
+"Nein — nach <i>In order to</i> steht hier, was <b>du</b> tust",
+"Ja — <i>In order to</i> ist die verlangte Fügung",
+"Nein — <i>In order to</i> ist immer verboten",
+"Nein — es fehlt das Jahr"
+],
+"a": 0,
+"why": "Dieselbe Fügung, anderes Subjekt — und daran entscheidet es sich. <i>… the author uses …</i> ist richtig, <i>… I will look at …</i> ist eine Ankündigung. Die Fügung selbst ist nie das Problem."
 },
 {
 "typ": "wahl",
@@ -303,9 +349,9 @@ var ITEMS = [
 },
 {
 "typ": "freitext",
-"tag": "SCHREIB DEN EINLEITUNGSSATZ",
+"tag": "SCHREIB DEN EINSTIEG",
 "stimulus": "<b>Textsorte</b> speech · <b>Autor</b> Abraham Lincoln · <b>Titel</b> The Gettysburg Address · <b>Jahr</b> 1863 · <b>Anlass</b> Einweihung des Soldatenfriedhofs in Gettysburg<br><b>Thema</b> Die Toten verpflichten die Lebenden, ihr Werk zu vollenden.",
-"frage": "Schreib einen Einleitungssatz.",
+"frage": "Bibliografiesatz und In-order-to-Satz. Zwei Sätze.",
 "pruef": [
 {
 "typ": "enthaelt",
@@ -338,10 +384,29 @@ var ITEMS = [
 "sagt": "Textsorte genannt (speech / address)"
 },
 {
+"typ": "eins_aus",
+"wert": [
+"in order to"
+],
+"sagt": "In-order-to-Satz da",
+"fehlt": "Der In-order-to-Satz fehlt — nach dem Bibliografiesatz gehört er dazu: <i>In order to convey his message of …, the author uses …</i>"
+},
+{
+"typ": "eins_aus",
+"wert": [
+"uses",
+"makes use of",
+"employs",
+"draws on",
+"relies on"
+],
+"sagt": "benannt, was der Text tut",
+"fehlt": "Es fehlt das Verb, das sagt, was der <b>Text</b> tut (uses, makes use of …)."
+},
+{
 "typ": "nicht_enthalten",
 "wert": [
 "in the following",
-"in order to",
 "i will analyse",
 "i will analyze",
 "i am going to",
@@ -350,28 +415,35 @@ var ITEMS = [
 "will be analyzed",
 "the aim of this",
 "in this analysis",
-"i would like to analyse"
+"i would like to analyse",
+"the following analysis",
+"in order to analyse",
+"in order to analyze",
+"in order to answer",
+"in order to find out",
+"in order to examine",
+"in order to show this"
 ],
 "sagt": "keine Absichtserklärung",
-"fehlt": "Absichtserklärung gefunden — sag, worum es geht, nicht was du vorhast. Das gilt auch im Passiv."
+"fehlt": "Absichtserklärung gefunden — der Satz sagt, was <b>du</b> vorhast. Er muss sagen, was der <b>Text</b> tut. Das gilt auch im Passiv."
 },
 {
 "typ": "laenge",
 "wert": [
-10,
-45
+22,
+75
 ],
-"sagt": "Umfang passt (ein bis zwei Sätze)"
+"sagt": "Umfang passt (Bibliografiesatz plus In-order-to-Satz)"
 }
 ],
-"muster": "In his speech The Gettysburg Address (1863), delivered at the dedication of a soldiers’ cemetery, Abraham Lincoln argues that the dead oblige the living to finish their work.",
-"why": "Ein Satz, fünf Bestandteile, kein Wort über deine Absicht."
+"muster": "In his speech The Gettysburg Address (1863), delivered at the dedication of a soldiers’ cemetery, Abraham Lincoln argues that the dead oblige the living to finish their work. In order to turn mourning into a duty, the speaker uses anaphora, antithesis and a strikingly plain vocabulary.",
+"why": "Zwei Sätze: erst wer, was und wann — dann wozu der Text seine Mittel einsetzt."
 },
 {
 "typ": "freitext",
-"tag": "SCHREIB DEN EINLEITUNGSSATZ",
+"tag": "SCHREIB DEN EINSTIEG",
 "stimulus": "<b>Textsorte</b> sonnet · <b>Autor</b> William Shakespeare · <b>Titel</b> Sonnet 18 · <b>Jahr</b> 1609<br><b>Thema</b> Das Gedicht behauptet, dass Dichtung Schönheit länger erhält als die Natur.",
-"frage": "Schreib einen Einleitungssatz. Achtung: andere Textsorte.",
+"frage": "Zwei Sätze. Achtung: andere Textsorte.",
 "pruef": [
 {
 "typ": "eins_aus",
@@ -404,10 +476,29 @@ var ITEMS = [
 "sagt": "Textsorte genannt (sonnet / poem)"
 },
 {
+"typ": "eins_aus",
+"wert": [
+"in order to"
+],
+"sagt": "In-order-to-Satz da",
+"fehlt": "Der In-order-to-Satz fehlt — nach dem Bibliografiesatz gehört er dazu: <i>In order to convey his message of …, the author uses …</i>"
+},
+{
+"typ": "eins_aus",
+"wert": [
+"uses",
+"makes use of",
+"employs",
+"draws on",
+"relies on"
+],
+"sagt": "benannt, was der Text tut",
+"fehlt": "Es fehlt das Verb, das sagt, was der <b>Text</b> tut (uses, makes use of …)."
+},
+{
 "typ": "nicht_enthalten",
 "wert": [
 "in the following",
-"in order to",
 "i will analyse",
 "i will analyze",
 "i am going to",
@@ -416,28 +507,35 @@ var ITEMS = [
 "will be analyzed",
 "the aim of this",
 "in this analysis",
-"i would like to analyse"
+"i would like to analyse",
+"the following analysis",
+"in order to analyse",
+"in order to analyze",
+"in order to answer",
+"in order to find out",
+"in order to examine",
+"in order to show this"
 ],
 "sagt": "keine Absichtserklärung",
-"fehlt": "Absichtserklärung gefunden — sag, worum es geht, nicht was du vorhast. Das gilt auch im Passiv."
+"fehlt": "Absichtserklärung gefunden — der Satz sagt, was <b>du</b> vorhast. Er muss sagen, was der <b>Text</b> tut. Das gilt auch im Passiv."
 },
 {
 "typ": "laenge",
 "wert": [
-10,
-45
+22,
+75
 ],
-"sagt": "Umfang passt (ein bis zwei Sätze)"
+"sagt": "Umfang passt (Bibliografiesatz plus In-order-to-Satz)"
 }
 ],
-"muster": "In his Sonnet 18 (1609), William Shakespeare claims that a poem can preserve beauty longer than nature itself can.",
+"muster": "In his Sonnet 18 (1609), William Shakespeare claims that a poem can preserve beauty longer than nature itself can. In order to set art against time, the speaker uses an extended comparison and a confident final couplet.",
 "why": "Bei einem Gedicht heißt die Textsorte <i>sonnet</i> oder <i>poem</i> — nicht <i>text</i>. Kriterium 2 fragt genau danach."
 },
 {
 "typ": "freitext",
-"tag": "SCHREIB DEN EINLEITUNGSSATZ",
+"tag": "SCHREIB DEN EINSTIEG",
 "stimulus": "<b>Textsorte</b> novel (Auszug) · <b>Autorin</b> Jane Austen · <b>Titel</b> Pride and Prejudice · <b>Jahr</b> 1813<br><b>Thema</b> Heirat erscheint weniger als Liebessache denn als Frage des gesellschaftlichen Standes.",
-"frage": "Schreib einen Einleitungssatz.",
+"frage": "Bibliografiesatz und In-order-to-Satz. Zwei Sätze.",
 "pruef": [
 {
 "typ": "eins_aus",
@@ -468,10 +566,29 @@ var ITEMS = [
 "sagt": "Textsorte genannt (novel)"
 },
 {
+"typ": "eins_aus",
+"wert": [
+"in order to"
+],
+"sagt": "In-order-to-Satz da",
+"fehlt": "Der In-order-to-Satz fehlt — nach dem Bibliografiesatz gehört er dazu: <i>In order to convey his message of …, the author uses …</i>"
+},
+{
+"typ": "eins_aus",
+"wert": [
+"uses",
+"makes use of",
+"employs",
+"draws on",
+"relies on"
+],
+"sagt": "benannt, was der Text tut",
+"fehlt": "Es fehlt das Verb, das sagt, was der <b>Text</b> tut (uses, makes use of …)."
+},
+{
 "typ": "nicht_enthalten",
 "wert": [
 "in the following",
-"in order to",
 "i will analyse",
 "i will analyze",
 "i am going to",
@@ -480,28 +597,35 @@ var ITEMS = [
 "will be analyzed",
 "the aim of this",
 "in this analysis",
-"i would like to analyse"
+"i would like to analyse",
+"the following analysis",
+"in order to analyse",
+"in order to analyze",
+"in order to answer",
+"in order to find out",
+"in order to examine",
+"in order to show this"
 ],
 "sagt": "keine Absichtserklärung",
-"fehlt": "Absichtserklärung gefunden — sag, worum es geht, nicht was du vorhast. Das gilt auch im Passiv."
+"fehlt": "Absichtserklärung gefunden — der Satz sagt, was <b>du</b> vorhast. Er muss sagen, was der <b>Text</b> tut. Das gilt auch im Passiv."
 },
 {
 "typ": "laenge",
 "wert": [
-10,
-45
+22,
+75
 ],
-"sagt": "Umfang passt (ein bis zwei Sätze)"
+"sagt": "Umfang passt (Bibliografiesatz plus In-order-to-Satz)"
 }
 ],
-"muster": "In the opening of her novel Pride and Prejudice (1813), Jane Austen presents marriage less as a matter of love than as a question of social rank.",
+"muster": "In the opening of her novel Pride and Prejudice (1813), Jane Austen presents marriage less as a matter of love than as a question of social rank. In order to expose this attitude, the narrator uses irony and a deceptively general opening sentence.",
 "why": "Bei einem Romanauszug gehört dazu, <b>welche Stelle</b> es ist — <i>in the opening</i>, <i>in this excerpt</i>. Sonst fehlt der Lesenden die Orientierung."
 },
 {
 "typ": "freitext",
-"tag": "SCHREIB DEN EINLEITUNGSSATZ",
+"tag": "SCHREIB DEN EINSTIEG",
 "stimulus": "<b>Textsorte</b> essay · <b>Autor</b> Ralph Waldo Emerson · <b>Titel</b> Self-Reliance · <b>Jahr</b> 1841<br><b>Thema</b> Wer seinem eigenen Urteil folgt, lebt redlicher als wer der Mehrheit folgt.",
-"frage": "Schreib einen Einleitungssatz.",
+"frage": "Bibliografiesatz und In-order-to-Satz. Zwei Sätze.",
 "pruef": [
 {
 "typ": "eins_aus",
@@ -533,10 +657,29 @@ var ITEMS = [
 "sagt": "Textsorte genannt (essay)"
 },
 {
+"typ": "eins_aus",
+"wert": [
+"in order to"
+],
+"sagt": "In-order-to-Satz da",
+"fehlt": "Der In-order-to-Satz fehlt — nach dem Bibliografiesatz gehört er dazu: <i>In order to convey his message of …, the author uses …</i>"
+},
+{
+"typ": "eins_aus",
+"wert": [
+"uses",
+"makes use of",
+"employs",
+"draws on",
+"relies on"
+],
+"sagt": "benannt, was der Text tut",
+"fehlt": "Es fehlt das Verb, das sagt, was der <b>Text</b> tut (uses, makes use of …)."
+},
+{
 "typ": "nicht_enthalten",
 "wert": [
 "in the following",
-"in order to",
 "i will analyse",
 "i will analyze",
 "i am going to",
@@ -545,21 +688,28 @@ var ITEMS = [
 "will be analyzed",
 "the aim of this",
 "in this analysis",
-"i would like to analyse"
+"i would like to analyse",
+"the following analysis",
+"in order to analyse",
+"in order to analyze",
+"in order to answer",
+"in order to find out",
+"in order to examine",
+"in order to show this"
 ],
 "sagt": "keine Absichtserklärung",
-"fehlt": "Absichtserklärung gefunden — sag, worum es geht, nicht was du vorhast. Das gilt auch im Passiv."
+"fehlt": "Absichtserklärung gefunden — der Satz sagt, was <b>du</b> vorhast. Er muss sagen, was der <b>Text</b> tut. Das gilt auch im Passiv."
 },
 {
 "typ": "laenge",
 "wert": [
-10,
-45
+22,
+75
 ],
-"sagt": "Umfang passt (ein bis zwei Sätze)"
+"sagt": "Umfang passt (Bibliografiesatz plus In-order-to-Satz)"
 }
 ],
-"muster": "In his essay Self-Reliance (1841), Ralph Waldo Emerson argues that trusting one’s own judgement is more honest than following the opinion of the majority.",
+"muster": "In his essay Self-Reliance (1841), Ralph Waldo Emerson argues that trusting one’s own judgement is more honest than following the opinion of the majority. In order to unsettle his readers, he uses direct address, paradox and short, quotable sentences.",
 "why": "Beim Essay ist die Hauptthese das Thema. <i>argues that …</i> sagt in einem Wort, dass der Text etwas behauptet — das ist Textbesprechungswortschatz (Kriterium 8)."
 }
 ];

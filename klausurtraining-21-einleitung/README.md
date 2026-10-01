@@ -2,21 +2,21 @@
 
 **Kriterien 1 + 2 · Aufgabenbezug und Textsortenmerkmale · 10 Punkte** · Block *Aufbau* · Jahrgang *alle*
 
-Titel · Autor · Jahr · Textsorte · Thema — und keine Absichtserklärung
+Bibliografiesatz und In-order-to-Satz — und keine Absichtserklärung
 
 **Live:** <https://nielsfeels-2.github.io/lernspiele/klausurtraining-21-einleitung/>
 · zurück zum [Hub](https://nielsfeels-2.github.io/lernspiele/klausurtraining/)
 
 ## Was das Modul trainiert (R1)
 
-Der erste Satz entscheidet, ob die Korrektur dich für sicher hält. Fünf Bestandteile gehören hinein — und eine Sorte Satz gehört ausdrücklich <b>nicht</b> hinein.
+Der Einstieg einer Analyse besteht aus <b>zwei</b> Sätzen: dem Bibliografiesatz und dem In-order-to-Satz. Und aus einer Sorte Satz, die ausdrücklich <b>nicht</b> hineingehört.
 
 ## Technik
 
 * eine HTML-Datei, offline lauffähig, kein CDN, keine Anmeldung
 * `localStorage`-Schlüssel `kt-21-v1` · 7 Aufgaben je Runde
-* 9 Items: 4× freitext, 5× wahl
-* Quellen: keine (eigene Beispielsätze)
+* 11 Items: 4× freitext, 7× wahl
+* Quellen: standard
 
 **Nicht hier ändern.** Die Datei wird erzeugt:
 
@@ -39,9 +39,11 @@ Quelle**.
 | 1 | WAS FEHLT HIER? | wahl | Textsorte (speech), Autor und Thema stehen da. Ohne Titel und Jahr weiß die Lesende nicht, über welchen Text … |
 | 2 | WAS FEHLT HIER? | wahl | Das ist eine Überschrift, kein Satz. Es fehlt, worum es geht — ohne Thema steht am Anfang der Analyse noch ke… |
 | 3 | WAS IST HIER FALSCH? | wahl | Die Korrektur weiß, dass du analysieren wirst — es steht in der Aufgabe. Der Satz verbraucht eine Zeile und b… |
-| 4 | WAS IST HIER FALSCH? | wahl | Das Passiv versteckt das I will, ändert aber nichts: Es ist eine Ankündigung, keine Aussage über den Text. Au… |
-| 5 | WELCHER IST BESSER? | wahl | B hat alle Bestandteile und sagt zusätzlich, was Lincoln tut. A sagt nur, dass es um etwas geht — und braucht… |
-| 6 | SCHREIB DEN EINLEITUNGSSATZ | freitext | Ein Satz, fünf Bestandteile, kein Wort über deine Absicht. |
-| 7 | SCHREIB DEN EINLEITUNGSSATZ | freitext | Bei einem Gedicht heißt die Textsorte sonnet oder poem — nicht text. Kriterium 2 fragt genau danach. |
-| 8 | SCHREIB DEN EINLEITUNGSSATZ | freitext | Bei einem Romanauszug gehört dazu, welche Stelle es ist — in the opening, in this excerpt. Sonst fehlt der Le… |
-| 9 | SCHREIB DEN EINLEITUNGSSATZ | freitext | Beim Essay ist die Hauptthese das Thema. argues that … sagt in einem Wort, dass der Text etwas behauptet — da… |
+| 4 | WAS IST HIER FALSCH? | wahl | Das Passiv versteckt das I will, ändert aber nichts: Es bleibt eine Ankündigung. Nicht das Problem ist In ord… |
+| 5 | IN ORDER TO — RICHTIG ODER NICHT? | wahl | Das ist die Musterformulierung. Der Satz sagt, wozu der Text seine Mittel einsetzt — und nennt mit line of ar… |
+| 6 | IN ORDER TO — RICHTIG ODER NICHT? | wahl | Dieselbe Fügung, anderes Subjekt — und daran entscheidet es sich. … the author uses … ist richtig, … I will l… |
+| 7 | WELCHER IST BESSER? | wahl | B hat alle Bestandteile und sagt zusätzlich, was Lincoln tut. A sagt nur, dass es um etwas geht — und braucht… |
+| 8 | SCHREIB DEN EINSTIEG | freitext | Zwei Sätze: erst wer, was und wann — dann wozu der Text seine Mittel einsetzt. |
+| 9 | SCHREIB DEN EINSTIEG | freitext | Bei einem Gedicht heißt die Textsorte sonnet oder poem — nicht text. Kriterium 2 fragt genau danach. |
+| 10 | SCHREIB DEN EINSTIEG | freitext | Bei einem Romanauszug gehört dazu, welche Stelle es ist — in the opening, in this excerpt. Sonst fehlt der Le… |
+| 11 | SCHREIB DEN EINSTIEG | freitext | Beim Essay ist die Hauptthese das Thema. argues that … sagt in einem Wort, dass der Text etwas behauptet — da… |

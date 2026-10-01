@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Stilmittel · Klausurtraining Englisch</title>
+<style>
+  :root{
+    --ink:#1A1A1A; --muted:#5D5D66; --paper:#FBFAF7; --card:#FFFFFF;
+    --accent:#4C4A8F; --tint:#E9E8F3; --band:#2E5458;
+    --ok:#1F7A5A; --okbg:#E3F1EB; --no:#A33; --nobg:#F8E7E7;
+    --gold:#B8860B; --goldbg:#FBF3DC;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);
+    font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    touch-action:manipulation;padding:0 0 env(safe-area-inset-bottom)}
+  .band{background:var(--band);color:#fff;padding:.5rem 1rem;font-size:.8rem;
+        font-weight:700;letter-spacing:.04em;display:flex;
+        justify-content:space-between;gap:1rem}
+  .band a{color:#fff;text-decoration:none;opacity:.85;white-space:nowrap}
+  .wrap{max-width:860px;margin:0 auto;padding:1rem}
+  h1{font-size:1.7rem;margin:.5rem 0 .2rem}
+  h2{font-size:1.15rem;margin:1.3rem 0 .4rem}
+  .lead{color:var(--muted);margin:.2rem 0 1rem}
+  .card{background:var(--card);border-radius:14px;padding:1.05rem;
+        box-shadow:0 1px 3px rgba(0,0,0,.09);margin-bottom:.9rem}
+  button{font:inherit;border:0;border-radius:14px;cursor:pointer}
+  .go{background:var(--accent);color:#fff;min-height:76px;width:100%;
+      font-size:1.14rem;font-weight:800;padding:.8rem}
+  .ghost{background:var(--tint);color:var(--accent);min-height:54px;
+         padding:.6rem 1rem;font-weight:700;width:100%;margin-top:.6rem}
+  .opt{display:block;width:100%;text-align:left;background:var(--tint);
+       color:var(--ink);min-height:68px;padding:.8rem 1rem;margin-bottom:.6rem;
+       font-size:1.02rem;border:3px solid transparent;line-height:1.4}
+  .opt:active{transform:scale(.995)}
+  .opt[disabled]{opacity:.55}
+  .opt.war{border-color:var(--ok)}
+  .opt.daneben{border-color:var(--no)}
+  .stim{font-size:1.1rem;line-height:1.55;border-left:4px solid var(--accent);
+        padding-left:.75rem;margin:.3rem 0 .2rem}
+  .ask{color:var(--muted);font-size:.93rem;margin:.6rem 0 .7rem}
+  textarea{width:100%;min-height:6rem;font:inherit;border:2px solid var(--tint);
+           border-radius:12px;padding:.7rem;resize:vertical;background:#fff}
+  textarea:focus{outline:none;border-color:var(--accent)}
+  .fb{margin-top:.9rem;padding:.9rem 1rem;border-radius:12px}
+  .fb.ok{background:var(--okbg);border-left:6px solid var(--ok)}
+  .fb.no{background:var(--nobg);border-left:6px solid var(--no)}
+  .fb b.kopf{display:block;margin-bottom:.25rem;font-size:1.06rem}
+  .krit{display:block;font-weight:700;color:var(--accent);font-size:.93rem;
+        margin-bottom:.3rem}
+  .checks{margin:.5rem 0 0;padding:0;list-style:none;font-size:.97rem}
+  .checks li{padding:.12rem 0}
+  .hud{display:flex;gap:.45rem;flex-wrap:wrap;margin:.2rem 0 .7rem}
+  .pill{background:var(--tint);color:var(--accent);border-radius:999px;
+        padding:.3rem .75rem;font-size:.87rem;font-weight:700}
+  .pill.g{background:var(--goldbg);color:var(--gold)}
+  .bar{height:9px;background:var(--tint);border-radius:999px;overflow:hidden;
+       margin:0 0 .9rem}
+  .bar>i{display:block;height:100%;background:var(--accent);width:0;
+         transition:width .25s}
+  .tagline{font-size:.82rem;font-weight:700;color:var(--accent);
+           letter-spacing:.05em}
+  .stars{font-size:2.1rem;letter-spacing:.14rem}
+  .chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.5rem}
+  .chip{font-size:1.35rem;padding:.3rem .4rem;border-radius:10px;
+        background:var(--tint)}
+  .chip.g{background:var(--goldbg)}
+  .hidden{display:none!important}
+  .note{color:var(--muted);font-size:.88rem;margin-top:.8rem}
+  ol.steps{margin:.3rem 0 0;padding-left:1.2rem}
+  ol.steps li{margin-bottom:.45rem}
+  code{background:var(--tint);border-radius:5px;padding:.08rem .3rem;
+       font-size:.94em}
+  /* --- Lücke --- */
+  .blank{display:inline-block;min-width:5rem;border-bottom:3px solid var(--accent);
+         vertical-align:baseline}
+  .blank.full{border-bottom-color:var(--ok);font-weight:800;color:var(--accent)}
+  /* --- Sortieren --- */
+  .slotlabel{font-size:.82rem;font-weight:700;color:var(--muted);
+             letter-spacing:.04em;margin:.9rem 0 .35rem}
+  .sortliste{display:flex;flex-direction:column;gap:.5rem}
+  .sort{display:flex;gap:.6rem;align-items:center;width:100%;text-align:left;
+        background:var(--tint);color:var(--ink);min-height:64px;
+        padding:.65rem .9rem;font-size:1rem;line-height:1.35;
+        border:3px solid transparent}
+  .sort .n{flex:0 0 1.9rem;height:1.9rem;border-radius:999px;
+           background:var(--accent);color:#fff;font-weight:800;
+           display:flex;align-items:center;justify-content:center;
+           font-size:.92rem}
+  .sort.gesetzt{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.09)}
+  .sort.war{border-color:var(--ok)}
+  .sort.daneben{border-color:var(--no)}
+  .leer{color:var(--muted);font-size:.9rem;padding:.5rem 0}
+  /* --- Markieren --- */
+  .marktext{font-size:1.14rem;line-height:2.15;margin:.3rem 0 .2rem}
+  .mark{cursor:pointer;border-radius:6px;padding:.15rem .1rem;
+        border-bottom:3px solid transparent}
+  .mark.an{background:#F4E2E2;border-bottom-color:var(--no);font-weight:700}
+  .mark.war{background:var(--okbg);border-bottom-color:var(--ok)}
+  .mark.verpasst{background:#FFF6D8;border-bottom-color:var(--gold)}
+  /* --- Bild (eigene SVG-Karikaturen) --- */
+  .bild{background:#fff;border:1px solid #E6E3D8;border-radius:12px;
+        padding:.5rem;margin:.2rem 0 .7rem}
+  .bild svg{display:block;width:100%;height:auto;max-height:46vh}
+  /* --- Schautext --- */
+  .quelle{background:#FFFDF6;border:1px solid #EDE6CF;border-radius:12px;
+          padding:.7rem .9rem;font-size:.95rem;line-height:1.6;max-height:40vh;
+          overflow:auto;white-space:pre-wrap;margin:.3rem 0 0;
+          font-family:ui-monospace,Menlo,monospace}
+  details.text{background:var(--card);border-radius:12px;padding:.7rem .9rem;
+               box-shadow:0 1px 3px rgba(0,0,0,.06);margin:0 0 .9rem}
+  details.text summary{font-weight:700;cursor:pointer;min-height:32px;
+                       color:var(--accent)}
+  @media (max-width:430px){ .marktext{line-height:2.4} }
+</style>
+</head>
+<body>
+<div class="band">
+  <span>TEILAUFGABE 2 · MITTEL MIT BELEG UND WIRKUNG · 6 VON 17 PUNKTEN</span>
+  <a href="../klausurtraining/">← Auswahl</a>
+</div>
+<div class="wrap">
+
+<section id="start">
+  <h1>Stilmittel</h1>
+  <p class="lead">Der Werkzeugkasten für jede Analyse. Im Erwartungshorizont stehen dafür <b>6 der 17 Punkte</b> — und zwar für Mittel <b>mit Beleg und Wirkung</b>. Vier Texte stehen oben zum Aufklappen: ein Kommentar, zwei Reden von heute und eine historische.</p>
+  <details class="text"><summary>📄 A museum that emptied itself — Kommentar (für diese Übung geschrieben)</summary><pre class="quelle">    The museum on Market Street has done something no
+    committee would ever recommend. It has emptied four of
+    its display cases, and it has said why.
+    For a century the building sat on the hill like a
+ 5  locked suitcase. Inside were masks, drums, carvings,
+    letters and a child’s bracelet. Outside were labels
+    that said almost nothing: West Africa, nineteenth
+    century, acquired 1897.
+    Acquired. That is a remarkably quiet word for a year in
+10  which a British force burned a city to the ground.
+    Now the museum has begun to speak. The empty cases
+    whisper louder than the full ones ever did. Visitors
+    stand longer in front of nothing than they once stood
+    in front of everything.
+15  Of course the critics are furious. They warn of chaos,
+    of lawsuits, of endless claims. Some predict that
+    museums from Bonn to New York will be stripped bare.
+    None of it has happened. Twenty-two objects have gone
+    home. The sky is still there.
+20  A museum is a promise: we will tell you where this came
+    from. For a hundred years this one broke that promise
+    politely. It is keeping it now, and it is keeping it
+    in public.</pre></details>
+  <details class="text"><summary>📄 At the city council: the number 9 — Rede (für diese Übung geschrieben, B1/B2)</summary><pre class="quelle">    Good evening. My name is Nadia, I am seventeen, and I
+    am not here to talk about traffic. I am here to talk
+    about getting home.
+    The number 9 is the last bus out of this part of town.
+ 5  It leaves at nine. If you cut it, the evening ends at
+    eight for everyone who is too young to drive.
+    You will say this is about money. I understand money.
+    But let me ask you one thing: what is a town worth if
+    half of it has to be home before dark?
+10  I have counted. Twelve of my friends use that bus.
+    Twelve. Not twelve hundred. I know we are a small line
+    on a long list.
+    Still, look at what that line does. It takes us to
+    training. It takes us to work. It takes us home from
+15  the library at half past eight on a Tuesday in
+    November, when the walk is forty minutes and the
+    pavement is pitch dark.
+    You are not cutting a bus. You are cutting an evening.
+    Thank you for listening. The number 9 leaves in
+20  twenty minutes, and I would very much like to be on it.</pre></details>
+  <details class="text"><summary>📄 A teacher’s farewell — Rede (für diese Übung geschrieben, B1/B2)</summary><pre class="quelle">    Thank you. I was told to keep this short, which is the
+    first piece of advice I have taken in thirty-one years.
+    People ask what has changed since 1995. The boards are
+    white now. The children are the same.
+ 5  I have taught in a room without windows, in a corridor,
+    and once, memorably, in a bus shelter. None of it was
+    ideal. All of it worked, because teaching is not a
+    room. It is a conversation that nobody wants to end.
+    I want to thank the colleague who took my lessons the
+10  week my father died, and never mentioned it again.
+    I want to thank the student who told me in 2004 that
+    my handwriting was a crime. She was right.
+    I want to thank every class that was difficult. You
+    taught me more than the easy ones, and you taught it
+15  faster.
+    Patience is a practical skill. Nobody teaches it on
+    purpose.
+    I am not retiring from the children. I am retiring
+    from the paperwork.
+20  Thank you.</pre></details>
+  <details class="text"><summary>📄 Abraham Lincoln, Gettysburg Address (1863) — gemeinfrei</summary><pre class="quelle">    Four score and seven years ago our fathers brought forth on this
+    continent, a new nation conceived in liberty, and dedicated to the
+    proposition that all men are created equal. Now we are engaged in a
+    great civil war, testing whether that nation or any nation so
+ 5  conceived and so dedicated, can long endure. We are met on a great
+    battlefield of that war. We have come to dedicate a portion of that
+    field as a final resting place for those who here gave their lives,
+    that that nation might live. It is altogether fitting and proper that
+    we should do this. But, in a larger sense, we can not dedicate — we
+10  can not consecrate — we can not hallow, this ground. The brave men
+    living and dead who struggled here, have consecrated it far above our
+    poor power to add or detract. The world will little note, nor long
+    remember what we say here but it can never forget what they did here.
+    It is for us the living rather to be dedicated here to the unfinished
+15  work which they who fought here have thus far so nobly advanced. It is
+    rather for us to be here dedicated to the great task remaining before
+    us — that from these honored dead we take increased devotion to that
+    cause for which they gave the last full measure of devotion — that we
+    here highly resolve that these dead shall not have died in vain — that
+20  this nation under God shall have a new birth of freedom — and that
+    government of the people by the people for the people shall not perish
+    from the earth.</pre></details>
+  <div class="card">
+    <h2 style="margin-top:0">Das Repertoire, das erwartet wird</h2>
+<table style="width:100%;border-collapse:collapse;font-size:.95rem">
+<tr><td style="padding:.2rem 0"><b>anaphora</b></td>
+    <td>gleicher Anfang mehrerer Sätze</td></tr>
+<tr><td><b>repetition</b></td><td>Wiederholung eines Wortes oder Satzes</td></tr>
+<tr><td><b>parallelism</b></td><td>gleicher Satzbau nacheinander</td></tr>
+<tr><td><b>antithesis</b></td><td>zwei Gegensätze, parallel gebaut</td></tr>
+<tr><td><b>enumeration</b></td><td>Aufzählung</td></tr>
+<tr><td><b>metaphor</b></td><td>Bild ohne <i>like</i>/<i>as</i></td></tr>
+<tr><td><b>simile</b></td><td>Vergleich <b>mit</b> <i>like</i> oder <i>as</i></td></tr>
+<tr><td><b>personification</b></td><td>Dinge handeln wie Menschen</td></tr>
+<tr><td><b>alliteration</b></td><td>gleicher Anlaut nebeneinander</td></tr>
+<tr><td><b>hyperbole</b></td><td>bewusste Übertreibung</td></tr>
+<tr><td><b>understatement</b></td><td>bewusstes Untertreiben</td></tr>
+<tr><td><b>irony</b></td><td>das Gegenteil sagen und es erkennbar machen</td></tr>
+<tr><td><b>rhetorical question</b></td><td>Frage ohne Antworterwartung</td></tr>
+<tr><td><b>direct address</b></td><td>das Publikum wird angesprochen</td></tr>
+<tr><td><b>inclusive we</b></td><td>Redner und Publikum werden eins</td></tr>
+<tr><td><b>emotive language</b></td><td>wertende, gefühlsgeladene Wörter</td></tr>
+<tr><td><b>allusion</b></td><td>Anspielung — religiös, historisch, literarisch</td></tr>
+</table>
+<p class="note" style="color:var(--accent);font-weight:700">
+  Der Name allein bringt keinen Punkt. Beleg und Wirkung bringen ihn.</p>
+<h2>Welchen Begriff wann?</h2>
+<p class="note">Im <b>Grundkurs</b> wird dieses Repertoire erwartet:
+  <i>anaphora · enumeration · parallelism · antithesis · metaphor · emotive
+  language · alliteration · religious allusion · historical reference ·
+  concise sentences</i>.</p>
+<p class="note"><b>Nicht</b> im Grundkurs: <i>Trikolon · Asyndeton ·
+  Hendiadyoin · Chiasmus · Litotes</i>. Wer sie trotzdem kennt, darf sie im
+  Leistungskurs verwenden — im Grundkurs ist der einfachere Begriff der
+  richtige, nicht der seltenere.</p>
+<h2>Zwei Verwechslungen, die ständig vorkommen</h2>
+<p class="note"><b>metaphor oder simile?</b> Steht <i>like</i> oder <i>as</i>
+  dabei, ist es ein <i>simile</i>. Ohne: <i>metaphor</i>.<br>
+  <b>anaphora oder repetition?</b> <i>anaphora</i> ist die Wiederholung am
+  <b>Satzanfang</b>. Irgendwo sonst: <i>repetition</i>.</p>
+    <button class="go" id="go" style="margin-top:.9rem">Los geht’s ▶</button>
+    <button class="ghost" id="resume">Meine Ergebnisse</button>
+  </div>
+  <details class="card">
+    <summary style="font-weight:700;cursor:pointer">Für Eltern und Lehrkräfte</summary>
+    <p class="note">Im Bewertungsraster der Analyseaufgabe (Teilaufgabe 2, 17 Punkte) entfallen 6 Punkte auf „rhetorische Mittel mit Beleg und Wirkung“. Genau das trainiert dieses Modul. Die Einteilung nach Kursniveau folgt R3 des Standards 01_STANDARDS/klausurformat_englisch_sek2.md und derselben Liste, die der Klausurgenerator in Erwartungshorizonten prüft. Beispiele aus Lincolns Gettysburg Address (gemeinfrei) und zwei für diese Übung geschriebenen Texten.</p>
+    <p class="note">Keine Anmeldung, keine Namen, keine Datenübertragung. Der
+      Fortschritt bleibt auf diesem Gerät.</p>
+  </details>
+</section>
+
+<section id="game" class="hidden">
+  <div class="hud">
+    <span class="pill" id="pos"></span>
+    <span class="pill" id="score"></span>
+    <span class="pill g" id="streak"></span>
+  </div>
+  <div class="bar"><i id="fill"></i></div>
+  <details class="text"><summary>📄 A museum that emptied itself — Kommentar (für diese Übung geschrieben)</summary><pre class="quelle">    The museum on Market Street has done something no
+    committee would ever recommend. It has emptied four of
+    its display cases, and it has said why.
+    For a century the building sat on the hill like a
+ 5  locked suitcase. Inside were masks, drums, carvings,
+    letters and a child’s bracelet. Outside were labels
+    that said almost nothing: West Africa, nineteenth
+    century, acquired 1897.
+    Acquired. That is a remarkably quiet word for a year in
+10  which a British force burned a city to the ground.
+    Now the museum has begun to speak. The empty cases
+    whisper louder than the full ones ever did. Visitors
+    stand longer in front of nothing than they once stood
+    in front of everything.
+15  Of course the critics are furious. They warn of chaos,
+    of lawsuits, of endless claims. Some predict that
+    museums from Bonn to New York will be stripped bare.
+    None of it has happened. Twenty-two objects have gone
+    home. The sky is still there.
+20  A museum is a promise: we will tell you where this came
+    from. For a hundred years this one broke that promise
+    politely. It is keeping it now, and it is keeping it
+    in public.</pre></details>
+  <details class="text"><summary>📄 At the city council: the number 9 — Rede (für diese Übung geschrieben, B1/B2)</summary><pre class="quelle">    Good evening. My name is Nadia, I am seventeen, and I
+    am not here to talk about traffic. I am here to talk
+    about getting home.
+    The number 9 is the last bus out of this part of town.
+ 5  It leaves at nine. If you cut it, the evening ends at
+    eight for everyone who is too young to drive.
+    You will say this is about money. I understand money.
+    But let me ask you one thing: what is a town worth if
+    half of it has to be home before dark?
+10  I have counted. Twelve of my friends use that bus.
+    Twelve. Not twelve hundred. I know we are a small line
+    on a long list.
+    Still, look at what that line does. It takes us to
+    training. It takes us to work. It takes us home from
+15  the library at half past eight on a Tuesday in
+    November, when the walk is forty minutes and the
+    pavement is pitch dark.
+    You are not cutting a bus. You are cutting an evening.
+    Thank you for listening. The number 9 leaves in
+20  twenty minutes, and I would very much like to be on it.</pre></details>
+  <details class="text"><summary>📄 A teacher’s farewell — Rede (für diese Übung geschrieben, B1/B2)</summary><pre class="quelle">    Thank you. I was told to keep this short, which is the
+    first piece of advice I have taken in thirty-one years.
+    People ask what has changed since 1995. The boards are
+    white now. The children are the same.
+ 5  I have taught in a room without windows, in a corridor,
+    and once, memorably, in a bus shelter. None of it was
+    ideal. All of it worked, because teaching is not a
+    room. It is a conversation that nobody wants to end.
+    I want to thank the colleague who took my lessons the
+10  week my father died, and never mentioned it again.
+    I want to thank the student who told me in 2004 that
+    my handwriting was a crime. She was right.
+    I want to thank every class that was difficult. You
+    taught me more than the easy ones, and you taught it
+15  faster.
+    Patience is a practical skill. Nobody teaches it on
+    purpose.
+    I am not retiring from the children. I am retiring
+    from the paperwork.
+20  Thank you.</pre></details>
+  <details class="text"><summary>📄 Abraham Lincoln, Gettysburg Address (1863) — gemeinfrei</summary><pre class="quelle">    Four score and seven years ago our fathers brought forth on this
+    continent, a new nation conceived in liberty, and dedicated to the
+    proposition that all men are created equal. Now we are engaged in a
+    great civil war, testing whether that nation or any nation so
+ 5  conceived and so dedicated, can long endure. We are met on a great
+    battlefield of that war. We have come to dedicate a portion of that
+    field as a final resting place for those who here gave their lives,
+    that that nation might live. It is altogether fitting and proper that
+    we should do this. But, in a larger sense, we can not dedicate — we
+10  can not consecrate — we can not hallow, this ground. The brave men
+    living and dead who struggled here, have consecrated it far above our
+    poor power to add or detract. The world will little note, nor long
+    remember what we say here but it can never forget what they did here.
+    It is for us the living rather to be dedicated here to the unfinished
+15  work which they who fought here have thus far so nobly advanced. It is
+    rather for us to be here dedicated to the great task remaining before
+    us — that from these honored dead we take increased devotion to that
+    cause for which they gave the last full measure of devotion — that we
+    here highly resolve that these dead shall not have died in vain — that
+20  this nation under God shall have a new birth of freedom — and that
+    government of the people by the people for the people shall not perish
+    from the earth.</pre></details>
+  <div class="card">
+    <div class="tagline" id="tagline"></div>
+    <div id="body"></div>
+    <button class="go hidden" id="pruefen" style="margin-top:.9rem">Prüfen ▶</button>
+    <div id="fb" class="fb hidden"></div>
+    <button class="go hidden" id="next" style="margin-top:.9rem">Weiter ▶</button>
+  </div>
+  <div class="chips" id="collected"></div>
+</section>
+
+<section id="end" class="hidden">
+  <h1 id="endTitle">Geschafft</h1>
+  <div class="card">
+    <div class="stars" id="stars"></div>
+    <p class="lead" id="endLine"></p>
+    <p style="margin:.2rem 0 .3rem"><b>Zeig das jemandem:</b></p>
+    <span class="pill" id="code" style="font-size:1.2rem;padding:.5rem 1rem"></span>
+    <p class="note" id="openLoop"></p>
+    <button class="go" id="again" style="margin-top:.9rem">Noch eine Runde ▶</button>
+    <button class="ghost" id="back">Zurück zum Anfang</button>
+    <button class="ghost" onclick="location.href='../klausurtraining/'">Andere Übung wählen</button>
+  </div>
+  <div class="card">
+    <b>Gesammelt</b>
+    <div class="chips" id="album"></div>
+    <p class="note" id="albumNote"></p>
+  </div>
+</section>
+
+</div>
+<script>
+"use strict";
+/* ==================================================================
+   MODUL I·G · STILMITTEL
+   TEILAUFGABE 2 · MITTEL MIT BELEG UND WIRKUNG · 6 VON 17 PUNKTEN
+   Spezifikation: 14_LERNAPPS/KLAUSURTRAINING-SPEZIFIKATION.md
+   Erzeugt von 12_SCRIPTS/klausurtraining_bauen.py — nicht hier ändern,
+   sondern in 12_SCRIPTS/klausurtraining_inhalte.py.
+
+   Quelltext der Beispiele: Abraham Lincoln, Gettysburg Address,
+   19.11.1863 (Bliss-Fassung), wörtlich nach nps.gov. Gemeinfrei —
+   und als *unbekannter* Klausurtext zu bekannt, deshalb dauerhaft frei
+   für Übungen (Spezifikation R3).
+
+   Die zitierten Operator-Erläuterungen und Bewertungskriterien stammen
+   wörtlich aus den Landesvorgaben NRW (Operatorenübersicht ab Abitur
+   2025; Konstruktionshinweise Klausuren moderne Fremdsprachen, Okt. 2025).
+   Bewertungskriterien sind kein Prüfungsinhalt — die SuS sollen sie kennen.
+
+   ▲ Alle Quelltexte sind gegen die Sperrliste geprüft
+   (12_SCRIPTS/klausurtexte_sperrliste.py, Regel R0): niemals Material aus
+   einer Klausur oder einer anderen Leistungsüberprüfung in einer Übung.
+   ================================================================== */
+
+var CFG = {
+"kriterium": "Teilaufgabe 2 · Mittel mit Beleg und Wirkung · 6 von 17 Punkten",
+"code": "STI",
+"key": "kt-ig-v1",
+"runde": 9,
+"chips": [
+"🔧",
+"🪄",
+"🎨",
+"🔁",
+"⚡",
+"🧰"
+],
+"gold": "🏅",
+"quelltext": "Four score and seven years ago our fathers brought forth on this continent, a new nation conceived in liberty, and dedicated to the proposition that all men are created equal. Now we are engaged in a great civil war, testing whether that nation or any nation so conceived and so dedicated, can long endure. We are met on a great battlefield of that war. We have come to dedicate a portion of that field as a final resting place for those who here gave their lives, that that nation might live. It is altogether fitting and proper that we should do this. But, in a larger sense, we can not dedicate — we can not consecrate — we can not hallow, this ground. The brave men living and dead who struggled here, have consecrated it far above our poor power to add or detract. The world will little note, nor long remember what we say here but it can never forget what they did here. It is for us the living rather to be dedicated here to the unfinished work which they who fought here have thus far so nobly advanced. It is rather for us to be here dedicated to the great task remaining before us — that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion — that we here highly resolve that these dead shall not have died in vain — that this nation under God shall have a new birth of freedom — and that government of the people by the people for the people shall not perish from the earth."
+};
+var ITEMS = [
+{
+"typ": "wahl",
+"tag": "WELCHES MITTEL IST DAS?",
+"stimulus": "„sat on the hill like a locked suitcase“ (Kommentar, ll. 4–5)",
+"frage": "Welches Mittel ist das?",
+"opt": [
+"simile",
+"metaphor",
+"personification",
+"hyperbole"
+],
+"a": 0,
+"why": "<i>like</i> steht dabei — damit ist es ein <b>simile</b>. Wirkung: Das Haus wirkt verschlossen und transportabel zugleich; genau darum geht es im Text."
+},
+{
+"typ": "wahl",
+"tag": "WELCHES MITTEL IST DAS?",
+"stimulus": "Abschiedsrede: „teaching is not a room. It is a conversation that nobody wants to end“ (ll. 7–8)",
+"frage": "Welches Mittel ist das?",
+"opt": [
+"metaphor",
+"simile",
+"alliteration",
+"enumeration"
+],
+"a": 0,
+"why": "Kein <i>like</i>, kein <i>as</i> — die Gleichsetzung steht direkt da. Wirkung: Aus einem Beruf wird etwas, das weitergeht, wenn die Rednerin aufhört. Genau das ist ihr Schlusspunkt."
+},
+{
+"typ": "wahl",
+"tag": "WELCHES MITTEL IST DAS?",
+"stimulus": "„The empty cases whisper louder than the full ones ever did“ (Kommentar, ll. 11–12)",
+"frage": "Welches Mittel ist das?",
+"opt": [
+"personification",
+"simile",
+"alliteration",
+"rhetorical question"
+],
+"a": 0,
+"why": "Vitrinen flüstern nicht. Wirkung: Die Leerstelle bekommt eine Stimme — das Fehlende wird zum eigentlichen Ausstellungsstück."
+},
+{
+"typ": "wahl",
+"tag": "WELCHES MITTEL IST DAS?",
+"stimulus": "Abschiedsrede: „in a room without windows, in a corridor, and once, memorably, in a bus shelter“ (ll. 5–6)",
+"frage": "Welches Mittel ist das?",
+"opt": [
+"enumeration",
+"antithesis",
+"metaphor",
+"personification"
+],
+"a": 0,
+"why": "Eine Aufzählung, die immer unwahrscheinlicher wird. Wirkung: Der Bushaltestelle-Schluss wirkt komisch — und beweist nebenbei den Satz, der gleich folgt. Im Leistungskurs hieße eine Dreierfigur <i>Trikolon</i>; <b>enumeration</b> ist der Begriff, der im Grundkurs erwartet wird."
+},
+{
+"typ": "wahl",
+"tag": "WELCHES MITTEL IST DAS?",
+"stimulus": "Ratsrede: „You are not cutting a bus. You are cutting an evening.“ (l. 18)",
+"frage": "Welches Mittel trägt diese Stelle?",
+"opt": [
+"antithesis",
+"simile",
+"personification",
+"hyperbole"
+],
+"a": 0,
+"why": "<i>a bus</i> gegen <i>an evening</i>, im gleichen Satzbau. Wirkung: Aus einer Haushaltsfrage wird eine Frage nach dem Leben in der Stadt — in zwei kurzen Sätzen."
+},
+{
+"typ": "wahl",
+"tag": "WELCHES MITTEL IST DAS?",
+"stimulus": "Abschiedsrede: „my handwriting was a crime“ (l. 12)",
+"frage": "Welches Mittel ist das?",
+"opt": [
+"hyperbole",
+"understatement",
+"metaphor",
+"allusion"
+],
+"a": 0,
+"why": "Eine Übertreibung, und eine freundliche. Wirkung: Die Rednerin lacht über sich selbst, bevor jemand anders es tut — das macht den Dank danach glaubwürdig."
+},
+{
+"typ": "wahl",
+"tag": "WELCHES MITTEL IST DAS?",
+"stimulus": "Ratsrede: „I know we are a small line on a long list.“ (ll. 11–12)",
+"frage": "Welches Mittel ist das?",
+"opt": [
+"understatement",
+"hyperbole",
+"simile",
+"enumeration"
+],
+"a": 0,
+"why": "Bewusst zu klein gesagt. Wirkung: Die Rednerin nimmt dem Rat das Gegenargument aus der Hand, bevor er es aussprechen kann."
+},
+{
+"typ": "wahl",
+"tag": "WELCHES MITTEL IST DAS?",
+"stimulus": "Kommentar: „Acquired. That is a remarkably quiet word for a year in which a British force burned a city to the ground.“ (ll. 9–10)",
+"frage": "Welches Mittel trägt diese Stelle?",
+"opt": [
+"irony",
+"personification",
+"simile",
+"enumeration"
+],
+"a": 0,
+"why": "<i>remarkably quiet</i> meint das Gegenteil: Das Wort verschweigt. Wirkung: Nicht das Objekt wird angegriffen, sondern das <b>Etikett</b> — die Sprache des Museums selbst."
+},
+{
+"typ": "wahl",
+"tag": "WELCHES MITTEL IST DAS?",
+"stimulus": "Abschiedsrede: „I was told to keep this short, which is the first piece of advice I have taken in thirty-one years“ (ll. 1–2)",
+"frage": "Welches Mittel ist das?",
+"opt": [
+"irony",
+"metaphor",
+"enumeration",
+"alliteration"
+],
+"a": 0,
+"why": "Sie sagt, sie halte sich nicht an Ratschläge — und tut es in diesem Moment. Wirkung: Der Ton ist in zwei Zeilen gesetzt, freundlich und selbstironisch."
+},
+{
+"typ": "wahl",
+"tag": "WELCHES MITTEL IST DAS?",
+"stimulus": "Kommentar: „the critics are furious“ (l. 15)",
+"frage": "Welches Mittel ist das?",
+"opt": [
+"emotive language",
+"metaphor",
+"alliteration",
+"understatement"
+],
+"a": 0,
+"why": "<i>furious</i> ist wertend. Wirkung: Die Gegenseite erscheint aufgebracht statt argumentierend — eine Vorentscheidung, die niemand begründen muss."
+},
+{
+"typ": "wahl",
+"tag": "WELCHES MITTEL IST DAS?",
+"stimulus": "Kommentar: „acquired 1897“ und „a year in which a British force burned a city to the ground“ (ll. 8–10)",
+"frage": "Welches Mittel ist das?",
+"opt": [
+"historical reference",
+"metaphor",
+"simile",
+"rhetorical question"
+],
+"a": 0,
+"why": "Eine Jahreszahl, die etwas voraussetzt. Wirkung: Wer sie einordnen kann, liest das Etikett anders — der Text rechnet mit Wissen und belohnt es."
+},
+{
+"typ": "wahl",
+"tag": "WELCHES MITTEL IST DAS?",
+"stimulus": "Ratsrede: „Twelve of my friends use that bus. Twelve. Not twelve hundred.“ (ll. 10–11)",
+"frage": "Welches Mittel ist das?",
+"opt": [
+"repetition",
+"anaphora",
+"antithesis",
+"simile"
+],
+"a": 0,
+"why": "Das Wort wird wiederholt, aber nicht am Satzanfang — deshalb <i>repetition</i>, nicht <i>anaphora</i>. Wirkung: Die winzige Zahl wird stehen gelassen, statt sie zu beschönigen."
+},
+{
+"typ": "wahl",
+"tag": "WELCHES MITTEL IST DAS?",
+"stimulus": "Abschiedsrede: „I want to thank the colleague … I want to thank the student … I want to thank every class …“ (ll. 9, 11, 13)",
+"frage": "Welches Mittel ist das?",
+"opt": [
+"anaphora",
+"repetition",
+"alliteration",
+"enumeration"
+],
+"a": 0,
+"why": "Dreimal derselbe <b>Satzanfang</b> — das unterscheidet die Anapher von der bloßen Wiederholung. Wirkung: Der Dank bekommt einen Takt, und jede neue Person wirkt gleich wichtig."
+},
+{
+"typ": "wahl",
+"tag": "WELCHES MITTEL IST DAS?",
+"stimulus": "Abschiedsrede: „Patience is a practical skill.“ (l. 16)",
+"frage": "Welches Mittel ist das?",
+"opt": [
+"alliteration",
+"metaphor",
+"enumeration",
+"antithesis"
+],
+"a": 0,
+"why": "<i>Patience … practical</i> — gleicher Anlaut. Wirkung: Der Satz klingt wie ein Merksatz und bleibt deshalb hängen."
+},
+{
+"typ": "wahl",
+"tag": "WELCHES MITTEL IST DAS?",
+"stimulus": "Ratsrede: „what is a town worth if half of it has to be home before dark?“ (ll. 8–9)",
+"frage": "Welches Mittel ist das?",
+"opt": [
+"rhetorical question",
+"antithesis",
+"metaphor",
+"enumeration"
+],
+"a": 0,
+"why": "Eine Frage, auf die niemand antworten soll. Wirkung: Der Rat muss sie im Kopf beantworten — und jede Antwort gibt der Rednerin recht."
+},
+{
+"typ": "wahl",
+"tag": "WELCHES MITTEL IST DAS?",
+"stimulus": "Ratsrede: „Good evening. My name is Nadia, I am seventeen“ (l. 1)",
+"frage": "Welches Mittel ist das?",
+"opt": [
+"direct address",
+"metaphor",
+"irony",
+"parallelism"
+],
+"a": 0,
+"why": "Die Rede beginnt bei den Zuhörenden, nicht beim Thema. Wirkung: Wer angesprochen wird, hört zu — und das Alter steht gleich im ersten Satz, weil es das Argument trägt."
+},
+{
+"typ": "wahl",
+"tag": "WELCHES MITTEL IST DAS?",
+"stimulus": "Lincoln: „The world will little note, nor long remember“ (ll. 12–13)",
+"frage": "Welches Mittel ist das?",
+"opt": [
+"parallelism",
+"anaphora",
+"simile",
+"personification"
+],
+"a": 0,
+"why": "Zweimal derselbe Bau: Adverb plus Verb. Wirkung: Die zweite Hälfte klingt wie die erste und wirkt deshalb ebenso selbstverständlich — obwohl sie mehr behauptet."
+},
+{
+"typ": "wahl",
+"tag": "WELCHES MITTEL IST DAS?",
+"stimulus": "Lincoln: „this nation under God shall have a new birth of freedom“ (l. 20)",
+"frage": "Welches Mittel ist das?",
+"opt": [
+"religious allusion",
+"historical reference",
+"simile",
+"enumeration"
+],
+"a": 0,
+"why": "<i>under God</i> und <i>new birth</i> holen religiöse Sprache in eine politische Rede. Wirkung: Der Neuanfang bekommt eine Weihe, die kein Gesetz geben kann. Dieses Mittel steht ausdrücklich im Grundkursrepertoire."
+},
+{
+"typ": "wahl",
+"tag": "FALSCH BENANNT — WAS IST ES WIRKLICH?",
+"stimulus": "<i>The author uses a metaphor: „sat on the hill like a locked suitcase“.</i>",
+"frage": "Wie heißt das Mittel richtig?",
+"opt": [
+"simile — es steht <i>like</i> dabei",
+"personification — ein Gebäude sitzt nicht",
+"hyperbole — die Übertreibung macht es aus",
+"Nichts falsch — metaphor stimmt"
+],
+"a": 0,
+"why": "Die häufigste Verwechslung überhaupt. <i>like</i> oder <i>as</i> ⇒ <b>simile</b>. Ohne ⇒ <b>metaphor</b>. Ein falscher Fachbegriff kostet den Punkt, auch wenn die Wirkung richtig beschrieben ist."
+},
+{
+"typ": "wahl",
+"tag": "FALSCH BENANNT — WAS IST ES WIRKLICH?",
+"stimulus": "<i>The speaker uses an anaphora: „Twelve of my friends use that bus. Twelve.“</i>",
+"frage": "Wie heißt das Mittel richtig?",
+"opt": [
+"repetition — die Wiederholung steht nicht am Satzanfang",
+"parallelism — es ist nur der gleiche Bau",
+"antithesis — es sind zwei Gegensätze",
+"Nichts falsch — anaphora stimmt"
+],
+"a": 0,
+"why": "<b>anaphora</b> ist die Wiederholung am <b>Anfang</b> aufeinanderfolgender Sätze. Hier steht das Wort am Ende und dann allein — also <i>repetition</i>."
+},
+{
+"typ": "wahl",
+"tag": "FALSCH BENANNT — WAS IST ES WIRKLICH?",
+"stimulus": "<i>By using hyperbole the speaker says: „I know we are a small line on a long list“.</i>",
+"frage": "Wie heißt das Mittel richtig?",
+"opt": [
+"understatement — der Satz sagt bewusst zu wenig",
+"personification — die Linie handelt",
+"metaphor — die Linie steht für etwas",
+"Nichts falsch — hyperbole stimmt"
+],
+"a": 0,
+"why": "Genau umgekehrt: <i>hyperbole</i> übertreibt, <i>understatement</i> untertreibt. Und das Untertreiben wirkt hier stärker — es nimmt dem Gegenüber das Argument weg."
+},
+{
+"typ": "wahl",
+"tag": "FALSCH BENANNT — WAS IST ES WIRKLICH?",
+"stimulus": "<i>The text uses emotive language: „in a room without windows, in a corridor, and once, memorably, in a bus shelter“.</i>",
+"frage": "Wie heißt das Mittel richtig?",
+"opt": [
+"enumeration — es ist eine Aufzählung",
+"antithesis — es sind Gegensätze",
+"alliteration — die Anlaute wiederholen sich",
+"Nichts falsch — emotive language stimmt"
+],
+"a": 0,
+"why": "Die Wörter selbst sind neutral; es ist die <b>Reihe</b>, die wirkt. <i>emotive language</i> wäre <i>furious</i> oder <i>burned to the ground</i> — Wörter, die werten."
+},
+{
+"typ": "wahl",
+"tag": "WELCHE WIRKUNG PASST HIER?",
+"stimulus": "Ratsrede: „It takes us to training. It takes us to work. It takes us home from the library …“ (ll. 13–15)",
+"frage": "Was bewirkt die Anapher <b>hier</b>?",
+"opt": [
+"Sie macht aus einer Streichung eine Liste von Verlusten",
+"Sie zeigt, dass die Rednerin nervös ist",
+"Sie gliedert den Text für die Lesenden",
+"Sie beweist, dass die Linie rentabel ist"
+],
+"a": 0,
+"why": "Dreimal derselbe Anfang, dreimal ein anderes Ziel — und jedes fällt weg. Die Wiederholung macht die Folgen zählbar, ohne dass jemand eine Zahl nennen muss."
+},
+{
+"typ": "wahl",
+"tag": "WELCHE WIRKUNG PASST HIER?",
+"stimulus": "Abschiedsrede: „I want to thank the colleague … I want to thank the student … I want to thank every class …“ (ll. 9, 11, 13)",
+"frage": "Was bewirkt die Anapher <b>hier</b>?",
+"opt": [
+"Sie stellt alle drei auf dieselbe Stufe — auch die schwierige Klasse",
+"Sie macht aus einer Streichung eine Liste von Verlusten",
+"Sie erhöht das Tempo zum Ende hin",
+"Sie zeigt, dass die Rednerin unsicher ist"
+],
+"a": 0,
+"why": "Dasselbe Mittel wie eben, andere Wirkung. Genau deshalb reicht es nie, das Mittel zu benennen: Der Punkt hängt an diesem Satz, nicht am Namen."
+},
+{
+"typ": "wahl",
+"tag": "WELCHE WIRKUNG PASST HIER?",
+"stimulus": "Kommentar: „Acquired.“ — ein Wort, ein Satz, ein Punkt. (l. 9)",
+"frage": "Was leistet der kurze Satz an dieser Stelle?",
+"opt": [
+"Er hält den Text an und zwingt zum Nachdenken über das Wort",
+"Er fasst den vorigen Absatz zusammen",
+"Er zeigt, dass der Autor sich kurzfassen kann",
+"Er nennt eine Quelle"
+],
+"a": 0,
+"why": "<b>Concise sentences</b> wirken durch den Bruch im Rhythmus. Nach den langen Sätzen davor steht ein einzelnes Wort — und das Etikett, das eben noch harmlos aussah, wird zur Frage."
+},
+{
+"typ": "wahl",
+"tag": "GRUNDKURS ODER LEISTUNGSKURS?",
+"fest": true,
+"stimulus": "<i>Trikolon</i>",
+"frage": "Brauchst du diesen Begriff?",
+"opt": [
+"Den Begriff brauchst du schon im Grundkurs",
+"Das ist ein Begriff für den Leistungskurs — im Grundkurs reicht ein einfacherer"
+],
+"a": 1,
+"why": "Im Grundkurs nicht erwartet — und ausdrücklich als zu schwierig markiert. Nimm <i>enumeration</i> oder <i>parallelism</i>; der Punkt hängt ohnehin an der Wirkung, nicht am Namen."
+},
+{
+"typ": "wahl",
+"tag": "GRUNDKURS ODER LEISTUNGSKURS?",
+"fest": true,
+"stimulus": "<i>Chiasmus</i>",
+"frage": "Brauchst du diesen Begriff?",
+"opt": [
+"Den Begriff brauchst du schon im Grundkurs",
+"Das ist ein Begriff für den Leistungskurs — im Grundkurs reicht ein einfacherer"
+],
+"a": 1,
+"why": "Leistungskurs. Im Grundkurs beschreibst du einfach, was passiert: Die zweite Hälfte dreht die Reihenfolge der ersten um."
+},
+{
+"typ": "wahl",
+"tag": "GRUNDKURS ODER LEISTUNGSKURS?",
+"fest": true,
+"stimulus": "<i>Litotes</i>",
+"frage": "Brauchst du diesen Begriff?",
+"opt": [
+"Den Begriff brauchst du schon im Grundkurs",
+"Das ist ein Begriff für den Leistungskurs — im Grundkurs reicht ein einfacherer"
+],
+"a": 1,
+"why": "Leistungskurs. Der Grundkursbegriff dafür heißt <i>understatement</i> — und trifft es für die meisten Stellen genauso."
+},
+{
+"typ": "wahl",
+"tag": "GRUNDKURS ODER LEISTUNGSKURS?",
+"fest": true,
+"stimulus": "<i>Asyndeton</i>",
+"frage": "Brauchst du diesen Begriff?",
+"opt": [
+"Den Begriff brauchst du schon im Grundkurs",
+"Das ist ein Begriff für den Leistungskurs — im Grundkurs reicht ein einfacherer"
+],
+"a": 1,
+"why": "Leistungskurs. Im Grundkurs genügt: eine Aufzählung <b>ohne Bindewörter</b> — und was das mit dem Tempo macht."
+},
+{
+"typ": "wahl",
+"tag": "GRUNDKURS ODER LEISTUNGSKURS?",
+"fest": true,
+"stimulus": "<i>anaphora</i>",
+"frage": "Brauchst du diesen Begriff?",
+"opt": [
+"Den Begriff brauchst du schon im Grundkurs",
+"Das ist ein Begriff für den Leistungskurs — im Grundkurs reicht ein einfacherer"
+],
+"a": 0,
+"why": "Grundkursrepertoire, und eines der wichtigsten: In fast jeder Rede steckt eine Anapher."
+},
+{
+"typ": "wahl",
+"tag": "GRUNDKURS ODER LEISTUNGSKURS?",
+"fest": true,
+"stimulus": "<i>alliteration</i>",
+"frage": "Brauchst du diesen Begriff?",
+"opt": [
+"Den Begriff brauchst du schon im Grundkurs",
+"Das ist ein Begriff für den Leistungskurs — im Grundkurs reicht ein einfacherer"
+],
+"a": 0,
+"why": "Grundkursrepertoire. Leicht zu finden — und leicht zu verschenken, wenn nur der Name dasteht und keine Wirkung."
+},
+{
+"typ": "wahl",
+"tag": "GRUNDKURS ODER LEISTUNGSKURS?",
+"fest": true,
+"stimulus": "<i>religious allusion</i>",
+"frage": "Brauchst du diesen Begriff?",
+"opt": [
+"Den Begriff brauchst du schon im Grundkurs",
+"Das ist ein Begriff für den Leistungskurs — im Grundkurs reicht ein einfacherer"
+],
+"a": 0,
+"why": "Grundkursrepertoire — und bei politischen Reden besonders ergiebig, weil die Anspielung eine Wertung mitbringt, ohne dass jemand sie begründen muss."
+},
+{
+"typ": "markieren",
+"tag": "FINDE DAS MITTEL",
+"frage": "Tippe die Wörter an, die den <b>Vergleich</b> tragen.",
+"teile": [
+{
+"t": "For a century the building sat on the hill ",
+"f": false
+},
+{
+"t": "like a locked suitcase",
+"f": true
+},
+{
+"t": ".",
+"f": false
+}
+],
+"why": "<b>Simile</b> — erkennbar am <i>like</i>. Wirkung: Das Museum erscheint verschlossen und zugleich als etwas, das jemand mitgenommen hat."
+},
+{
+"typ": "markieren",
+"tag": "FINDE DAS MITTEL",
+"frage": "Tippe das Wort an, das die Vitrinen zu Handelnden macht.",
+"teile": [
+{
+"t": "The empty cases ",
+"f": false
+},
+{
+"t": "whisper",
+"f": true
+},
+{
+"t": " louder than the full ones ever did.",
+"f": false
+}
+],
+"why": "<b>Personification.</b> Wirkung: Was fehlt, bekommt eine Stimme — die Leerstelle wird zum eigentlichen Exponat."
+},
+{
+"typ": "markieren",
+"tag": "FINDE DAS MITTEL",
+"frage": "Tippe die <b>zwei</b> Wörter an, die den Gegensatz tragen.",
+"teile": [
+{
+"t": "You are not cutting ",
+"f": false
+},
+{
+"t": "a bus",
+"f": true
+},
+{
+"t": ". You are cutting ",
+"f": false
+},
+{
+"t": "an evening",
+"f": true
+},
+{
+"t": ".",
+"f": false
+}
+],
+"why": "<b>Antithesis.</b> Zwei Wörter im gleichen Satzbau, die zwei Größenordnungen gegeneinandersetzen. Wirkung: Aus einer Haushaltszeile wird ein Stück Leben."
+},
+{
+"typ": "markieren",
+"tag": "FINDE DAS MITTEL",
+"frage": "Tippe die zwei Wörter mit dem gleichen Anlaut an.",
+"teile": [
+{
+"t": "",
+"f": false
+},
+{
+"t": "Patience",
+"f": true
+},
+{
+"t": " is a ",
+"f": false
+},
+{
+"t": "practical",
+"f": true
+},
+{
+"t": " skill. Nobody teaches it on purpose.",
+"f": false
+}
+],
+"why": "<b>Alliteration.</b> Wirkung: Der Satz klingt wie ein Merksatz — deshalb steht er allein und ohne Erklärung da."
+}
+];
+
+function $(id){ return document.getElementById(id); }
+function mischen(a){ var b=a.slice(),i,j,t;
+  for(i=b.length-1;i>0;i--){ j=Math.floor(Math.random()*(i+1)); t=b[i];b[i]=b[j];b[j]=t; }
+  return b; }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;"); }
+function norm(s){
+  return String(s).toLowerCase()
+    .replace(/[„“”‟]/g,'"').replace(/[‘’]/g,"'")
+    .replace(/[—–]/g,"-").replace(/\s+/g," ").trim();
+}
+function worte(s){ return String(s).trim().split(/\s+/).filter(function(w){
+  return w.length > 0; }); }
+
+/* ---------- Fortschritt ---------- */
+function laden(){
+  try{
+    var r = JSON.parse(localStorage.getItem(CFG.key) || "{}");
+    if(!r || typeof r !== "object") r = {};
+    if(!Array.isArray(r.album)) r.album = [];
+    if(typeof r.best !== "number") r.best = 0;
+    if(typeof r.runden !== "number") r.runden = 0;
+    return r;
+  }catch(e){ return {album:[], best:0, runden:0}; }
+}
+function sichern(){ try{ localStorage.setItem(CFG.key, JSON.stringify(S)); }catch(e){} }
+var S = laden(), runde = null;
+
+function zeigen(w){ ["start","game","end"].forEach(function(id){
+  $(id).classList.toggle("hidden", id !== w); }); window.scrollTo(0,0); }
+
+/* ---------- Runde zusammenstellen ----------
+   Nach Aufgabentyp gruppiert und im Wechsel entnommen, damit jede Runde
+   gemischt ist und nicht zufällig achtmal dasselbe Format bringt. */
+function bauen(){
+  var nach = {}, folge = [];
+  ITEMS.forEach(function(it){
+    if(!nach[it.tag]){ nach[it.tag] = []; folge.push(it.tag); }
+    nach[it.tag].push(it);
+  });
+  folge.forEach(function(t){ nach[t] = mischen(nach[t]); });
+  /* Auch die REIHENFOLGE der Gruppen mischen. Sonst füllen bei einem Modul mit
+     mehr Gruppen als Runden-Plätzen immer die ersten Gruppen die Runde, und die
+     letzten kommen nie dran - in Modul 2.2 fielen so die beiden
+     "Welcher Absatz fehlt?"-Items dauerhaft heraus. */
+  folge = mischen(folge);
+  var raus = [], runde_ = 0;
+  while(raus.length < CFG.runde && runde_ < 40){
+    var leer = true;
+    for(var i = 0; i < folge.length && raus.length < CFG.runde; i++){
+      var g = nach[folge[i]];
+      if(g.length){ raus.push(g.shift()); leer = false; }
+    }
+    if(leer) break;
+    runde_++;
+  }
+  return mischen(raus);
+}
+function starten(){
+  runde = {liste:bauen(), i:0, richtig:0, serie:0, beste:0, neue:[]};
+  zeigen("game"); frage();
+}
+
+/* ---------- Darstellung je Aufgabentyp ---------- */
+var gewaehlt = null;      // wahl / luecke: Text der Wahl
+var reihe = null;         // sortieren: gesetzte Teile
+var offen = null;         // sortieren: noch nicht gesetzt
+var markiert = null;      // markieren: Indizes
+
+function frage(){
+  var it = runde.liste[runde.i], b = $("body");
+  $("pos").textContent = (runde.i+1) + " / " + runde.liste.length;
+  $("score").textContent = runde.richtig + " richtig";
+  $("streak").textContent = "Serie " + runde.serie;
+  $("fill").style.width = (runde.i / runde.liste.length * 100) + "%";
+  $("fb").classList.add("hidden");
+  $("next").classList.add("hidden");
+  $("pruefen").classList.add("hidden");
+  $("pruefen").disabled = false;
+  $("tagline").textContent = it.tag;
+  gewaehlt = null; reihe = null; offen = null; markiert = null;
+
+  if(it.typ === "wahl" || it.typ === "luecke"){ zeigeWahl(it, b); }
+  else if(it.typ === "sortieren"){ zeigeSortieren(it, b); }
+  else if(it.typ === "markieren"){ zeigeMarkieren(it, b); }
+  else if(it.typ === "freitext"){ zeigeFreitext(it, b); }
+}
+
+function optionen(it){
+  var richtig = it.opt[it.a];
+  var liste = it.fest ? it.opt.slice() : mischen(it.opt);
+  return {liste:liste, richtig:richtig};
+}
+
+/* Karikaturen stecken als SVG in CFG.bilder und werden über it.bild geholt -
+   so steht jede Zeichnung einmal in der Datei, auch wenn sechs Items sie
+   brauchen. */
+function bildHtml(it){
+  if(!it.bild) return "";
+  var svg = (CFG.bilder || {})[it.bild];
+  return svg ? '<div class="bild">' + svg + "</div>" : "";
+}
+
+function zeigeWahl(it, b){
+  var o = optionen(it);
+  it._richtig = o.richtig;
+  var kopf;
+  if(it.typ === "luecke"){
+    kopf = '<p class="stim">'
+      + it.satz.replace("___", '<span class="blank" id="blank">&nbsp;</span>')
+      + "</p>";
+  } else {
+    kopf = bildHtml(it) + '<p class="stim">' + it.stimulus + "</p>";
+  }
+  b.innerHTML = kopf + '<p class="ask">' + it.frage + "</p>" +
+    o.liste.map(function(t, i){
+      return '<button class="opt" data-i="' + i + '">' + t + "</button>";
+    }).join("");
+  Array.prototype.forEach.call(b.querySelectorAll(".opt"), function(btn){
+    btn.addEventListener("click", function(){
+      var t = o.liste[Number(btn.getAttribute("data-i"))];
+      if(it.typ === "luecke" && $("blank")){
+        $("blank").textContent = t;
+        $("blank").classList.add("full");
+      }
+      auswerten(it, t === o.richtig,
+        'Richtig wäre: <b>' + o.richtig + "</b>. ", btn,
+        o.liste.indexOf(o.richtig));
+    });
+  });
+}
+
+function zeigeSortieren(it, b){
+  reihe = []; offen = mischen(it.teile);
+  b.innerHTML = bildHtml(it) + '<p class="ask">' + it.frage + "</p>" +
+    '<div class="slotlabel">DEINE REIHENFOLGE</div><div class="sortliste" id="gesetzt"></div>' +
+    '<div class="slotlabel">NOCH OFFEN — TIPPE AN</div><div class="sortliste" id="pool"></div>';
+  malenSortieren(it);
+  $("pruefen").classList.remove("hidden");
+}
+function malenSortieren(it){
+  var g = $("gesetzt"), p = $("pool");
+  g.innerHTML = ""; p.innerHTML = "";
+  if(reihe.length === 0){
+    g.innerHTML = '<p class="leer">Noch nichts gesetzt.</p>';
+  }
+  reihe.forEach(function(t, i){
+    var btn = document.createElement("button");
+    btn.className = "sort gesetzt";
+    btn.innerHTML = '<span class="n">' + (i+1) + "</span><span>" + esc(t) + "</span>";
+    btn.addEventListener("click", function(){
+      reihe.splice(i, 1); offen.push(t); malenSortieren(it);
+    });
+    g.appendChild(btn);
+  });
+  if(offen.length === 0){
+    p.innerHTML = '<p class="leer">Alles gesetzt — jetzt prüfen.</p>';
+  }
+  offen.forEach(function(t, i){
+    var btn = document.createElement("button");
+    btn.className = "sort";
+    btn.innerHTML = '<span class="n">?</span><span>' + esc(t) + "</span>";
+    btn.addEventListener("click", function(){
+      offen.splice(i, 1); reihe.push(t); malenSortieren(it);
+    });
+    p.appendChild(btn);
+  });
+  $("pruefen").disabled = offen.length > 0;
+  $("pruefen").textContent = offen.length > 0
+    ? "Noch " + offen.length + " offen" : "Prüfen ▶";
+}
+
+function zeigeMarkieren(it, b){
+  markiert = {};
+  b.innerHTML = bildHtml(it) + '<p class="ask">' + it.frage + "</p>" +
+    '<p class="marktext" id="mt">' + it.teile.map(function(t, i){
+      return '<span class="mark" data-i="' + i + '">' + esc(t.t) + "</span>";
+    }).join("") + "</p>";
+  Array.prototype.forEach.call(b.querySelectorAll(".mark"), function(sp){
+    sp.addEventListener("click", function(){
+      var i = sp.getAttribute("data-i");
+      if(markiert[i]){ delete markiert[i]; sp.classList.remove("an"); }
+      else { markiert[i] = true; sp.classList.add("an"); }
+    });
+  });
+  $("pruefen").classList.remove("hidden");
+}
+
+function zeigeFreitext(it, b){
+  b.innerHTML = bildHtml(it) + '<p class="stim">' + it.stimulus + "</p>" +
+    '<p class="ask">' + it.frage + "</p>" +
+    '<textarea id="eingabe" placeholder="Schreib hier auf Englisch …"></textarea>';
+  $("pruefen").classList.remove("hidden");
+}
+
+/* ---------- Freitext: Musterabgleich (Spezifikation § 4.2) ----------
+   Geprüft werden Bestandteile, nicht Qualität. Was geprüft wurde, sagt die
+   App ausdrücklich (§ 4.3) - sie behauptet nie, eine Leistung bewertet zu
+   haben. */
+function freitextPruefen(text, pruef){
+  var t = norm(text), n = worte(text).length;
+  var zeilen = [], alles = true;
+  pruef.forEach(function(p){
+    var ok = false, sagt = p.sagt, fehlt = p.fehlt || (p.sagt + " fehlt");
+    if(p.typ === "enthaelt"){
+      ok = p.wert.every(function(w){ return t.indexOf(norm(w)) >= 0; });
+    } else if(p.typ === "eins_aus"){
+      ok = p.wert.some(function(w){ return t.indexOf(norm(w)) >= 0; });
+    } else if(p.typ === "nicht_enthalten"){
+      ok = !p.wert.some(function(w){ return t.indexOf(norm(w)) >= 0; });
+    } else if(p.typ === "zeilenangabe"){
+      ok = /\(\s*ll?\s*\.\s*\d+/i.test(text);
+    } else if(p.typ === "zitat_woertlich"){
+      var m = String(text).match(/[„"]([^“”"]{6,})[“”"]/);
+      ok = !!m && norm(CFG.quelltext || "").indexOf(norm(m[1])) >= 0;
+    } else if(p.typ === "laenge"){
+      ok = n >= p.wert[0] && n <= p.wert[1];
+      sagt = p.sagt + " — " + n + " Wörter";
+      fehlt = n < p.wert[0]
+        ? "zu knapp (" + n + " Wörter, erwartet mindestens " + p.wert[0] + ")"
+        : "zu lang (" + n + " Wörter, mehr als " + p.wert[1] + ")";
+    }
+    if(!ok) alles = false;
+    zeilen.push("<li>" + (ok ? "✓ " : "✗ ") + (ok ? sagt : fehlt) + "</li>");
+  });
+  return {alles:alles, liste:"<ul class='checks'>" + zeilen.join("") + "</ul>"};
+}
+
+/* ---------- Auswertung ---------- */
+function belohnen(ok){
+  if(ok){
+    runde.richtig++; runde.serie++;
+    if(runde.serie > runde.beste) runde.beste = runde.serie;
+    var gold = runde.serie % 3 === 0;
+    var st = gold ? CFG.gold
+      : CFG.chips[Math.floor(Math.random()*CFG.chips.length)];
+    runde.neue.push(st); S.album.push(st); sichern();
+    return gold ? "Richtig — drei in Folge! " + CFG.gold : "Richtig! " + st;
+  }
+  runde.serie = 0;
+  return "Noch nicht.";
+}
+function malenChips(ziel, liste){
+  ziel.innerHTML = "";
+  liste.forEach(function(s){
+    var d = document.createElement("span");
+    d.className = "chip" + (s === CFG.gold ? " g" : "");
+    d.textContent = s; ziel.appendChild(d);
+  });
+}
+function fertig(kopf, text, ok){
+  var fb = $("fb");
+  fb.className = "fb " + (ok ? "ok" : "no");
+  fb.innerHTML = '<b class="kopf">' + kopf + "</b>" +
+    '<span class="krit">' + CFG.kriterium + "</span>" + text;
+  fb.classList.remove("hidden");
+  $("pruefen").classList.add("hidden");
+  $("next").textContent = (runde.i+1 < runde.liste.length) ? "Weiter ▶" : "Ergebnis ▶";
+  $("next").classList.remove("hidden");
+  $("score").textContent = runde.richtig + " richtig";
+  $("streak").textContent = "Serie " + runde.serie;
+  malenChips($("collected"), runde.neue);
+}
+
+function auswerten(it, ok, hinweis, btn, iRichtig){
+  var knoepfe = $("body").querySelectorAll(".opt");
+  Array.prototype.forEach.call(knoepfe, function(x){ x.disabled = true; });
+  if(knoepfe[iRichtig]) knoepfe[iRichtig].classList.add("war");
+  if(!ok && btn) btn.classList.add("daneben");
+  fertig(belohnen(ok), (ok ? "" : hinweis) + it.why, ok);
+}
+
+function pruefenJetzt(){
+  var it = runde.liste[runde.i];
+  if(it.typ === "sortieren"){
+    var ok = reihe.join("§") === it.teile.join("§");
+    Array.prototype.forEach.call($("gesetzt").querySelectorAll(".sort"),
+      function(el, i){
+        el.disabled = true;
+        el.classList.add(reihe[i] === it.teile[i] ? "war" : "daneben");
+      });
+    var richtig = ok ? "" : "<b>Richtige Reihenfolge:</b><ol style='margin:.3rem 0 .6rem;padding-left:1.3rem'>"
+      + it.teile.map(function(t){ return "<li>" + esc(t) + "</li>"; }).join("")
+      + "</ol>";
+    fertig(belohnen(ok), richtig + it.why, ok);
+  } else if(it.typ === "markieren"){
+    var soll = {}, i;
+    for(i = 0; i < it.teile.length; i++){ if(it.teile[i].f) soll[i] = true; }
+    var gleich = Object.keys(soll).length === Object.keys(markiert).length;
+    if(gleich){
+      for(i in soll){ if(!markiert[i]) { gleich = false; break; } }
+    }
+    Array.prototype.forEach.call($("body").querySelectorAll(".mark"),
+      function(sp){
+        var k = sp.getAttribute("data-i");
+        sp.classList.remove("an");
+        sp.style.cursor = "default";
+        if(soll[k] && markiert[k]) sp.classList.add("war");
+        else if(soll[k]) sp.classList.add("verpasst");
+        else if(markiert[k]) sp.classList.add("an");
+      });
+    var legende = gleich ? ""
+      : "<p class='note' style='margin-top:.3rem'>Grün: richtig gefunden · "
+        + "Gelb: übersehen · Rot: hier war nichts falsch.</p>";
+    fertig(belohnen(gleich), legende + it.why, gleich);
+  } else if(it.typ === "freitext"){
+    var e = $("eingabe");
+    var r = freitextPruefen(e.value || "", it.pruef);
+    e.disabled = true;
+    var muster = "<p class='note' style='margin-top:.6rem'><b>Ein möglicher "
+      + "Satz:</b><br><i>" + esc(it.muster) + "</i></p>";
+    var ehrlich = "<p class='note'><b>Geprüft wurden die Bestandteile.</b> "
+      + "Ob dein Satz gut klingt und ob das Thema richtig benannt ist, "
+      + "entscheidest du am Kriterienraster — das kann dir diese App nicht "
+      + "abnehmen.</p>";
+    fertig(belohnen(r.alles), r.liste + (it.why ? "<p class='note'>" + it.why
+      + "</p>" : "") + muster + ehrlich, r.alles);
+  }
+}
+
+function weiter(){
+  runde.i++;
+  if(runde.i < runde.liste.length){ frage(); } else { beenden(); }
+}
+function beenden(){
+  S.runden++;
+  if(runde.richtig > S.best) S.best = runde.richtig;
+  sichern();
+  var n = runde.liste.length;
+  var sterne = runde.richtig >= n-1 ? 3 : (runde.richtig >= n-3 ? 2 : 1);
+  $("stars").textContent = "⭐".repeat(sterne) + "☆".repeat(3-sterne);
+  $("endTitle").textContent = runde.richtig === n ? "Alles richtig!" : "Runde geschafft";
+  $("endLine").textContent = runde.richtig + " von " + n + " · längste Serie "
+    + runde.beste + " · dein Rekord: " + S.best + " von " + n + ".";
+  $("code").textContent = CFG.code + "-" + runde.richtig + "/" + n;
+  $("openLoop").textContent = sterne === 3
+    ? "Nächstes Ziel: eine Runde ohne Fehler."
+    : "Die Aufgaben werden neu gemischt. Noch " + (3-sterne) + " Stern"
+      + (3-sterne === 1 ? "" : "e") + " bis zur vollen Wertung.";
+  if(S.runden % 3 === 0){
+    $("openLoop").textContent = "Gut für heute — drei Runden sind genug. "
+      + $("openLoop").textContent;
+  }
+  malenChips($("album"), S.album.slice(-40));
+  var g = S.album.filter(function(x){ return x === CFG.gold; }).length;
+  $("albumNote").textContent = S.album.length + " gesammelt, davon " + g
+    + " goldene · " + S.runden + " Runden.";
+  zeigen("end");
+}
+
+$("go").addEventListener("click", starten);
+$("again").addEventListener("click", starten);
+$("back").addEventListener("click", function(){ zeigen("start"); });
+$("next").addEventListener("click", weiter);
+$("pruefen").addEventListener("click", pruefenJetzt);
+$("resume").addEventListener("click", function(){
+  malenChips($("album"), S.album.slice(-40));
+  var g = S.album.filter(function(x){ return x === CFG.gold; }).length;
+  $("stars").textContent = "";
+  $("endTitle").textContent = "Deine Ergebnisse";
+  $("endLine").textContent = S.runden === 0 ? "Noch nichts gespielt."
+    : "Rekord: " + S.best + " von " + CFG.runde + " · " + S.runden + " Runden.";
+  $("code").textContent = CFG.code + "-" + S.best + "/" + CFG.runde;
+  $("openLoop").textContent = "";
+  $("albumNote").textContent = S.album.length + " gesammelt, davon " + g
+    + " goldene.";
+  zeigen("end");
+});
+</script>
+</body>
+</html>

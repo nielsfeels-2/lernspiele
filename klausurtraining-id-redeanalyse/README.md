@@ -9,14 +9,14 @@ Rhetorische Mittel — mit Wirkung, nicht als Liste
 
 ## Was das Modul trainiert (R1)
 
-Eine Liste rhetorischer Mittel ist keine Analyse. Die Punkte liegen auf der <b>Wirkung</b>. Beide Reden stehen oben zum Aufklappen.
+Eine Liste rhetorischer Mittel ist keine Analyse. Die Punkte liegen auf der <b>Wirkung</b>. Zwei Reden von heute stehen oben zum Aufklappen.
 
 ## Technik
 
 * eine HTML-Datei, offline lauffähig, kein CDN, keine Anmeldung
 * `localStorage`-Schlüssel `kt-id-v1` · 8 Aufgaben je Runde
 * 17 Items: 4× markieren, 13× wahl
-* Quellen: rede, gettysburg, vorgaben
+* Quellen: rede, redebus, vorgaben, standard
 
 **Nicht hier ändern.** Die Datei wird erzeugt:
 
@@ -42,8 +42,8 @@ Quelle**.
 | 4 | WELCHES MITTEL IST DAS? | wahl | Der Tresor steht für Besitz und Verschluss. Wirkung: Das Bild macht einen Verwaltungsstreit anschaulich — man… |
 | 5 | WELCHES MITTEL IST DAS? | wahl | Zwei Verben, die einander ausschließen, in vier Wörtern. Wirkung: Die ganze Streitfrage — fragen oder nehmen … |
 | 6 | WELCHES MITTEL IST DAS? | wahl | Die Kiste ist das Bild für Wegschaffen. Wirkung: Der Schluss dreht den Vorwurf um — man kann dem Museum Objek… |
-| 7 | WELCHES MITTEL IST DAS? | wahl | Dreimal derselbe Anfang. Wirkung: Die Wiederholung macht den Redner klein — er zählt auf, was er nicht vermag… |
-| 8 | WELCHES MITTEL IST DAS? | wahl | Drei Präpositionen, ein Wort. Wirkung: Die Dreierfigur klingt abgeschlossen — deshalb steht sie am Ende und w… |
+| 7 | WELCHES MITTEL IST DAS? | wahl | Dreimal derselbe Satzanfang. Wirkung: Die Wiederholung macht die Folgen zählbar — jedes Ziel fällt weg, ohne … |
+| 8 | WELCHES MITTEL IST DAS? | wahl | Bewusst zu klein gesagt. Wirkung: Die Rednerin nimmt dem Rat das Gegenargument aus der Hand, bevor er es auss… |
 | 9 | MITTEL ODER WIRKUNG? | wahl | Eine Beobachtung am Text — richtig, aber noch unbezahlt. Erst der nächste Satz bringt den Punkt. |
 | 10 | MITTEL ODER WIRKUNG? | wahl | Hier steht, was das Mittel mit den Zuhörenden macht. Genau dieser Satz ist in Klausuren am häufigsten der feh… |
 | 11 | MITTEL ODER WIRKUNG? | wahl | Eine Inhaltsangabe. Sie gehört in Teilaufgabe 1 — in der Analyse zählt sie allenfalls als Beleg für eine Beha… |
