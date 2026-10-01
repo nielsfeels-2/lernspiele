@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>AFB erkennen · Klausurtraining Englisch</title>
+<style>
+  :root{
+    --ink:#1A1A1A; --muted:#5D5D66; --paper:#FBFAF7; --card:#FFFFFF;
+    --accent:#4C4A8F; --tint:#E9E8F3; --band:#2E5458;
+    --ok:#1F7A5A; --okbg:#E3F1EB; --no:#A33; --nobg:#F8E7E7;
+    --gold:#B8860B; --goldbg:#FBF3DC;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);
+    font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    touch-action:manipulation;padding:0 0 env(safe-area-inset-bottom)}
+  .band{background:var(--band);color:#fff;padding:.5rem 1rem;font-size:.8rem;
+        font-weight:700;letter-spacing:.04em;display:flex;
+        justify-content:space-between;gap:1rem}
+  .band a{color:#fff;text-decoration:none;opacity:.85;white-space:nowrap}
+  .wrap{max-width:860px;margin:0 auto;padding:1rem}
+  h1{font-size:1.7rem;margin:.5rem 0 .2rem}
+  h2{font-size:1.15rem;margin:1.3rem 0 .4rem}
+  .lead{color:var(--muted);margin:.2rem 0 1rem}
+  .card{background:var(--card);border-radius:14px;padding:1.05rem;
+        box-shadow:0 1px 3px rgba(0,0,0,.09);margin-bottom:.9rem}
+  button{font:inherit;border:0;border-radius:14px;cursor:pointer}
+  .go{background:var(--accent);color:#fff;min-height:76px;width:100%;
+      font-size:1.14rem;font-weight:800;padding:.8rem}
+  .ghost{background:var(--tint);color:var(--accent);min-height:54px;
+         padding:.6rem 1rem;font-weight:700;width:100%;margin-top:.6rem}
+  .opt{display:block;width:100%;text-align:left;background:var(--tint);
+       color:var(--ink);min-height:68px;padding:.8rem 1rem;margin-bottom:.6rem;
+       font-size:1.02rem;border:3px solid transparent;line-height:1.4}
+  .opt:active{transform:scale(.995)}
+  .opt[disabled]{opacity:.55}
+  .opt.war{border-color:var(--ok)}
+  .opt.daneben{border-color:var(--no)}
+  .stim{font-size:1.1rem;line-height:1.55;border-left:4px solid var(--accent);
+        padding-left:.75rem;margin:.3rem 0 .2rem}
+  .ask{color:var(--muted);font-size:.93rem;margin:.6rem 0 .7rem}
+  textarea{width:100%;min-height:6rem;font:inherit;border:2px solid var(--tint);
+           border-radius:12px;padding:.7rem;resize:vertical;background:#fff}
+  textarea:focus{outline:none;border-color:var(--accent)}
+  .fb{margin-top:.9rem;padding:.9rem 1rem;border-radius:12px}
+  .fb.ok{background:var(--okbg);border-left:6px solid var(--ok)}
+  .fb.no{background:var(--nobg);border-left:6px solid var(--no)}
+  .fb b.kopf{display:block;margin-bottom:.25rem;font-size:1.06rem}
+  .krit{display:block;font-weight:700;color:var(--accent);font-size:.93rem;
+        margin-bottom:.3rem}
+  .checks{margin:.5rem 0 0;padding:0;list-style:none;font-size:.97rem}
+  .checks li{padding:.12rem 0}
+  .hud{display:flex;gap:.45rem;flex-wrap:wrap;margin:.2rem 0 .7rem}
+  .pill{background:var(--tint);color:var(--accent);border-radius:999px;
+        padding:.3rem .75rem;font-size:.87rem;font-weight:700}
+  .pill.g{background:var(--goldbg);color:var(--gold)}
+  .bar{height:9px;background:var(--tint);border-radius:999px;overflow:hidden;
+       margin:0 0 .9rem}
+  .bar>i{display:block;height:100%;background:var(--accent);width:0;
+         transition:width .25s}
+  .tagline{font-size:.82rem;font-weight:700;color:var(--accent);
+           letter-spacing:.05em}
+  .stars{font-size:2.1rem;letter-spacing:.14rem}
+  .chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.5rem}
+  .chip{font-size:1.35rem;padding:.3rem .4rem;border-radius:10px;
+        background:var(--tint)}
+  .chip.g{background:var(--goldbg)}
+  .hidden{display:none!important}
+  .note{color:var(--muted);font-size:.88rem;margin-top:.8rem}
+  ol.steps{margin:.3rem 0 0;padding-left:1.2rem}
+  ol.steps li{margin-bottom:.45rem}
+  code{background:var(--tint);border-radius:5px;padding:.08rem .3rem;
+       font-size:.94em}
+  /* --- Lücke --- */
+  .blank{display:inline-block;min-width:5rem;border-bottom:3px solid var(--accent);
+         vertical-align:baseline}
+  .blank.full{border-bottom-color:var(--ok);font-weight:800;color:var(--accent)}
+  /* --- Sortieren --- */
+  .slotlabel{font-size:.82rem;font-weight:700;color:var(--muted);
+             letter-spacing:.04em;margin:.9rem 0 .35rem}
+  .sortliste{display:flex;flex-direction:column;gap:.5rem}
+  .sort{display:flex;gap:.6rem;align-items:center;width:100%;text-align:left;
+        background:var(--tint);color:var(--ink);min-height:64px;
+        padding:.65rem .9rem;font-size:1rem;line-height:1.35;
+        border:3px solid transparent}
+  .sort .n{flex:0 0 1.9rem;height:1.9rem;border-radius:999px;
+           background:var(--accent);color:#fff;font-weight:800;
+           display:flex;align-items:center;justify-content:center;
+           font-size:.92rem}
+  .sort.gesetzt{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.09)}
+  .sort.war{border-color:var(--ok)}
+  .sort.daneben{border-color:var(--no)}
+  .leer{color:var(--muted);font-size:.9rem;padding:.5rem 0}
+  /* --- Markieren --- */
+  .marktext{font-size:1.14rem;line-height:2.15;margin:.3rem 0 .2rem}
+  .mark{cursor:pointer;border-radius:6px;padding:.15rem .1rem;
+        border-bottom:3px solid transparent}
+  .mark.an{background:#F4E2E2;border-bottom-color:var(--no);font-weight:700}
+  .mark.war{background:var(--okbg);border-bottom-color:var(--ok)}
+  .mark.verpasst{background:#FFF6D8;border-bottom-color:var(--gold)}
+  @media (max-width:430px){ .marktext{line-height:2.4} }
+</style>
+</head>
+<body>
+<div class="band">
+  <span>KRITERIUM 1 · AUFGABENBEZUG · 6 PUNKTE</span>
+  <a href="../klausurtraining/">← Auswahl</a>
+</div>
+<div class="wrap">
+
+<section id="start">
+  <h1>AFB erkennen</h1>
+  <p class="lead">Jede Klausur hat <b>drei Teilaufgaben</b>, und jede will etwas anderes. Wer in Teilaufgabe 1 schon wertet, verschenkt doppelt: Die Wertung zählt dort nicht — und in Teilaufgabe 3 fehlt sie dann.</p>
+  <div class="card">
+    <h2 style="margin-top:0">Die drei Teilaufgaben</h2>
+<ol class="steps">
+  <li><b>Leseverstehen</b> — meist eine Zusammenfassung. Sie „dient dazu, das
+      Textverständnis zu sichern". Schwerpunkt <b>AFB I und II</b>.</li>
+  <li><b>Analyse</b> — „unter Berücksichtigung des Zusammenhangs von Form und
+      Inhalt". Schwerpunkt <b>AFB II</b>.</li>
+  <li><b>Stellungnahme oder Gestaltung</b> — „produktiv-gestaltend bzw.
+      kritisch-wertend". Schwerpunkt <b>AFB II und III</b>.</li>
+</ol>
+<p class="note“ style="color:var(--accent);font-weight:700">
+  Richtwert der Punkte: 12 · 17 · 15. Die Analyse ist die größte Teilaufgabe.</p>
+<h2>Und die drei Anforderungsbereiche?</h2>
+<ol class="steps">
+  <li><b>AFB I</b> — wiedergeben: was im Text steht, in eigenen Worten.</li>
+  <li><b>AFB II</b> — erklären und einordnen: wie es zusammenhängt, was es
+      bewirkt.</li>
+  <li><b>AFB III</b> — beurteilen: eigene, begründete Wertung.</li>
+</ol>
+<p class="note">Eine reine Beobachtung (<i>der Satz wird dreimal wiederholt</i>) ist
+  noch <b>AFB I</b>. AFB II beginnt dort, wo du sagst, was sie bewirkt.</p>
+    <button class="go" id="go" style="margin-top:.9rem">Los geht’s ▶</button>
+    <button class="ghost" id="resume">Meine Ergebnisse</button>
+  </div>
+  <details class="card">
+    <summary style="font-weight:700;cursor:pointer">Für Eltern und Lehrkräfte</summary>
+    <p class="note">Trainiert wird Kriterium 1 (Aufgabenbezug, 6 Punkte). Die Beschreibung der drei Teilaufgaben ist wörtlich aus den Konstruktionshinweisen – Klausuren in den modernen Fremdsprachen in der gymnasialen Oberstufe (MSB NRW, Okt. 2025), § 2.1.2 übernommen; der Punkte-Richtwert 12 / 17 / 15 aus dem Bewertungsraster desselben Dokuments.</p>
+    <p class="note">Keine Anmeldung, keine Namen, keine Datenübertragung. Der
+      Fortschritt bleibt auf diesem Gerät.</p>
+  </details>
+</section>
+
+<section id="game" class="hidden">
+  <div class="hud">
+    <span class="pill" id="pos"></span>
+    <span class="pill" id="score"></span>
+    <span class="pill g" id="streak"></span>
+  </div>
+  <div class="bar"><i id="fill"></i></div>
+  <div class="card">
+    <div class="tagline" id="tagline"></div>
+    <div id="body"></div>
+    <button class="go hidden" id="pruefen" style="margin-top:.9rem">Prüfen ▶</button>
+    <div id="fb" class="fb hidden"></div>
+    <button class="go hidden" id="next" style="margin-top:.9rem">Weiter ▶</button>
+  </div>
+  <div class="chips" id="collected"></div>
+</section>
+
+<section id="end" class="hidden">
+  <h1 id="endTitle">Geschafft</h1>
+  <div class="card">
+    <div class="stars" id="stars"></div>
+    <p class="lead" id="endLine"></p>
+    <p style="margin:.2rem 0 .3rem"><b>Zeig das jemandem:</b></p>
+    <span class="pill" id="code" style="font-size:1.2rem;padding:.5rem 1rem"></span>
+    <p class="note" id="openLoop"></p>
+    <button class="go" id="again" style="margin-top:.9rem">Noch eine Runde ▶</button>
+    <button class="ghost" id="back">Zurück zum Anfang</button>
+    <button class="ghost" onclick="location.href='../klausurtraining/'">Andere Übung wählen</button>
+  </div>
+  <div class="card">
+    <b>Gesammelt</b>
+    <div class="chips" id="album"></div>
+    <p class="note" id="albumNote"></p>
+  </div>
+</section>
+
+</div>
+<script>
+"use strict";
+/* ==================================================================
+   MODUL 1.2 · AFB ERKENNEN
+   KRITERIUM 1 · AUFGABENBEZUG · 6 PUNKTE
+   Spezifikation: 14_LERNAPPS/KLAUSURTRAINING-SPEZIFIKATION.md
+   Erzeugt von 12_SCRIPTS/klausurtraining_bauen.py — nicht hier ändern,
+   sondern in 12_SCRIPTS/klausurtraining_inhalte.py.
+
+   Quelltext der Beispiele: Abraham Lincoln, Gettysburg Address,
+   19.11.1863 (Bliss-Fassung), wörtlich nach nps.gov. Gemeinfrei —
+   und als *unbekannter* Klausurtext zu bekannt, deshalb dauerhaft frei
+   für Übungen (Spezifikation R3).
+
+   Die zitierten Operator-Erläuterungen und Bewertungskriterien stammen
+   wörtlich aus den Landesvorgaben NRW (Operatorenübersicht ab Abitur
+   2025; Konstruktionshinweise Klausuren moderne Fremdsprachen, Okt. 2025).
+   Bewertungskriterien sind kein Prüfungsinhalt — die SuS sollen sie kennen.
+
+   ▲ Alle Quelltexte sind gegen die Sperrliste geprüft
+   (12_SCRIPTS/klausurtexte_sperrliste.py, Regel R0): niemals Material aus
+   einer Klausur oder einer anderen Leistungsüberprüfung in einer Übung.
+   ================================================================== */
+
+var CFG = {
+"kriterium": "Kriterium 1 · Aufgabenbezug · 6 Punkte",
+"code": "AFB",
+"key": "kt-12-v1",
+"runde": 8,
+"chips": [
+"1️⃣",
+"2️⃣",
+"3️⃣",
+"🪜",
+"⚖️",
+"🔎"
+],
+"gold": "🏅",
+"quelltext": "Four score and seven years ago our fathers brought forth on this continent, a new nation conceived in liberty, and dedicated to the proposition that all men are created equal. Now we are engaged in a great civil war, testing whether that nation or any nation so conceived and so dedicated, can long endure. We are met on a great battlefield of that war. We have come to dedicate a portion of that field as a final resting place for those who here gave their lives, that that nation might live. It is altogether fitting and proper that we should do this. But, in a larger sense, we can not dedicate — we can not consecrate — we can not hallow, this ground. The brave men living and dead who struggled here, have consecrated it far above our poor power to add or detract. The world will little note, nor long remember what we say here but it can never forget what they did here. It is for us the living rather to be dedicated here to the unfinished work which they who fought here have thus far so nobly advanced. It is rather for us to be here dedicated to the great task remaining before us — that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion — that we here highly resolve that these dead shall not have died in vain — that this nation under God shall have a new birth of freedom — and that government of the people by the people for the people shall not perish from the earth."
+};
+var ITEMS = [
+{
+"typ": "wahl",
+"tag": "WELCHE TEILAUFGABE IST DAS?",
+"fest": true,
+"stimulus": "<b>Outline</b> the steps of the speaker’s argument.",
+"frage": "In welche Teilaufgabe gehört das?",
+"opt": [
+"Teilaufgabe 1 · Leseverstehen",
+"Teilaufgabe 2 · Analyse",
+"Teilaufgabe 3 · Stellungnahme"
+],
+"a": 0,
+"why": "Wiedergeben, geordnet, ohne Deutung — das sichert das Textverständnis. Teilaufgabe 1, Schwerpunkt AFB I und II."
+},
+{
+"typ": "wahl",
+"tag": "WELCHE TEILAUFGABE IST DAS?",
+"fest": true,
+"stimulus": "<b>Analyse</b> how the speaker creates a sense of shared duty. Focus on structure and rhetorical devices.",
+"frage": "In welche Teilaufgabe gehört das?",
+"opt": [
+"Teilaufgabe 1 · Leseverstehen",
+"Teilaufgabe 2 · Analyse",
+"Teilaufgabe 3 · Stellungnahme"
+],
+"a": 1,
+"why": "Verlangt ist eine Analyse „unter Berücksichtigung des Zusammenhangs von Form und Inhalt“. Teilaufgabe 2, Schwerpunkt AFB II, und mit 17 Punkten die größte der drei."
+},
+{
+"typ": "wahl",
+"tag": "WELCHE TEILAUFGABE IST DAS?",
+"fest": true,
+"stimulus": "<b>Assess</b> whether an appeal to a shared past can still unite a divided society.",
+"frage": "In welche Teilaufgabe gehört das?",
+"opt": [
+"Teilaufgabe 1 · Leseverstehen",
+"Teilaufgabe 2 · Analyse",
+"Teilaufgabe 3 · Stellungnahme"
+],
+"a": 2,
+"why": "Ein begründetes Urteil, das über den Text hinausgeht — kritisch-wertend. Teilaufgabe 3, Schwerpunkt AFB II und III."
+},
+{
+"typ": "wahl",
+"tag": "WELCHE TEILAUFGABE IST DAS?",
+"fest": true,
+"stimulus": "<b>Write</b> a letter to the editor in which you take a stand on the speaker’s demand.",
+"frage": "In welche Teilaufgabe gehört das?",
+"opt": [
+"Teilaufgabe 1 · Leseverstehen",
+"Teilaufgabe 2 · Analyse",
+"Teilaufgabe 3 · Stellungnahme"
+],
+"a": 2,
+"why": "Produktiv-gestaltend: eine eigene Textsorte mit eigener Position. Das ist die andere Hälfte von Teilaufgabe 3 — ab Q2.2 dürfen die SuS zwischen beiden wählen."
+},
+{
+"typ": "wahl",
+"tag": "WELCHE TEILAUFGABE IST DAS?",
+"fest": true,
+"stimulus": "<b>Summarize</b> what the speaker says about the task of the living.",
+"frage": "In welche Teilaufgabe gehört das?",
+"opt": [
+"Teilaufgabe 1 · Leseverstehen",
+"Teilaufgabe 2 · Analyse",
+"Teilaufgabe 3 · Stellungnahme"
+],
+"a": 0,
+"why": "Eine Zusammenfassung bestimmter thematischer Aspekte — genau die Form, die die Konstruktionshinweise für Teilaufgabe 1 nennen."
+},
+{
+"typ": "wahl",
+"tag": "WELCHE TEILAUFGABE IST DAS?",
+"fest": true,
+"stimulus": "<b>Examine</b> the way the speaker presents the war and its victims.",
+"frage": "In welche Teilaufgabe gehört das?",
+"opt": [
+"Teilaufgabe 1 · Leseverstehen",
+"Teilaufgabe 2 · Analyse",
+"Teilaufgabe 3 · Stellungnahme"
+],
+"a": 1,
+"why": "<i>examine</i> heißt „describe and explain in detail“ — dieselbe Erläuterung wie <i>analyse</i>. Teilaufgabe 2."
+},
+{
+"typ": "wahl",
+"tag": "WELCHE TEILAUFGABE IST DAS?",
+"fest": true,
+"stimulus": "<b>Interpret</b> the last sentence with regard to the speaker’s aim.",
+"frage": "In welche Teilaufgabe gehört das?",
+"opt": [
+"Teilaufgabe 1 · Leseverstehen",
+"Teilaufgabe 2 · Analyse",
+"Teilaufgabe 3 · Stellungnahme"
+],
+"a": 1,
+"why": "<i>interpret</i> = „explain the meaning, purpose or message of sth.“ Bedeutung erklären ist Analyse, nicht Wertung — Teilaufgabe 2."
+},
+{
+"typ": "wahl",
+"tag": "WELCHER ANFORDERUNGSBEREICH?",
+"fest": true,
+"stimulus": "<i>The speech was given in November 1863 on a battlefield of the Civil War.</i>",
+"frage": "Welcher Anforderungsbereich ist das?",
+"opt": [
+"AFB I — wiedergeben",
+"AFB II — erklären, einordnen",
+"AFB III — beurteilen, bewerten"
+],
+"a": 0,
+"why": "Eine Angabe aus dem Text bzw. der Textquelle, korrekt wiedergegeben. Nötig — aber AFB I, und davon gibt es nur wenige Punkte."
+},
+{
+"typ": "wahl",
+"tag": "WELCHER ANFORDERUNGSBEREICH?",
+"fest": true,
+"stimulus": "<i>The speaker repeats „we can not“ three times.</i>",
+"frage": "Welcher Anforderungsbereich ist das?",
+"opt": [
+"AFB I — wiedergeben",
+"AFB II — erklären, einordnen",
+"AFB III — beurteilen, bewerten"
+],
+"a": 0,
+"why": "Das ist noch reines Beobachten — nachzählen kann jede und jeder. <b>AFB II beginnt erst</b> bei: <i>… which makes him sound helpless.</i>"
+},
+{
+"typ": "wahl",
+"tag": "WELCHER ANFORDERUNGSBEREICH?",
+"fest": true,
+"stimulus": "<i>The threefold „we can not“ makes the speaker sound humble and turns the attention away from himself.</i>",
+"frage": "Welcher Anforderungsbereich ist das?",
+"opt": [
+"AFB I — wiedergeben",
+"AFB II — erklären, einordnen",
+"AFB III — beurteilen, bewerten"
+],
+"a": 1,
+"why": "Beobachtung <b>plus</b> Wirkung — genau der Schritt von AFB I zu AFB II. Hier liegt der Schwerpunkt der Analyseaufgabe."
+},
+{
+"typ": "wahl",
+"tag": "WELCHER ANFORDERUNGSBEREICH?",
+"fest": true,
+"stimulus": "<i>Whether such an appeal would still convince an audience today is doubtful, because people no longer share one founding story.</i>",
+"frage": "Welcher Anforderungsbereich ist das?",
+"opt": [
+"AFB I — wiedergeben",
+"AFB II — erklären, einordnen",
+"AFB III — beurteilen, bewerten"
+],
+"a": 2,
+"why": "Ein eigenes Urteil mit Begründung, über den Text hinaus. AFB III — und das gibt es nur in Teilaufgabe 3."
+},
+{
+"typ": "wahl",
+"tag": "WELCHER ANFORDERUNGSBEREICH?",
+"fest": true,
+"stimulus": "<i>The speaker links the survival of the nation to the dead soldiers (l. 19).</i>",
+"frage": "Welcher Anforderungsbereich ist das?",
+"opt": [
+"AFB I — wiedergeben",
+"AFB II — erklären, einordnen",
+"AFB III — beurteilen, bewerten"
+],
+"a": 1,
+"why": "Zwei Stellen in Beziehung setzen ist schon Deutung — AFB II. Reines Wiedergeben wäre: <i>The speaker mentions the dead soldiers.</i>"
+}
+];
+
+function $(id){ return document.getElementById(id); }
+function mischen(a){ var b=a.slice(),i,j,t;
+  for(i=b.length-1;i>0;i--){ j=Math.floor(Math.random()*(i+1)); t=b[i];b[i]=b[j];b[j]=t; }
+  return b; }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;"); }
+function norm(s){
+  return String(s).toLowerCase()
+    .replace(/[„“”‟]/g,'"').replace(/[‘’]/g,"'")
+    .replace(/[—–]/g,"-").replace(/\s+/g," ").trim();
+}
+function worte(s){ return String(s).trim().split(/\s+/).filter(function(w){
+  return w.length > 0; }); }
+
+/* ---------- Fortschritt ---------- */
+function laden(){
+  try{
+    var r = JSON.parse(localStorage.getItem(CFG.key) || "{}");
+    if(!r || typeof r !== "object") r = {};
+    if(!Array.isArray(r.album)) r.album = [];
+    if(typeof r.best !== "number") r.best = 0;
+    if(typeof r.runden !== "number") r.runden = 0;
+    return r;
+  }catch(e){ return {album:[], best:0, runden:0}; }
+}
+function sichern(){ try{ localStorage.setItem(CFG.key, JSON.stringify(S)); }catch(e){} }
+var S = laden(), runde = null;
+
+function zeigen(w){ ["start","game","end"].forEach(function(id){
+  $(id).classList.toggle("hidden", id !== w); }); window.scrollTo(0,0); }
+
+/* ---------- Runde zusammenstellen ----------
+   Nach Aufgabentyp gruppiert und im Wechsel entnommen, damit jede Runde
+   gemischt ist und nicht zufällig achtmal dasselbe Format bringt. */
+function bauen(){
+  var nach = {}, folge = [];
+  ITEMS.forEach(function(it){
+    if(!nach[it.tag]){ nach[it.tag] = []; folge.push(it.tag); }
+    nach[it.tag].push(it);
+  });
+  folge.forEach(function(t){ nach[t] = mischen(nach[t]); });
+  /* Auch die REIHENFOLGE der Gruppen mischen. Sonst füllen bei einem Modul mit
+     mehr Gruppen als Runden-Plätzen immer die ersten Gruppen die Runde, und die
+     letzten kommen nie dran - in Modul 2.2 fielen so die beiden
+     "Welcher Absatz fehlt?"-Items dauerhaft heraus. */
+  folge = mischen(folge);
+  var raus = [], runde_ = 0;
+  while(raus.length < CFG.runde && runde_ < 40){
+    var leer = true;
+    for(var i = 0; i < folge.length && raus.length < CFG.runde; i++){
+      var g = nach[folge[i]];
+      if(g.length){ raus.push(g.shift()); leer = false; }
+    }
+    if(leer) break;
+    runde_++;
+  }
+  return mischen(raus);
+}
+function starten(){
+  runde = {liste:bauen(), i:0, richtig:0, serie:0, beste:0, neue:[]};
+  zeigen("game"); frage();
+}
+
+/* ---------- Darstellung je Aufgabentyp ---------- */
+var gewaehlt = null;      // wahl / luecke: Text der Wahl
+var reihe = null;         // sortieren: gesetzte Teile
+var offen = null;         // sortieren: noch nicht gesetzt
+var markiert = null;      // markieren: Indizes
+
+function frage(){
+  var it = runde.liste[runde.i], b = $("body");
+  $("pos").textContent = (runde.i+1) + " / " + runde.liste.length;
+  $("score").textContent = runde.richtig + " richtig";
+  $("streak").textContent = "Serie " + runde.serie;
+  $("fill").style.width = (runde.i / runde.liste.length * 100) + "%";
+  $("fb").classList.add("hidden");
+  $("next").classList.add("hidden");
+  $("pruefen").classList.add("hidden");
+  $("pruefen").disabled = false;
+  $("tagline").textContent = it.tag;
+  gewaehlt = null; reihe = null; offen = null; markiert = null;
+
+  if(it.typ === "wahl" || it.typ === "luecke"){ zeigeWahl(it, b); }
+  else if(it.typ === "sortieren"){ zeigeSortieren(it, b); }
+  else if(it.typ === "markieren"){ zeigeMarkieren(it, b); }
+  else if(it.typ === "freitext"){ zeigeFreitext(it, b); }
+}
+
+function optionen(it){
+  var richtig = it.opt[it.a];
+  var liste = it.fest ? it.opt.slice() : mischen(it.opt);
+  return {liste:liste, richtig:richtig};
+}
+
+function zeigeWahl(it, b){
+  var o = optionen(it);
+  it._richtig = o.richtig;
+  var kopf;
+  if(it.typ === "luecke"){
+    kopf = '<p class="stim">'
+      + it.satz.replace("___", '<span class="blank" id="blank">&nbsp;</span>')
+      + "</p>";
+  } else {
+    kopf = '<p class="stim">' + it.stimulus + "</p>";
+  }
+  b.innerHTML = kopf + '<p class="ask">' + it.frage + "</p>" +
+    o.liste.map(function(t, i){
+      return '<button class="opt" data-i="' + i + '">' + t + "</button>";
+    }).join("");
+  Array.prototype.forEach.call(b.querySelectorAll(".opt"), function(btn){
+    btn.addEventListener("click", function(){
+      var t = o.liste[Number(btn.getAttribute("data-i"))];
+      if(it.typ === "luecke" && $("blank")){
+        $("blank").textContent = t;
+        $("blank").classList.add("full");
+      }
+      auswerten(it, t === o.richtig,
+        'Richtig wäre: <b>' + o.richtig + "</b>. ", btn,
+        o.liste.indexOf(o.richtig));
+    });
+  });
+}
+
+function zeigeSortieren(it, b){
+  reihe = []; offen = mischen(it.teile);
+  b.innerHTML = '<p class="ask">' + it.frage + "</p>" +
+    '<div class="slotlabel">DEINE REIHENFOLGE</div><div class="sortliste" id="gesetzt"></div>' +
+    '<div class="slotlabel">NOCH OFFEN — TIPPE AN</div><div class="sortliste" id="pool"></div>';
+  malenSortieren(it);
+  $("pruefen").classList.remove("hidden");
+}
+function malenSortieren(it){
+  var g = $("gesetzt"), p = $("pool");
+  g.innerHTML = ""; p.innerHTML = "";
+  if(reihe.length === 0){
+    g.innerHTML = '<p class="leer">Noch nichts gesetzt.</p>';
+  }
+  reihe.forEach(function(t, i){
+    var btn = document.createElement("button");
+    btn.className = "sort gesetzt";
+    btn.innerHTML = '<span class="n">' + (i+1) + "</span><span>" + esc(t) + "</span>";
+    btn.addEventListener("click", function(){
+      reihe.splice(i, 1); offen.push(t); malenSortieren(it);
+    });
+    g.appendChild(btn);
+  });
+  if(offen.length === 0){
+    p.innerHTML = '<p class="leer">Alles gesetzt — jetzt prüfen.</p>';
+  }
+  offen.forEach(function(t, i){
+    var btn = document.createElement("button");
+    btn.className = "sort";
+    btn.innerHTML = '<span class="n">?</span><span>' + esc(t) + "</span>";
+    btn.addEventListener("click", function(){
+      offen.splice(i, 1); reihe.push(t); malenSortieren(it);
+    });
+    p.appendChild(btn);
+  });
+  $("pruefen").disabled = offen.length > 0;
+  $("pruefen").textContent = offen.length > 0
+    ? "Noch " + offen.length + " offen" : "Prüfen ▶";
+}
+
+function zeigeMarkieren(it, b){
+  markiert = {};
+  b.innerHTML = '<p class="ask">' + it.frage + "</p>" +
+    '<p class="marktext" id="mt">' + it.teile.map(function(t, i){
+      return '<span class="mark" data-i="' + i + '">' + esc(t.t) + "</span>";
+    }).join("") + "</p>";
+  Array.prototype.forEach.call(b.querySelectorAll(".mark"), function(sp){
+    sp.addEventListener("click", function(){
+      var i = sp.getAttribute("data-i");
+      if(markiert[i]){ delete markiert[i]; sp.classList.remove("an"); }
+      else { markiert[i] = true; sp.classList.add("an"); }
+    });
+  });
+  $("pruefen").classList.remove("hidden");
+}
+
+function zeigeFreitext(it, b){
+  b.innerHTML = '<p class="stim">' + it.stimulus + "</p>" +
+    '<p class="ask">' + it.frage + "</p>" +
+    '<textarea id="eingabe" placeholder="Schreib hier auf Englisch …"></textarea>';
+  $("pruefen").classList.remove("hidden");
+}
+
+/* ---------- Freitext: Musterabgleich (Spezifikation § 4.2) ----------
+   Geprüft werden Bestandteile, nicht Qualität. Was geprüft wurde, sagt die
+   App ausdrücklich (§ 4.3) - sie behauptet nie, eine Leistung bewertet zu
+   haben. */
+function freitextPruefen(text, pruef){
+  var t = norm(text), n = worte(text).length;
+  var zeilen = [], alles = true;
+  pruef.forEach(function(p){
+    var ok = false, sagt = p.sagt, fehlt = p.fehlt || (p.sagt + " fehlt");
+    if(p.typ === "enthaelt"){
+      ok = p.wert.every(function(w){ return t.indexOf(norm(w)) >= 0; });
+    } else if(p.typ === "eins_aus"){
+      ok = p.wert.some(function(w){ return t.indexOf(norm(w)) >= 0; });
+    } else if(p.typ === "nicht_enthalten"){
+      ok = !p.wert.some(function(w){ return t.indexOf(norm(w)) >= 0; });
+    } else if(p.typ === "zeilenangabe"){
+      ok = /\(\s*ll?\s*\.\s*\d+/i.test(text);
+    } else if(p.typ === "zitat_woertlich"){
+      var m = String(text).match(/[„"]([^“”"]{6,})[“”"]/);
+      ok = !!m && norm(CFG.quelltext || "").indexOf(norm(m[1])) >= 0;
+    } else if(p.typ === "laenge"){
+      ok = n >= p.wert[0] && n <= p.wert[1];
+      sagt = p.sagt + " — " + n + " Wörter";
+      fehlt = n < p.wert[0]
+        ? "zu knapp (" + n + " Wörter, erwartet mindestens " + p.wert[0] + ")"
+        : "zu lang (" + n + " Wörter, mehr als " + p.wert[1] + ")";
+    }
+    if(!ok) alles = false;
+    zeilen.push("<li>" + (ok ? "✓ " : "✗ ") + (ok ? sagt : fehlt) + "</li>");
+  });
+  return {alles:alles, liste:"<ul class='checks'>" + zeilen.join("") + "</ul>"};
+}
+
+/* ---------- Auswertung ---------- */
+function belohnen(ok){
+  if(ok){
+    runde.richtig++; runde.serie++;
+    if(runde.serie > runde.beste) runde.beste = runde.serie;
+    var gold = runde.serie % 3 === 0;
+    var st = gold ? CFG.gold
+      : CFG.chips[Math.floor(Math.random()*CFG.chips.length)];
+    runde.neue.push(st); S.album.push(st); sichern();
+    return gold ? "Richtig — drei in Folge! " + CFG.gold : "Richtig! " + st;
+  }
+  runde.serie = 0;
+  return "Noch nicht.";
+}
+function malenChips(ziel, liste){
+  ziel.innerHTML = "";
+  liste.forEach(function(s){
+    var d = document.createElement("span");
+    d.className = "chip" + (s === CFG.gold ? " g" : "");
+    d.textContent = s; ziel.appendChild(d);
+  });
+}
+function fertig(kopf, text, ok){
+  var fb = $("fb");
+  fb.className = "fb " + (ok ? "ok" : "no");
+  fb.innerHTML = '<b class="kopf">' + kopf + "</b>" +
+    '<span class="krit">' + CFG.kriterium + "</span>" + text;
+  fb.classList.remove("hidden");
+  $("pruefen").classList.add("hidden");
+  $("next").textContent = (runde.i+1 < runde.liste.length) ? "Weiter ▶" : "Ergebnis ▶";
+  $("next").classList.remove("hidden");
+  $("score").textContent = runde.richtig + " richtig";
+  $("streak").textContent = "Serie " + runde.serie;
+  malenChips($("collected"), runde.neue);
+}
+
+function auswerten(it, ok, hinweis, btn, iRichtig){
+  var knoepfe = $("body").querySelectorAll(".opt");
+  Array.prototype.forEach.call(knoepfe, function(x){ x.disabled = true; });
+  if(knoepfe[iRichtig]) knoepfe[iRichtig].classList.add("war");
+  if(!ok && btn) btn.classList.add("daneben");
+  fertig(belohnen(ok), (ok ? "" : hinweis) + it.why, ok);
+}
+
+function pruefenJetzt(){
+  var it = runde.liste[runde.i];
+  if(it.typ === "sortieren"){
+    var ok = reihe.join("§") === it.teile.join("§");
+    Array.prototype.forEach.call($("gesetzt").querySelectorAll(".sort"),
+      function(el, i){
+        el.disabled = true;
+        el.classList.add(reihe[i] === it.teile[i] ? "war" : "daneben");
+      });
+    var richtig = ok ? "" : "<b>Richtige Reihenfolge:</b><ol style='margin:.3rem 0 .6rem;padding-left:1.3rem'>"
+      + it.teile.map(function(t){ return "<li>" + esc(t) + "</li>"; }).join("")
+      + "</ol>";
+    fertig(belohnen(ok), richtig + it.why, ok);
+  } else if(it.typ === "markieren"){
+    var soll = {}, i;
+    for(i = 0; i < it.teile.length; i++){ if(it.teile[i].f) soll[i] = true; }
+    var gleich = Object.keys(soll).length === Object.keys(markiert).length;
+    if(gleich){
+      for(i in soll){ if(!markiert[i]) { gleich = false; break; } }
+    }
+    Array.prototype.forEach.call($("body").querySelectorAll(".mark"),
+      function(sp){
+        var k = sp.getAttribute("data-i");
+        sp.classList.remove("an");
+        sp.style.cursor = "default";
+        if(soll[k] && markiert[k]) sp.classList.add("war");
+        else if(soll[k]) sp.classList.add("verpasst");
+        else if(markiert[k]) sp.classList.add("an");
+      });
+    var legende = gleich ? ""
+      : "<p class='note' style='margin-top:.3rem'>Grün: richtig gefunden · "
+        + "Gelb: übersehen · Rot: hier war nichts falsch.</p>";
+    fertig(belohnen(gleich), legende + it.why, gleich);
+  } else if(it.typ === "freitext"){
+    var e = $("eingabe");
+    var r = freitextPruefen(e.value || "", it.pruef);
+    e.disabled = true;
+    var muster = "<p class='note' style='margin-top:.6rem'><b>Ein möglicher "
+      + "Satz:</b><br><i>" + esc(it.muster) + "</i></p>";
+    var ehrlich = "<p class='note'><b>Geprüft wurden die Bestandteile.</b> "
+      + "Ob dein Satz gut klingt und ob das Thema richtig benannt ist, "
+      + "entscheidest du am Kriterienraster — das kann dir diese App nicht "
+      + "abnehmen.</p>";
+    fertig(belohnen(r.alles), r.liste + (it.why ? "<p class='note'>" + it.why
+      + "</p>" : "") + muster + ehrlich, r.alles);
+  }
+}
+
+function weiter(){
+  runde.i++;
+  if(runde.i < runde.liste.length){ frage(); } else { beenden(); }
+}
+function beenden(){
+  S.runden++;
+  if(runde.richtig > S.best) S.best = runde.richtig;
+  sichern();
+  var n = runde.liste.length;
+  var sterne = runde.richtig >= n-1 ? 3 : (runde.richtig >= n-3 ? 2 : 1);
+  $("stars").textContent = "⭐".repeat(sterne) + "☆".repeat(3-sterne);
+  $("endTitle").textContent = runde.richtig === n ? "Alles richtig!" : "Runde geschafft";
+  $("endLine").textContent = runde.richtig + " von " + n + " · längste Serie "
+    + runde.beste + " · dein Rekord: " + S.best + " von " + n + ".";
+  $("code").textContent = CFG.code + "-" + runde.richtig + "/" + n;
+  $("openLoop").textContent = sterne === 3
+    ? "Nächstes Ziel: eine Runde ohne Fehler."
+    : "Die Aufgaben werden neu gemischt. Noch " + (3-sterne) + " Stern"
+      + (3-sterne === 1 ? "" : "e") + " bis zur vollen Wertung.";
+  if(S.runden % 3 === 0){
+    $("openLoop").textContent = "Gut für heute — drei Runden sind genug. "
+      + $("openLoop").textContent;
+  }
+  malenChips($("album"), S.album.slice(-40));
+  var g = S.album.filter(function(x){ return x === CFG.gold; }).length;
+  $("albumNote").textContent = S.album.length + " gesammelt, davon " + g
+    + " goldene · " + S.runden + " Runden.";
+  zeigen("end");
+}
+
+$("go").addEventListener("click", starten);
+$("again").addEventListener("click", starten);
+$("back").addEventListener("click", function(){ zeigen("start"); });
+$("next").addEventListener("click", weiter);
+$("pruefen").addEventListener("click", pruefenJetzt);
+$("resume").addEventListener("click", function(){
+  malenChips($("album"), S.album.slice(-40));
+  var g = S.album.filter(function(x){ return x === CFG.gold; }).length;
+  $("stars").textContent = "";
+  $("endTitle").textContent = "Deine Ergebnisse";
+  $("endLine").textContent = S.runden === 0 ? "Noch nichts gespielt."
+    : "Rekord: " + S.best + " von " + CFG.runde + " · " + S.runden + " Runden.";
+  $("code").textContent = CFG.code + "-" + S.best + "/" + CFG.runde;
+  $("openLoop").textContent = "";
+  $("albumNote").textContent = S.album.length + " gesammelt, davon " + g
+    + " goldene.";
+  zeigen("end");
+});
+</script>
+</body>
+</html>

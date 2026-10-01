@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Connectives · Klausurtraining Englisch</title>
+<style>
+  :root{
+    --ink:#1A1A1A; --muted:#5D5D66; --paper:#FBFAF7; --card:#FFFFFF;
+    --accent:#4C4A8F; --tint:#E9E8F3; --band:#2E5458;
+    --ok:#1F7A5A; --okbg:#E3F1EB; --no:#A33; --nobg:#F8E7E7;
+    --gold:#B8860B; --goldbg:#FBF3DC;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);
+    font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    touch-action:manipulation;padding:0 0 env(safe-area-inset-bottom)}
+  .band{background:var(--band);color:#fff;padding:.5rem 1rem;font-size:.8rem;
+        font-weight:700;letter-spacing:.04em;display:flex;
+        justify-content:space-between;gap:1rem}
+  .band a{color:#fff;text-decoration:none;opacity:.85;white-space:nowrap}
+  .wrap{max-width:860px;margin:0 auto;padding:1rem}
+  h1{font-size:1.7rem;margin:.5rem 0 .2rem}
+  h2{font-size:1.15rem;margin:1.3rem 0 .4rem}
+  .lead{color:var(--muted);margin:.2rem 0 1rem}
+  .card{background:var(--card);border-radius:14px;padding:1.05rem;
+        box-shadow:0 1px 3px rgba(0,0,0,.09);margin-bottom:.9rem}
+  button{font:inherit;border:0;border-radius:14px;cursor:pointer}
+  .go{background:var(--accent);color:#fff;min-height:76px;width:100%;
+      font-size:1.14rem;font-weight:800;padding:.8rem}
+  .ghost{background:var(--tint);color:var(--accent);min-height:54px;
+         padding:.6rem 1rem;font-weight:700;width:100%;margin-top:.6rem}
+  .opt{display:block;width:100%;text-align:left;background:var(--tint);
+       color:var(--ink);min-height:68px;padding:.8rem 1rem;margin-bottom:.6rem;
+       font-size:1.02rem;border:3px solid transparent;line-height:1.4}
+  .opt:active{transform:scale(.995)}
+  .opt[disabled]{opacity:.55}
+  .opt.war{border-color:var(--ok)}
+  .opt.daneben{border-color:var(--no)}
+  .stim{font-size:1.1rem;line-height:1.55;border-left:4px solid var(--accent);
+        padding-left:.75rem;margin:.3rem 0 .2rem}
+  .ask{color:var(--muted);font-size:.93rem;margin:.6rem 0 .7rem}
+  textarea{width:100%;min-height:6rem;font:inherit;border:2px solid var(--tint);
+           border-radius:12px;padding:.7rem;resize:vertical;background:#fff}
+  textarea:focus{outline:none;border-color:var(--accent)}
+  .fb{margin-top:.9rem;padding:.9rem 1rem;border-radius:12px}
+  .fb.ok{background:var(--okbg);border-left:6px solid var(--ok)}
+  .fb.no{background:var(--nobg);border-left:6px solid var(--no)}
+  .fb b.kopf{display:block;margin-bottom:.25rem;font-size:1.06rem}
+  .krit{display:block;font-weight:700;color:var(--accent);font-size:.93rem;
+        margin-bottom:.3rem}
+  .checks{margin:.5rem 0 0;padding:0;list-style:none;font-size:.97rem}
+  .checks li{padding:.12rem 0}
+  .hud{display:flex;gap:.45rem;flex-wrap:wrap;margin:.2rem 0 .7rem}
+  .pill{background:var(--tint);color:var(--accent);border-radius:999px;
+        padding:.3rem .75rem;font-size:.87rem;font-weight:700}
+  .pill.g{background:var(--goldbg);color:var(--gold)}
+  .bar{height:9px;background:var(--tint);border-radius:999px;overflow:hidden;
+       margin:0 0 .9rem}
+  .bar>i{display:block;height:100%;background:var(--accent);width:0;
+         transition:width .25s}
+  .tagline{font-size:.82rem;font-weight:700;color:var(--accent);
+           letter-spacing:.05em}
+  .stars{font-size:2.1rem;letter-spacing:.14rem}
+  .chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.5rem}
+  .chip{font-size:1.35rem;padding:.3rem .4rem;border-radius:10px;
+        background:var(--tint)}
+  .chip.g{background:var(--goldbg)}
+  .hidden{display:none!important}
+  .note{color:var(--muted);font-size:.88rem;margin-top:.8rem}
+  ol.steps{margin:.3rem 0 0;padding-left:1.2rem}
+  ol.steps li{margin-bottom:.45rem}
+  code{background:var(--tint);border-radius:5px;padding:.08rem .3rem;
+       font-size:.94em}
+  /* --- Lücke --- */
+  .blank{display:inline-block;min-width:5rem;border-bottom:3px solid var(--accent);
+         vertical-align:baseline}
+  .blank.full{border-bottom-color:var(--ok);font-weight:800;color:var(--accent)}
+  /* --- Sortieren --- */
+  .slotlabel{font-size:.82rem;font-weight:700;color:var(--muted);
+             letter-spacing:.04em;margin:.9rem 0 .35rem}
+  .sortliste{display:flex;flex-direction:column;gap:.5rem}
+  .sort{display:flex;gap:.6rem;align-items:center;width:100%;text-align:left;
+        background:var(--tint);color:var(--ink);min-height:64px;
+        padding:.65rem .9rem;font-size:1rem;line-height:1.35;
+        border:3px solid transparent}
+  .sort .n{flex:0 0 1.9rem;height:1.9rem;border-radius:999px;
+           background:var(--accent);color:#fff;font-weight:800;
+           display:flex;align-items:center;justify-content:center;
+           font-size:.92rem}
+  .sort.gesetzt{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.09)}
+  .sort.war{border-color:var(--ok)}
+  .sort.daneben{border-color:var(--no)}
+  .leer{color:var(--muted);font-size:.9rem;padding:.5rem 0}
+  /* --- Markieren --- */
+  .marktext{font-size:1.14rem;line-height:2.15;margin:.3rem 0 .2rem}
+  .mark{cursor:pointer;border-radius:6px;padding:.15rem .1rem;
+        border-bottom:3px solid transparent}
+  .mark.an{background:#F4E2E2;border-bottom-color:var(--no);font-weight:700}
+  .mark.war{background:var(--okbg);border-bottom-color:var(--ok)}
+  .mark.verpasst{background:#FFF6D8;border-bottom-color:var(--gold)}
+  @media (max-width:430px){ .marktext{line-height:2.4} }
+</style>
+</head>
+<body>
+<div class="band">
+  <span>KRITERIUM 3 · STRUKTUR · 5 PUNKTE</span>
+  <a href="../klausurtraining/">← Auswahl</a>
+</div>
+<div class="wrap">
+
+<section id="start">
+  <h1>Connectives</h1>
+  <p class="lead">Ein Connective ist keine Verzierung. Es ist eine <b>Behauptung</b> darüber, wie zwei Sätze zusammenhängen — und die kann falsch sein.</p>
+  <div class="card">
+    <h2 style="margin-top:0">Fünf Beziehungen, die du brauchst</h2>
+<ol class="steps">
+  <li><b>Folge</b> — <i>therefore · consequently · as a result · thus</i></li>
+  <li><b>Gegensatz</b> — <i>however · in contrast · instead · on the contrary</i></li>
+  <li><b>Einräumen</b> — <i>although · nevertheless · admittedly · even though</i></li>
+  <li><b>Hinzufügen</b> — <i>moreover · what is more · in addition · furthermore</i></li>
+  <li><b>Beispiel</b> — <i>for example · for instance · such as</i></li>
+</ol>
+<p class="note" style="color:var(--accent);font-weight:700">
+  Prüf die Beziehung, nicht den Klang.</p>
+<p class="note">✗ <i>The speech is short. Therefore, it is famous.</i> — Kurz zu
+  sein macht keinen Text berühmt. Das Connective behauptet eine Folge, die es
+  nicht gibt.</p>
+<h2>Drei Stolpersteine</h2>
+<p class="note"><b>although</b> verbindet zwei Sätze · <b>despite</b> braucht ein
+  Nomen (<i>despite its length</i>) · <b>however</b> beginnt einen <b>neuen</b>
+  Satz, mit Komma danach.<br>
+  Und: <i>on the one hand</i> gehört zu <i>on the other hand</i> — nicht zu
+  <i>in the other hand</i>.</p>
+<p class="note">Am Anfang eines Absatzes zeigt ein Connective den <b>Aufbau</b>:
+  <i>Taken together … · All in all …</i> Genau dafür gibt es Kriterium 3.</p>
+    <button class="go" id="go" style="margin-top:.9rem">Los geht’s ▶</button>
+    <button class="ghost" id="resume">Meine Ergebnisse</button>
+  </div>
+  <details class="card">
+    <summary style="font-weight:700;cursor:pointer">Für Eltern und Lehrkräfte</summary>
+    <p class="note">Trainiert wird Kriterium 3 (Struktur, 5 Punkte: der Prüfling „erstellt einen sachgerecht strukturierten Text.“). Die Items prüfen die logische Beziehung, nicht Vokabelwissen — zu jeder Lücke gibt es genau eine Beziehung, die stimmt. Beispielsätze beziehen sich auf Lincolns Gettysburg Address (1863, gemeinfrei).</p>
+    <p class="note">Keine Anmeldung, keine Namen, keine Datenübertragung. Der
+      Fortschritt bleibt auf diesem Gerät.</p>
+  </details>
+</section>
+
+<section id="game" class="hidden">
+  <div class="hud">
+    <span class="pill" id="pos"></span>
+    <span class="pill" id="score"></span>
+    <span class="pill g" id="streak"></span>
+  </div>
+  <div class="bar"><i id="fill"></i></div>
+  <div class="card">
+    <div class="tagline" id="tagline"></div>
+    <div id="body"></div>
+    <button class="go hidden" id="pruefen" style="margin-top:.9rem">Prüfen ▶</button>
+    <div id="fb" class="fb hidden"></div>
+    <button class="go hidden" id="next" style="margin-top:.9rem">Weiter ▶</button>
+  </div>
+  <div class="chips" id="collected"></div>
+</section>
+
+<section id="end" class="hidden">
+  <h1 id="endTitle">Geschafft</h1>
+  <div class="card">
+    <div class="stars" id="stars"></div>
+    <p class="lead" id="endLine"></p>
+    <p style="margin:.2rem 0 .3rem"><b>Zeig das jemandem:</b></p>
+    <span class="pill" id="code" style="font-size:1.2rem;padding:.5rem 1rem"></span>
+    <p class="note" id="openLoop"></p>
+    <button class="go" id="again" style="margin-top:.9rem">Noch eine Runde ▶</button>
+    <button class="ghost" id="back">Zurück zum Anfang</button>
+    <button class="ghost" onclick="location.href='../klausurtraining/'">Andere Übung wählen</button>
+  </div>
+  <div class="card">
+    <b>Gesammelt</b>
+    <div class="chips" id="album"></div>
+    <p class="note" id="albumNote"></p>
+  </div>
+</section>
+
+</div>
+<script>
+"use strict";
+/* ==================================================================
+   MODUL 2.3 · CONNECTIVES
+   KRITERIUM 3 · STRUKTUR · 5 PUNKTE
+   Spezifikation: 14_LERNAPPS/KLAUSURTRAINING-SPEZIFIKATION.md
+   Erzeugt von 12_SCRIPTS/klausurtraining_bauen.py — nicht hier ändern,
+   sondern in 12_SCRIPTS/klausurtraining_inhalte.py.
+
+   Quelltext der Beispiele: Abraham Lincoln, Gettysburg Address,
+   19.11.1863 (Bliss-Fassung), wörtlich nach nps.gov. Gemeinfrei —
+   und als *unbekannter* Klausurtext zu bekannt, deshalb dauerhaft frei
+   für Übungen (Spezifikation R3).
+
+   Die zitierten Operator-Erläuterungen und Bewertungskriterien stammen
+   wörtlich aus den Landesvorgaben NRW (Operatorenübersicht ab Abitur
+   2025; Konstruktionshinweise Klausuren moderne Fremdsprachen, Okt. 2025).
+   Bewertungskriterien sind kein Prüfungsinhalt — die SuS sollen sie kennen.
+
+   ▲ Alle Quelltexte sind gegen die Sperrliste geprüft
+   (12_SCRIPTS/klausurtexte_sperrliste.py, Regel R0): niemals Material aus
+   einer Klausur oder einer anderen Leistungsüberprüfung in einer Übung.
+   ================================================================== */
+
+var CFG = {
+"kriterium": "Kriterium 3 · Struktur · 5 Punkte",
+"code": "CON",
+"key": "kt-23-v1",
+"runde": 8,
+"chips": [
+"🔗",
+"➡️",
+"↔️",
+"🪢",
+"🧵",
+"⛓️"
+],
+"gold": "🏅",
+"quelltext": "Four score and seven years ago our fathers brought forth on this continent, a new nation conceived in liberty, and dedicated to the proposition that all men are created equal. Now we are engaged in a great civil war, testing whether that nation or any nation so conceived and so dedicated, can long endure. We are met on a great battlefield of that war. We have come to dedicate a portion of that field as a final resting place for those who here gave their lives, that that nation might live. It is altogether fitting and proper that we should do this. But, in a larger sense, we can not dedicate — we can not consecrate — we can not hallow, this ground. The brave men living and dead who struggled here, have consecrated it far above our poor power to add or detract. The world will little note, nor long remember what we say here but it can never forget what they did here. It is for us the living rather to be dedicated here to the unfinished work which they who fought here have thus far so nobly advanced. It is rather for us to be here dedicated to the great task remaining before us — that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion — that we here highly resolve that these dead shall not have died in vain — that this nation under God shall have a new birth of freedom — and that government of the people by the people for the people shall not perish from the earth."
+};
+var ITEMS = [
+{
+"typ": "luecke",
+"tag": "WELCHE VERKNÜPFUNG PASST?",
+"frage": "Welche Beziehung besteht zwischen den beiden Sätzen?",
+"satz": "Lincoln does not praise his own speech. ___, he says that the world will soon forget what is said here.",
+"opt": [
+"Instead",
+"Therefore",
+"For example",
+"In addition"
+],
+"a": 0,
+"why": "<b>Gegensatz.</b> Der zweite Satz sagt nicht die Folge, sondern das Gegenteil des Erwarteten. <i>Therefore</i> würde behaupten, das eine ergebe sich aus dem anderen."
+},
+{
+"typ": "luecke",
+"tag": "WELCHE VERKNÜPFUNG PASST?",
+"frage": "Welche Beziehung besteht zwischen den beiden Sätzen?",
+"satz": "Words alone cannot honour the dead. ___, the living have to finish their work.",
+"opt": [
+"Therefore",
+"However",
+"For instance",
+"Although"
+],
+"a": 0,
+"why": "<b>Folge.</b> Weil Worte nicht genügen, bleibt die Tat — das ist genau Lincolns Gedankengang (ll. 14–17)."
+},
+{
+"typ": "luecke",
+"tag": "WELCHE VERKNÜPFUNG PASST?",
+"frage": "Welche Beziehung besteht zwischen den beiden Sätzen?",
+"satz": "The speech takes about two minutes. ___, it has become one of the best-known texts in American history.",
+"opt": [
+"Nevertheless",
+"Because of this",
+"For example",
+"Similarly"
+],
+"a": 0,
+"why": "<b>Einräumen.</b> Die Kürze spricht eher dagegen, dass ein Text berühmt wird — der Satz räumt das ein und widerspricht dann."
+},
+{
+"typ": "luecke",
+"tag": "WELCHE VERKNÜPFUNG PASST?",
+"frage": "Welche Beziehung besteht zwischen den beiden Sätzen?",
+"satz": "Lincoln uses very simple words. ___, he arranges them in groups of three.",
+"opt": [
+"What is more",
+"In contrast",
+"As a result",
+"In short"
+],
+"a": 0,
+"why": "<b>Hinzufügen.</b> Beides gilt gleichzeitig und zeigt in dieselbe Richtung. Ein Gegensatz wäre falsch: Einfache Wörter und Dreiergruppen widersprechen sich nicht."
+},
+{
+"typ": "luecke",
+"tag": "WELCHE VERKNÜPFUNG PASST?",
+"frage": "Achtung — Satzbau. Was passt grammatisch <b>und</b> logisch?",
+"satz": "___ the speech is extremely short, it is remembered better than many long ones.",
+"opt": [
+"Although",
+"Despite",
+"However",
+"Because"
+],
+"a": 0,
+"why": "<i>Despite</i> braucht ein Nomen (<i>despite its length</i>), <i>however</i> einen eigenen Satz. Nur <i>although</i> kann einen Nebensatz einleiten — und nur Einräumen passt hier."
+},
+{
+"typ": "luecke",
+"tag": "WELCHE VERKNÜPFUNG PASST?",
+"frage": "Welche Beziehung besteht zwischen den beiden Sätzen?",
+"satz": "The nation rests on an idea rather than on a piece of land. ___, the war is not only a fight over territory.",
+"opt": [
+"Consequently",
+"Although",
+"For instance",
+"In contrast"
+],
+"a": 0,
+"why": "<b>Folge.</b> Aus der Prämisse ergibt sich der zweite Satz — genau die Verbindung, die Lincoln in ll. 3–5 herstellt."
+},
+{
+"typ": "luecke",
+"tag": "WELCHE VERKNÜPFUNG PASST?",
+"frage": "Welche Beziehung besteht zwischen den beiden Sätzen?",
+"satz": "Many listeners expected a long address. ___, Lincoln spoke only a few sentences.",
+"opt": [
+"However",
+"Therefore",
+"Moreover",
+"In addition"
+],
+"a": 0,
+"why": "<b>Gegensatz</b> zwischen Erwartung und Wirklichkeit. <i>Therefore</i> hieße: Weil sie eine lange Rede erwarteten, sprach er kurz — das behauptet niemand."
+},
+{
+"typ": "luecke",
+"tag": "WELCHE VERKNÜPFUNG PASST?",
+"frage": "Welche Beziehung besteht zwischen den beiden Sätzen?",
+"satz": "On the one hand the speech mourns the dead. ___, it gives the living a task.",
+"opt": [
+"On the other hand",
+"In the other hand",
+"On the contrary",
+"Otherwise"
+],
+"a": 0,
+"why": "<i>On the one hand</i> hat genau einen Partner: <i>on the other hand</i>. <i>In the other hand</i> ist kein Englisch, und <i>on the contrary</i> würde den ersten Satz zurücknehmen."
+},
+{
+"typ": "luecke",
+"tag": "WELCHE VERKNÜPFUNG PASST?",
+"frage": "Dieser Satz steht am Anfang des Schlussabsatzes.",
+"satz": "___, the three devices turn a speech of mourning into a call to action.",
+"opt": [
+"All in all",
+"For example",
+"Because of this",
+"In contrast"
+],
+"a": 0,
+"why": "Am Absatzanfang zeigt das Connective den <b>Aufbau</b>: Hier wird gebündelt, nicht ergänzt. Genau daran erkennt die Korrektur deinen Schlussabsatz."
+},
+{
+"typ": "luecke",
+"tag": "WELCHE VERKNÜPFUNG PASST?",
+"frage": "Welche Beziehung besteht zwischen den beiden Sätzen?",
+"satz": "First the speaker looks back to the founding of the nation. ___ he turns to the war of his own time.",
+"opt": [
+"Only then",
+"Therefore",
+"In contrast",
+"For instance"
+],
+"a": 0,
+"why": "<b>Reihenfolge.</b> Der Text geht in Schritten vor; das Connective zeigt den Schritt. Eine Folge wäre zu stark — der Rückblick <i>verursacht</i> den zweiten Teil nicht."
+},
+{
+"typ": "luecke",
+"tag": "WELCHE VERKNÜPFUNG PASST?",
+"frage": "Welche Beziehung besteht zwischen den beiden Sätzen?",
+"satz": "The repetition makes the speaker sound humble. ___, it slows the sentence down and gives it weight.",
+"opt": [
+"At the same time",
+"Therefore",
+"Despite",
+"For example"
+],
+"a": 0,
+"why": "Zwei Wirkungen <b>desselben</b> Mittels. Das ist weder Folge noch Gegensatz — sie treten zusammen auf."
+},
+{
+"typ": "luecke",
+"tag": "WELCHE VERKNÜPFUNG PASST?",
+"frage": "Welche Beziehung besteht zwischen den beiden Sätzen?",
+"satz": "The speaker lists what cannot be done. ___, he admits the limits of his own words.",
+"opt": [
+"In doing so",
+"Nevertheless",
+"By contrast",
+"For instance"
+],
+"a": 0,
+"why": "Der zweite Satz sagt, <b>was der erste bewirkt</b> — genau der Übergang von Beleg zu Wirkung. <i>In doing so</i> ist dafür die knappste Fügung."
+},
+{
+"typ": "wahl",
+"tag": "STIMMT DIE VERKNÜPFUNG?",
+"stimulus": "<i>The speech is very short. Therefore, it is famous.</i>",
+"frage": "Stimmt die behauptete Beziehung?",
+"opt": [
+"Nein — die behauptete Folge gibt es nicht",
+"Ja, das passt",
+"Nein — hier fehlt ein Gegensatz",
+"Nein — hier fehlt ein Beispiel"
+],
+"a": 0,
+"why": "Kurze Texte werden nicht durch ihre Kürze berühmt. <i>Therefore</i> behauptet eine Ursache und liegt damit sachlich falsch — das kostet nicht nur Kriterium 3."
+},
+{
+"typ": "wahl",
+"tag": "STIMMT DIE VERKNÜPFUNG?",
+"stimulus": "<i>Words will soon be forgotten. In contrast, deeds will be remembered.</i>",
+"frage": "Stimmt die behauptete Beziehung?",
+"opt": [
+"Ja — Wort und Tat stehen hier wirklich gegeneinander",
+"Nein — es fehlt eine Folge",
+"Nein — es fehlt ein Beispiel",
+"Nein — der Gegensatz ist erfunden"
+],
+"a": 0,
+"why": "Der Gegensatz steht so im Text: „The world will little note, nor long remember what we say here but it can never forget what they did here“ (ll. 12–13). Das Connective gibt wieder, was Lincoln baut."
+},
+{
+"typ": "wahl",
+"tag": "STIMMT DIE VERKNÜPFUNG?",
+"stimulus": "<i>The audience was very large. However, the speech was short.</i>",
+"frage": "Stimmt die behauptete Beziehung?",
+"opt": [
+"Nein — zwischen groß und kurz liegt kein Gegensatz",
+"Ja, das passt",
+"Nein — es fehlt eine Folge",
+"Nein — <i>however</i> darf nie am Satzanfang stehen"
+],
+"a": 0,
+"why": "Eine große Zuhörerschaft und eine kurze Rede widersprechen sich nicht. Das Connective tut so, als wäre da eine Spannung — die Lesende sucht sie und findet nichts."
+},
+{
+"typ": "wahl",
+"tag": "STIMMT DIE VERKNÜPFUNG?",
+"stimulus": "<i>Lincoln honours the soldiers. For example, he calls them „The brave men living and dead who struggled here“ (ll. 10–11).</i>",
+"frage": "Stimmt die behauptete Beziehung?",
+"opt": [
+"Ja — das Zitat ist wirklich ein Beispiel für die Behauptung",
+"Nein — hier gehört eine Folge hin",
+"Nein — hier gehört ein Gegensatz hin",
+"Nein — ein Zitat kann kein Beispiel sein"
+],
+"a": 0,
+"why": "Behauptung, dann Beispiel mit Beleg und Zeilenangabe — Verknüpfung und Belegtechnik greifen hier ineinander (Kriterium 3 und Kriterium 5)."
+}
+];
+
+function $(id){ return document.getElementById(id); }
+function mischen(a){ var b=a.slice(),i,j,t;
+  for(i=b.length-1;i>0;i--){ j=Math.floor(Math.random()*(i+1)); t=b[i];b[i]=b[j];b[j]=t; }
+  return b; }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;"); }
+function norm(s){
+  return String(s).toLowerCase()
+    .replace(/[„“”‟]/g,'"').replace(/[‘’]/g,"'")
+    .replace(/[—–]/g,"-").replace(/\s+/g," ").trim();
+}
+function worte(s){ return String(s).trim().split(/\s+/).filter(function(w){
+  return w.length > 0; }); }
+
+/* ---------- Fortschritt ---------- */
+function laden(){
+  try{
+    var r = JSON.parse(localStorage.getItem(CFG.key) || "{}");
+    if(!r || typeof r !== "object") r = {};
+    if(!Array.isArray(r.album)) r.album = [];
+    if(typeof r.best !== "number") r.best = 0;
+    if(typeof r.runden !== "number") r.runden = 0;
+    return r;
+  }catch(e){ return {album:[], best:0, runden:0}; }
+}
+function sichern(){ try{ localStorage.setItem(CFG.key, JSON.stringify(S)); }catch(e){} }
+var S = laden(), runde = null;
+
+function zeigen(w){ ["start","game","end"].forEach(function(id){
+  $(id).classList.toggle("hidden", id !== w); }); window.scrollTo(0,0); }
+
+/* ---------- Runde zusammenstellen ----------
+   Nach Aufgabentyp gruppiert und im Wechsel entnommen, damit jede Runde
+   gemischt ist und nicht zufällig achtmal dasselbe Format bringt. */
+function bauen(){
+  var nach = {}, folge = [];
+  ITEMS.forEach(function(it){
+    if(!nach[it.tag]){ nach[it.tag] = []; folge.push(it.tag); }
+    nach[it.tag].push(it);
+  });
+  folge.forEach(function(t){ nach[t] = mischen(nach[t]); });
+  /* Auch die REIHENFOLGE der Gruppen mischen. Sonst füllen bei einem Modul mit
+     mehr Gruppen als Runden-Plätzen immer die ersten Gruppen die Runde, und die
+     letzten kommen nie dran - in Modul 2.2 fielen so die beiden
+     "Welcher Absatz fehlt?"-Items dauerhaft heraus. */
+  folge = mischen(folge);
+  var raus = [], runde_ = 0;
+  while(raus.length < CFG.runde && runde_ < 40){
+    var leer = true;
+    for(var i = 0; i < folge.length && raus.length < CFG.runde; i++){
+      var g = nach[folge[i]];
+      if(g.length){ raus.push(g.shift()); leer = false; }
+    }
+    if(leer) break;
+    runde_++;
+  }
+  return mischen(raus);
+}
+function starten(){
+  runde = {liste:bauen(), i:0, richtig:0, serie:0, beste:0, neue:[]};
+  zeigen("game"); frage();
+}
+
+/* ---------- Darstellung je Aufgabentyp ---------- */
+var gewaehlt = null;      // wahl / luecke: Text der Wahl
+var reihe = null;         // sortieren: gesetzte Teile
+var offen = null;         // sortieren: noch nicht gesetzt
+var markiert = null;      // markieren: Indizes
+
+function frage(){
+  var it = runde.liste[runde.i], b = $("body");
+  $("pos").textContent = (runde.i+1) + " / " + runde.liste.length;
+  $("score").textContent = runde.richtig + " richtig";
+  $("streak").textContent = "Serie " + runde.serie;
+  $("fill").style.width = (runde.i / runde.liste.length * 100) + "%";
+  $("fb").classList.add("hidden");
+  $("next").classList.add("hidden");
+  $("pruefen").classList.add("hidden");
+  $("pruefen").disabled = false;
+  $("tagline").textContent = it.tag;
+  gewaehlt = null; reihe = null; offen = null; markiert = null;
+
+  if(it.typ === "wahl" || it.typ === "luecke"){ zeigeWahl(it, b); }
+  else if(it.typ === "sortieren"){ zeigeSortieren(it, b); }
+  else if(it.typ === "markieren"){ zeigeMarkieren(it, b); }
+  else if(it.typ === "freitext"){ zeigeFreitext(it, b); }
+}
+
+function optionen(it){
+  var richtig = it.opt[it.a];
+  var liste = it.fest ? it.opt.slice() : mischen(it.opt);
+  return {liste:liste, richtig:richtig};
+}
+
+function zeigeWahl(it, b){
+  var o = optionen(it);
+  it._richtig = o.richtig;
+  var kopf;
+  if(it.typ === "luecke"){
+    kopf = '<p class="stim">'
+      + it.satz.replace("___", '<span class="blank" id="blank">&nbsp;</span>')
+      + "</p>";
+  } else {
+    kopf = '<p class="stim">' + it.stimulus + "</p>";
+  }
+  b.innerHTML = kopf + '<p class="ask">' + it.frage + "</p>" +
+    o.liste.map(function(t, i){
+      return '<button class="opt" data-i="' + i + '">' + t + "</button>";
+    }).join("");
+  Array.prototype.forEach.call(b.querySelectorAll(".opt"), function(btn){
+    btn.addEventListener("click", function(){
+      var t = o.liste[Number(btn.getAttribute("data-i"))];
+      if(it.typ === "luecke" && $("blank")){
+        $("blank").textContent = t;
+        $("blank").classList.add("full");
+      }
+      auswerten(it, t === o.richtig,
+        'Richtig wäre: <b>' + o.richtig + "</b>. ", btn,
+        o.liste.indexOf(o.richtig));
+    });
+  });
+}
+
+function zeigeSortieren(it, b){
+  reihe = []; offen = mischen(it.teile);
+  b.innerHTML = '<p class="ask">' + it.frage + "</p>" +
+    '<div class="slotlabel">DEINE REIHENFOLGE</div><div class="sortliste" id="gesetzt"></div>' +
+    '<div class="slotlabel">NOCH OFFEN — TIPPE AN</div><div class="sortliste" id="pool"></div>';
+  malenSortieren(it);
+  $("pruefen").classList.remove("hidden");
+}
+function malenSortieren(it){
+  var g = $("gesetzt"), p = $("pool");
+  g.innerHTML = ""; p.innerHTML = "";
+  if(reihe.length === 0){
+    g.innerHTML = '<p class="leer">Noch nichts gesetzt.</p>';
+  }
+  reihe.forEach(function(t, i){
+    var btn = document.createElement("button");
+    btn.className = "sort gesetzt";
+    btn.innerHTML = '<span class="n">' + (i+1) + "</span><span>" + esc(t) + "</span>";
+    btn.addEventListener("click", function(){
+      reihe.splice(i, 1); offen.push(t); malenSortieren(it);
+    });
+    g.appendChild(btn);
+  });
+  if(offen.length === 0){
+    p.innerHTML = '<p class="leer">Alles gesetzt — jetzt prüfen.</p>';
+  }
+  offen.forEach(function(t, i){
+    var btn = document.createElement("button");
+    btn.className = "sort";
+    btn.innerHTML = '<span class="n">?</span><span>' + esc(t) + "</span>";
+    btn.addEventListener("click", function(){
+      offen.splice(i, 1); reihe.push(t); malenSortieren(it);
+    });
+    p.appendChild(btn);
+  });
+  $("pruefen").disabled = offen.length > 0;
+  $("pruefen").textContent = offen.length > 0
+    ? "Noch " + offen.length + " offen" : "Prüfen ▶";
+}
+
+function zeigeMarkieren(it, b){
+  markiert = {};
+  b.innerHTML = '<p class="ask">' + it.frage + "</p>" +
+    '<p class="marktext" id="mt">' + it.teile.map(function(t, i){
+      return '<span class="mark" data-i="' + i + '">' + esc(t.t) + "</span>";
+    }).join("") + "</p>";
+  Array.prototype.forEach.call(b.querySelectorAll(".mark"), function(sp){
+    sp.addEventListener("click", function(){
+      var i = sp.getAttribute("data-i");
+      if(markiert[i]){ delete markiert[i]; sp.classList.remove("an"); }
+      else { markiert[i] = true; sp.classList.add("an"); }
+    });
+  });
+  $("pruefen").classList.remove("hidden");
+}
+
+function zeigeFreitext(it, b){
+  b.innerHTML = '<p class="stim">' + it.stimulus + "</p>" +
+    '<p class="ask">' + it.frage + "</p>" +
+    '<textarea id="eingabe" placeholder="Schreib hier auf Englisch …"></textarea>';
+  $("pruefen").classList.remove("hidden");
+}
+
+/* ---------- Freitext: Musterabgleich (Spezifikation § 4.2) ----------
+   Geprüft werden Bestandteile, nicht Qualität. Was geprüft wurde, sagt die
+   App ausdrücklich (§ 4.3) - sie behauptet nie, eine Leistung bewertet zu
+   haben. */
+function freitextPruefen(text, pruef){
+  var t = norm(text), n = worte(text).length;
+  var zeilen = [], alles = true;
+  pruef.forEach(function(p){
+    var ok = false, sagt = p.sagt, fehlt = p.fehlt || (p.sagt + " fehlt");
+    if(p.typ === "enthaelt"){
+      ok = p.wert.every(function(w){ return t.indexOf(norm(w)) >= 0; });
+    } else if(p.typ === "eins_aus"){
+      ok = p.wert.some(function(w){ return t.indexOf(norm(w)) >= 0; });
+    } else if(p.typ === "nicht_enthalten"){
+      ok = !p.wert.some(function(w){ return t.indexOf(norm(w)) >= 0; });
+    } else if(p.typ === "zeilenangabe"){
+      ok = /\(\s*ll?\s*\.\s*\d+/i.test(text);
+    } else if(p.typ === "zitat_woertlich"){
+      var m = String(text).match(/[„"]([^“”"]{6,})[“”"]/);
+      ok = !!m && norm(CFG.quelltext || "").indexOf(norm(m[1])) >= 0;
+    } else if(p.typ === "laenge"){
+      ok = n >= p.wert[0] && n <= p.wert[1];
+      sagt = p.sagt + " — " + n + " Wörter";
+      fehlt = n < p.wert[0]
+        ? "zu knapp (" + n + " Wörter, erwartet mindestens " + p.wert[0] + ")"
+        : "zu lang (" + n + " Wörter, mehr als " + p.wert[1] + ")";
+    }
+    if(!ok) alles = false;
+    zeilen.push("<li>" + (ok ? "✓ " : "✗ ") + (ok ? sagt : fehlt) + "</li>");
+  });
+  return {alles:alles, liste:"<ul class='checks'>" + zeilen.join("") + "</ul>"};
+}
+
+/* ---------- Auswertung ---------- */
+function belohnen(ok){
+  if(ok){
+    runde.richtig++; runde.serie++;
+    if(runde.serie > runde.beste) runde.beste = runde.serie;
+    var gold = runde.serie % 3 === 0;
+    var st = gold ? CFG.gold
+      : CFG.chips[Math.floor(Math.random()*CFG.chips.length)];
+    runde.neue.push(st); S.album.push(st); sichern();
+    return gold ? "Richtig — drei in Folge! " + CFG.gold : "Richtig! " + st;
+  }
+  runde.serie = 0;
+  return "Noch nicht.";
+}
+function malenChips(ziel, liste){
+  ziel.innerHTML = "";
+  liste.forEach(function(s){
+    var d = document.createElement("span");
+    d.className = "chip" + (s === CFG.gold ? " g" : "");
+    d.textContent = s; ziel.appendChild(d);
+  });
+}
+function fertig(kopf, text, ok){
+  var fb = $("fb");
+  fb.className = "fb " + (ok ? "ok" : "no");
+  fb.innerHTML = '<b class="kopf">' + kopf + "</b>" +
+    '<span class="krit">' + CFG.kriterium + "</span>" + text;
+  fb.classList.remove("hidden");
+  $("pruefen").classList.add("hidden");
+  $("next").textContent = (runde.i+1 < runde.liste.length) ? "Weiter ▶" : "Ergebnis ▶";
+  $("next").classList.remove("hidden");
+  $("score").textContent = runde.richtig + " richtig";
+  $("streak").textContent = "Serie " + runde.serie;
+  malenChips($("collected"), runde.neue);
+}
+
+function auswerten(it, ok, hinweis, btn, iRichtig){
+  var knoepfe = $("body").querySelectorAll(".opt");
+  Array.prototype.forEach.call(knoepfe, function(x){ x.disabled = true; });
+  if(knoepfe[iRichtig]) knoepfe[iRichtig].classList.add("war");
+  if(!ok && btn) btn.classList.add("daneben");
+  fertig(belohnen(ok), (ok ? "" : hinweis) + it.why, ok);
+}
+
+function pruefenJetzt(){
+  var it = runde.liste[runde.i];
+  if(it.typ === "sortieren"){
+    var ok = reihe.join("§") === it.teile.join("§");
+    Array.prototype.forEach.call($("gesetzt").querySelectorAll(".sort"),
+      function(el, i){
+        el.disabled = true;
+        el.classList.add(reihe[i] === it.teile[i] ? "war" : "daneben");
+      });
+    var richtig = ok ? "" : "<b>Richtige Reihenfolge:</b><ol style='margin:.3rem 0 .6rem;padding-left:1.3rem'>"
+      + it.teile.map(function(t){ return "<li>" + esc(t) + "</li>"; }).join("")
+      + "</ol>";
+    fertig(belohnen(ok), richtig + it.why, ok);
+  } else if(it.typ === "markieren"){
+    var soll = {}, i;
+    for(i = 0; i < it.teile.length; i++){ if(it.teile[i].f) soll[i] = true; }
+    var gleich = Object.keys(soll).length === Object.keys(markiert).length;
+    if(gleich){
+      for(i in soll){ if(!markiert[i]) { gleich = false; break; } }
+    }
+    Array.prototype.forEach.call($("body").querySelectorAll(".mark"),
+      function(sp){
+        var k = sp.getAttribute("data-i");
+        sp.classList.remove("an");
+        sp.style.cursor = "default";
+        if(soll[k] && markiert[k]) sp.classList.add("war");
+        else if(soll[k]) sp.classList.add("verpasst");
+        else if(markiert[k]) sp.classList.add("an");
+      });
+    var legende = gleich ? ""
+      : "<p class='note' style='margin-top:.3rem'>Grün: richtig gefunden · "
+        + "Gelb: übersehen · Rot: hier war nichts falsch.</p>";
+    fertig(belohnen(gleich), legende + it.why, gleich);
+  } else if(it.typ === "freitext"){
+    var e = $("eingabe");
+    var r = freitextPruefen(e.value || "", it.pruef);
+    e.disabled = true;
+    var muster = "<p class='note' style='margin-top:.6rem'><b>Ein möglicher "
+      + "Satz:</b><br><i>" + esc(it.muster) + "</i></p>";
+    var ehrlich = "<p class='note'><b>Geprüft wurden die Bestandteile.</b> "
+      + "Ob dein Satz gut klingt und ob das Thema richtig benannt ist, "
+      + "entscheidest du am Kriterienraster — das kann dir diese App nicht "
+      + "abnehmen.</p>";
+    fertig(belohnen(r.alles), r.liste + (it.why ? "<p class='note'>" + it.why
+      + "</p>" : "") + muster + ehrlich, r.alles);
+  }
+}
+
+function weiter(){
+  runde.i++;
+  if(runde.i < runde.liste.length){ frage(); } else { beenden(); }
+}
+function beenden(){
+  S.runden++;
+  if(runde.richtig > S.best) S.best = runde.richtig;
+  sichern();
+  var n = runde.liste.length;
+  var sterne = runde.richtig >= n-1 ? 3 : (runde.richtig >= n-3 ? 2 : 1);
+  $("stars").textContent = "⭐".repeat(sterne) + "☆".repeat(3-sterne);
+  $("endTitle").textContent = runde.richtig === n ? "Alles richtig!" : "Runde geschafft";
+  $("endLine").textContent = runde.richtig + " von " + n + " · längste Serie "
+    + runde.beste + " · dein Rekord: " + S.best + " von " + n + ".";
+  $("code").textContent = CFG.code + "-" + runde.richtig + "/" + n;
+  $("openLoop").textContent = sterne === 3
+    ? "Nächstes Ziel: eine Runde ohne Fehler."
+    : "Die Aufgaben werden neu gemischt. Noch " + (3-sterne) + " Stern"
+      + (3-sterne === 1 ? "" : "e") + " bis zur vollen Wertung.";
+  if(S.runden % 3 === 0){
+    $("openLoop").textContent = "Gut für heute — drei Runden sind genug. "
+      + $("openLoop").textContent;
+  }
+  malenChips($("album"), S.album.slice(-40));
+  var g = S.album.filter(function(x){ return x === CFG.gold; }).length;
+  $("albumNote").textContent = S.album.length + " gesammelt, davon " + g
+    + " goldene · " + S.runden + " Runden.";
+  zeigen("end");
+}
+
+$("go").addEventListener("click", starten);
+$("again").addEventListener("click", starten);
+$("back").addEventListener("click", function(){ zeigen("start"); });
+$("next").addEventListener("click", weiter);
+$("pruefen").addEventListener("click", pruefenJetzt);
+$("resume").addEventListener("click", function(){
+  malenChips($("album"), S.album.slice(-40));
+  var g = S.album.filter(function(x){ return x === CFG.gold; }).length;
+  $("stars").textContent = "";
+  $("endTitle").textContent = "Deine Ergebnisse";
+  $("endLine").textContent = S.runden === 0 ? "Noch nichts gespielt."
+    : "Rekord: " + S.best + " von " + CFG.runde + " · " + S.runden + " Runden.";
+  $("code").textContent = CFG.code + "-" + S.best + "/" + CFG.runde;
+  $("openLoop").textContent = "";
+  $("albumNote").textContent = S.album.length + " gesammelt, davon " + g
+    + " goldene.";
+  zeigen("end");
+});
+</script>
+</body>
+</html>
