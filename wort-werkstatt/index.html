@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Wort-Werkstatt – Lesen und Schreiben</title>
+<style>
+:root{--sky:#8fd3ff;--sky2:#dff3ff;--grass:#59a847;--grass2:#3f7d34;--dirt:#8a5a35;--dirt2:#6b4326;--stone:#a3a3a3;--ink:#2b2118;--gold:#f6c343;--red:#d9534f;--blue:#3b82f6;--ok:#3f9d4a;--s0:#d9442f;--s1:#2563eb}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;font-family:"Trebuchet MS","Avenir Next",system-ui,sans-serif;color:var(--ink);background:linear-gradient(var(--sky),var(--sky2) 55%,#c8ecb0);background-attachment:fixed;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+body{padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+#app{max-width:860px;margin:0 auto;padding:12px 14px 40px}
+h1{font-size:clamp(28px,7vw,40px);margin:8px 0;line-height:1.1}
+h2{font-size:22px;margin:0 0 6px}
+p{margin:4px 0}
+button{font:inherit;font-weight:800;color:var(--ink);cursor:pointer;border:4px solid var(--ink);border-radius:8px;min-height:64px;padding:0 16px;background:#f4f1e8;box-shadow:inset 0 -6px 0 rgba(0,0,0,.18),0 4px 0 rgba(0,0,0,.35);touch-action:manipulation}
+button:active:not(:disabled){transform:translateY(3px);box-shadow:inset 0 -3px 0 rgba(0,0,0,.18),0 1px 0 rgba(0,0,0,.35)}
+button:disabled{opacity:.4;cursor:default}
+.big{width:100%;min-height:96px;font-size:clamp(26px,6vw,36px);background:var(--grass);color:#fff;text-shadow:0 3px 0 rgba(0,0,0,.35);margin:10px 0}
+.big.gold{background:var(--gold);color:var(--ink);text-shadow:none}
+.big.blue{background:var(--blue);color:#fff;text-shadow:0 3px 0 rgba(0,0,0,.3)}
+.sm{min-height:56px;font-size:17px;padding:0 14px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.chip{background:#fff;border:3px solid var(--ink);border-radius:8px;padding:5px 10px;font-weight:800}
+.bar{height:20px;border:3px solid var(--ink);border-radius:6px;background:#fff;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--gold)}
+.card{background:#fff;border:4px solid var(--ink);border-radius:10px;padding:12px;margin:10px 0}
+.biome{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:10px 0}
+.bio{min-height:104px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.4)}
+.bio b{font-size:20px}
+.bio span{font-size:34px}
+.bio small{font-size:13px;font-weight:700}
+.bio.rec{outline:5px solid var(--gold);outline-offset:2px}
+.bio:disabled{background:#8a8a8a!important}
+.bubble{display:flex;gap:12px;align-items:center;background:#fff;border:4px solid var(--ink);border-radius:12px;padding:12px;margin:10px 0}
+.npc{font-size:54px;flex:none}
+.q{font-size:clamp(22px,5.4vw,30px);font-weight:800;line-height:1.3;flex:1}
+.wd{cursor:pointer;border-bottom:3px dotted rgba(0,0,0,.25)}
+.sy0{color:var(--s0)}.sy1{color:var(--s1)}
+.grid{display:grid;gap:10px;margin:10px 0}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.item{min-height:118px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px;background:#f4f1e8}
+.item .em{font-size:44px;line-height:1.1}
+.item .lb{font-size:clamp(19px,4.6vw,26px)}
+.item.done{background:#bfe8b3;border-color:var(--ok)}
+.item.help .lb{opacity:1}
+.pic{text-align:center;font-size:clamp(80px,22vw,128px);line-height:1.1;margin:6px 0}
+.slots{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:10px 0}
+.slot{width:clamp(44px,12vw,64px);height:clamp(56px,14vw,76px);border:4px solid var(--ink);border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:clamp(28px,8vw,42px);font-weight:900}
+.slot.on{background:#fff6c9;border-color:var(--blue)}
+.slot.ok{background:#bfe8b3}
+.shown{text-align:center;font-size:clamp(34px,9vw,52px);font-weight:900;min-height:60px;letter-spacing:2px}
+.tiles{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:12px 0}
+.tile{min-width:78px;min-height:78px;font-size:32px}
+.tile.hint{background:var(--gold);animation:pulse .7s infinite alternate}
+.kb{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:12px 0}
+.kb .tile{min-width:0;min-height:76px;font-size:30px;padding:0}
+.wtile{min-height:76px;font-size:clamp(20px,5vw,28px);padding:0 14px}
+.line{display:flex;gap:8px;flex-wrap:wrap;min-height:82px;border:4px dashed var(--ink);border-radius:10px;padding:8px;background:#fff;align-items:center;margin:10px 0}
+.line .w{background:#bfe8b3;border:3px solid var(--ok);border-radius:8px;padding:8px 12px;font-size:clamp(20px,5vw,28px);font-weight:800}
+.bench{display:flex;gap:10px;flex-wrap:wrap;min-height:90px;border:4px dashed var(--ink);border-radius:10px;padding:8px;background:#efe3cf;align-items:center;margin:10px 0}
+.bch{min-width:92px;min-height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:22px;padding:4px 10px}
+.bch.ok{background:#bfe8b3}.bch.few{background:#ffe9a8}.bch.many{background:#ffc6bd}
+.msg{margin:10px 0;padding:10px 14px;border:4px solid var(--ink);border-radius:10px;background:#fff6c9;font-size:19px;font-weight:700}
+.msg.good{background:#bfe8b3}
+.world{display:grid;grid-template-columns:repeat(8,1fr);border:5px solid var(--ink);border-radius:10px;overflow:hidden;margin:10px 0}
+.cell{aspect-ratio:1;min-height:0;min-width:0;border:0;border-radius:0;box-shadow:none;padding:0;font-size:clamp(24px,7.5vw,58px);display:flex;align-items:center;justify-content:center;line-height:1}
+.cell:active:not(:disabled){transform:none;box-shadow:none;filter:brightness(.9)}
+.cell.sky{background:#a7e0ff}.cell.grass{background:var(--grass);box-shadow:inset 0 8px 0 var(--grass2)}.cell.dirt{background:var(--dirt);box-shadow:inset 0 0 0 2px var(--dirt2)}
+.pal{display:flex;gap:8px;overflow-x:auto;padding:6px 2px 10px}
+.pal button{flex:none;min-width:84px;min-height:84px;font-size:34px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:0 6px}
+.pal button small{font-size:14px;font-weight:800}
+.pal button.sel{background:var(--gold);outline:4px solid var(--blue)}
+.bk{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px}
+.bkc{min-height:128px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:17px}
+.bkc .em{font-size:40px}
+.bkc.lock{background:#d8d8d8;color:#777}
+.bkc.gold{background:#ffe9a8}
+.st{color:#e0a200;letter-spacing:1px;font-size:20px}
+.chest{font-size:120px;text-align:center;line-height:1.1;margin:10px 0}
+.rare{background:linear-gradient(135deg,#fff3b0,#f6c343);border-color:#b57f0b}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{padding:6px 8px;border-bottom:2px solid #ddd;text-align:left}
+.shake{animation:shake .4s}
+@keyframes shake{20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+.pop{animation:pop .45s}
+@keyframes pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+@keyframes pulse{from{transform:scale(1)}to{transform:scale(1.1)}}
+.foot{margin-top:16px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-size:13px}
+@media (prefers-reduced-motion:reduce){.shake,.pop,.tile.hint{animation:none}}
+</style>
+</head>
+<body>
+<div id="app"><noscript>Dieses Spiel braucht JavaScript.</noscript></div>
+<script>
+'use strict';
+const KEY='wortWerkstatt_v1';
+const CHEST_AT=8, SESSION_J=2;
+const TIERS=[null,{n:'Wald',i:'🌲',c:'#3f8f3a'},{n:'Höhle',i:'⛰️',c:'#7a7a7a'},{n:'Meer',i:'🌊',c:'#2f6fd0'},{n:'Schloss',i:'🏰',c:'#8a4fd0'}];
+function W(w,s,e,t,pl){return {w:w,s:s.split('-'),e:e,t:t,pl:pl||w};}
+const WORDS=[
+ W('Kuh','Kuh','🐄',1),W('Hut','Hut','🎩',1),W('Bett','Bett','🛏️',1),W('Brot','Brot','🍞',1),W('Pilz','Pilz','🍄',1),
+ W('Holz','Holz','🪵',1),W('Axt','Axt','🪓',1),W('Tür','Tür','🚪',1,'Türen'),W('Haus','Haus','🏠',1),W('Baum','Baum','🌳',1),
+ W('Mond','Mond','🌙',1),W('Wolf','Wolf','🐺',1),W('Gold','Gold','🪙',1),
+ W('Apfel','Ap-fel','🍎',2,'Äpfel'),W('Fisch','Fisch','🐟',2),W('Schaf','Schaf','🐑',2),W('Huhn','Huhn','🐔',2),W('Stein','Stein','🪨',2,'Steine'),
+ W('Feuer','Feu-er','🔥',2),W('Wolle','Wol-le','🧶',2),W('Leiter','Lei-ter','🪜',2,'Leitern'),W('Kerze','Ker-ze','🕯️',2,'Kerzen'),
+ W('Möhre','Möh-re','🥕',2,'Möhren'),W('Pferd','Pferd','🐴',2),W('Boot','Boot','⛵',2),W('Mauer','Mau-er','🧱',2),W('Eimer','Ei-mer','🪣',2),
+ W('Blume','Blu-me','🌸',2),W('Kuchen','Ku-chen','🎂',2),W('Weizen','Wei-zen','🌾',2),W('Fuchs','Fuchs','🦊',2),W('Biene','Bie-ne','🐝',2),W('Dino','Di-no','🦖',2),
+ W('Schwein','Schwein','🐷',3),W('Schwert','Schwert','🗡️',3),W('Diamant','Dia-mant','💎',3),W('Schlüssel','Schlüs-sel','🔑',3),
+ W('Kompass','Kom-pass','🧭',3),W('Hammer','Ham-mer','🔨',3),W('Kartoffel','Kar-tof-fel','🥔',3),W('Melone','Me-lo-ne','🍉',3),
+ W('Brücke','Brü-cke','🌉',3),W('Angel','An-gel','🎣',3),W('Fenster','Fens-ter','🪟',3),W('Spinne','Spin-ne','🕷️',3),
+ W('Rakete','Ra-ke-te','🚀',3),W('Kürbis','Kür-bis','🎃',3),W('Schild','Schild','🛡️',3),
+ W('Spitzhacke','Spitz-ha-cke','⛏️',4),W('Holztür','Holz-tür','🪵🚪',4),W('Steinhaus','Stein-haus','🪨🏠',4),W('Apfelbaum','Ap-fel-baum','🍎🌳',4),
+ W('Pilzsuppe','Pilz-sup-pe','🍄🍲',4),W('Schmetterling','Schmet-ter-ling','🦋',4),W('Erdbeere','Erd-bee-re','🍓',4),
+ W('Hubschrauber','Hub-schrau-ber','🚁',4),W('Dinosaurier','Di-no-sau-ri-er','🦕',4),W('Feuerwerk','Feu-er-werk','🎆',4),
+ W('Regenbogen','Re-gen-bo-gen','🌈',4),W('Schneemann','Schnee-mann','⛄',4)
+];
+const BYW={};WORDS.forEach(function(x){BYW[x.w]=x;});
+const RARE=[{id:'burg',e:'🏰',n:'Burg'},{id:'drache',e:'🐉',n:'Drache'},{id:'regenbogen',e:'🌈',n:'Regenbogen'},{id:'einhorn',e:'🦄',n:'Einhorn'},{id:'rakete',e:'🚀',n:'Rakete'},{id:'krone',e:'👑',n:'Krone'}];
+const RECIPES=[
+ {r:'Boot',acc:'ein Boot',ing:{Holz:5}},{r:'Leiter',acc:'eine Leiter',ing:{Holz:3}},{r:'Tür',acc:'eine Tür',ing:{Holz:4}},
+ {r:'Bett',acc:'ein Bett',ing:{Wolle:3,Holz:3}},{r:'Axt',acc:'eine Axt',ing:{Holz:2,Stein:3}},{r:'Brot',acc:'ein Brot',ing:{Weizen:3}},
+ {r:'Kuchen',acc:'einen Kuchen',ing:{Weizen:3,Apfel:2}},{r:'Eimer',acc:'einen Eimer',ing:{Stein:3}},{r:'Mauer',acc:'eine Mauer',ing:{Stein:6}},
+ {r:'Haus',acc:'ein Haus',ing:{Holz:5,Stein:4}},{r:'Brücke',acc:'eine Brücke',ing:{Holz:4,Stein:3}},{r:'Schwert',acc:'ein Schwert',ing:{Holz:1,Stein:2}},
+ {r:'Kerze',acc:'eine Kerze',ing:{Wolle:1,Feuer:1}},
+ {r:'Haus',acc:'ein Haus',ing:{Holz:5,Stein:4,Tür:1}},{r:'Boot',acc:'ein Boot',ing:{Holz:5,Wolle:2,Eimer:1}},
+ {r:'Kuchen',acc:'einen Kuchen',ing:{Weizen:3,Apfel:2,Möhre:1}},{r:'Bett',acc:'ein Bett',ing:{Wolle:3,Holz:3,Kerze:1}},
+ {r:'Brücke',acc:'eine Brücke',ing:{Holz:4,Stein:3,Leiter:1}},{r:'Schwert',acc:'ein Schwert',ing:{Holz:1,Stein:2,Gold:1}},
+ {r:'Spitzhacke',acc:'eine Spitzhacke',ing:{Holz:2,Stein:3,Gold:1}}
+];
+const BASE=['Holz','Stein','Wolle','Weizen','Apfel','Möhre','Eimer','Leiter','Tür','Feuer','Kerze','Gold'];
+const SENT={
+ 2:['Ich sehe ein Schaf.','Die Kuh ist groß.','Der Fisch schwimmt.','Das Haus ist rot.','Ich esse einen Apfel.','Wir bauen ein Boot.','Die Blume ist schön.','Das Huhn legt ein Ei.','Ich habe einen Hut.','Der Pilz ist klein.','Mama backt Kuchen.','Der Fuchs ist schnell.'],
+ 3:['Ich baue ein Haus aus Holz.','Der Fuchs schleicht durch den Wald.','Wir gehen über die Brücke.','Das Schwein liegt im Stroh.','Ich suche einen Schlüssel.','Der Diamant glitzert in der Höhle.','Papa hat einen Hammer.','Die Spinne sitzt im Netz.','Ich pflanze eine Melone.','Die Rakete fliegt zum Mond.'],
+ 4:['Der Schmetterling fliegt über die Blumenwiese.','Wir bauen ein Steinhaus am Fluss.','Der Dinosaurier ist riesengroß.','Nach dem Regen kommt der Regenbogen.','Ich esse Erdbeeren mit Sahne.','Im Winter bauen wir einen Schneemann.','Der Hubschrauber landet auf dem Dach.','Mit der Spitzhacke grabe ich nach Diamanten.','Zum Geburtstag gibt es ein Feuerwerk.']
+};
+const KEYS='abcdefghijklmnopqrstuvwxyzäöüß'.split('');
+
+/* ---------- Helfer ---------- */
+function ri(a,b){return a+Math.floor(Math.random()*(b-a+1));}
+function pick(a){return a[ri(0,a.length-1)];}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=ri(0,i);const t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function p2(n){return (n<10?'0':'')+n;}
+function todayStr(off){const d=new Date();d.setDate(d.getDate()+(off||0));return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());}
+function stars(n){return '★'.repeat(n)+'☆'.repeat(3-n);}
+
+/* ---------- Spielstand ---------- */
+function defaults(){return {v:1,inv:{},rare:{},mast:{},world:new Array(48).fill(''),chestProg:0,chests:0,streak:{last:'',days:0},journeys:0,
+ stats:{find:{n:0,ok:0},write:{n:0,ok:0},craft:{n:0,ok:0},sentence:{n:0,ok:0}},settings:{syl:true,sound:true,auto:true,unlock:false}};}
+function load(){const d=defaults();try{const raw=localStorage.getItem(KEY);if(raw){const o=JSON.parse(raw);if(o&&typeof o==='object'){for(const k in d){if(o[k]!==undefined){if(d[k]&&typeof d[k]==='object'&&!Array.isArray(d[k]))d[k]=Object.assign(d[k],o[k]);else d[k]=o[k];}}}}}catch(e){}
+ if(!Array.isArray(d.world)||d.world.length!==48)d.world=new Array(48).fill('');return d;}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+let S=load();
+let view='hub',J=null,Tr=null,sel='',eraseMode=false,confirmReset=false,sessionJ=0,lastSentence='';
+
+function mast(w){if(!S.mast[w])S.mast[w]={m:0,ok:0,bad:0};return S.mast[w];}
+function tierSize(t){return WORDS.filter(function(x){return x.t===t;}).length;}
+function tierMastered(t){return WORDS.filter(function(x){return x.t===t&&S.mast[x.w]&&S.mast[x.w].m>=1;}).length;}
+function tierUnlocked(t){return t===1||S.settings.unlock||tierMastered(t-1)>=Math.ceil(tierSize(t-1)*0.5);}
+function recTier(){let r=1;for(let t=1;t<=4;t++){if(tierUnlocked(t))r=t;}return r;}
+function weight(w){const x=S.mast[w]||{m:0,bad:0};return 1+(3-Math.min(3,x.m))*2+Math.min(x.bad,3);}
+function pickWords(tier,n,not){
+ const pool=WORDS.filter(function(x){return x.t===tier&&(not||[]).indexOf(x.w)<0;}),res=[];
+ while(res.length<n&&pool.length){
+  const tot=pool.reduce(function(a,x){return a+weight(x.w);},0);let r=Math.random()*tot,i=0;
+  for(;i<pool.length;i++){r-=weight(pool[i].w);if(r<=0)break;}
+  i=Math.min(i,pool.length-1);res.push(pool.splice(i,1)[0]);
+ }
+ return res;
+}
+function grant(key,n){S.inv[key]=(S.inv[key]||0)+n;if(J){J.items[key]=(J.items[key]||0)+n;}}
+function addPts(n){S.chestProg+=n;while(S.chestProg>=CHEST_AT){S.chestProg-=CHEST_AT;S.chests++;}}
+function emojiOf(key){if(key.indexOf('r:')===0){const r=RARE.filter(function(x){return 'r:'+x.id===key;})[0];return r?r.e:'❓';}const w=BYW[key];return w?w.e:'❓';}
+function plural(w,n){return n===1?w:(BYW[w]?BYW[w].pl:w);}
+
+/* ---------- Missionen erzeugen ---------- */
+function commonPrefix(a,b){let i=0;a=a.toLowerCase();b=b.toLowerCase();while(i<a.length&&i<b.length&&a[i]===b[i])i++;return i;}
+function genFind(tier){
+ const nT=tier===1?1:tier===2?2:3,nTiles=tier===1?4:tier===2?6:tier===3?9:12;
+ const targets=pickWords(tier,nT);
+ const tn=targets.map(function(x){return x.w;});
+ const pool=WORDS.filter(function(x){return x.t<=tier&&x.t>=Math.max(1,tier-1)&&tn.indexOf(x.w)<0;});
+ let dis=[];
+ if(tier>=3){
+  const scored=shuffle(pool).sort(function(a,b){return (Math.max.apply(null,tn.map(function(t){return commonPrefix(b.w,t)+(Math.abs(b.w.length-t.length)<2?1:0);}))-Math.max.apply(null,tn.map(function(t){return commonPrefix(a.w,t)+(Math.abs(a.w.length-t.length)<2?1:0);})));});
+  dis=scored.slice(0,3);
+  dis=dis.concat(shuffle(scored.slice(3)).slice(0,nTiles-nT-dis.length));
+ }else dis=shuffle(pool).slice(0,nTiles-nT);
+ const tiles=shuffle(targets.concat(dis)).map(function(x){return x.w;});
+ return {type:'find',tier:tier,targets:tn,tiles:tiles,found:[],mistakes:0,wrongRun:0,help:false,done:false,shakeW:''};
+}
+function genWrite(tier){
+ const wd=pickWords(tier,1)[0],chars=wd.w.split('');
+ let tiles=[],kb=false;
+ if(tier>=3){kb=true;tiles=KEYS.map(function(c){return {id:'k_'+c,c:c,used:false};});}
+ else{
+  let cs=chars.map(function(c){return c.toLowerCase();});
+  if(tier===2){const letters='abdefghiklmnoprstuw'.split('').filter(function(c){return cs.indexOf(c)<0;});cs=cs.concat(shuffle(letters).slice(0,3));}
+  tiles=shuffle(cs.map(function(c,i){return {id:'t'+i,c:c,used:false};}));
+ }
+ return {type:'write',tier:tier,word:wd.w,chars:chars,pos:0,tiles:tiles,kb:kb,mistakes:0,wrongRun:0,peeks:0,hintChar:'',reveal:false,done:false,shakeId:''};
+}
+function genSentence(tier){
+ const t=Math.max(2,Math.min(4,tier));let s,i=0;
+ do{s=pick(SENT[t]);i++;}while(s===lastSentence&&i<10);
+ lastSentence=s;
+ const tokens=s.split(' ');
+ return {type:'sentence',tier:tier,sentence:s,tokens:tokens,pos:0,tiles:shuffle(tokens.map(function(x,k){return {id:'s'+k,c:x,used:false};})),mistakes:0,wrongRun:0,hintTok:'',done:false,shakeId:''};
+}
+function genCraft(tier){
+ const cand=RECIPES.filter(function(r){const n=Object.keys(r.ing).length;return tier<=3?n<=2&&BYW[r.r].t<=3:n===3;});
+ const rec=pick(cand),order=Object.keys(rec.ing);
+ const nPool=tier<=3?6:8;
+ const others=shuffle(BASE.filter(function(b){return order.indexOf(b)<0;})).slice(0,nPool-order.length);
+ return {type:'craft',tier:tier,result:rec.r,acc:rec.acc,ing:rec.ing,order:order,pool:shuffle(order.concat(others)),table:{},tries:0,states:null,done:false};
+}
+function genMission(type,tier){return type==='find'?genFind(tier):type==='write'?genWrite(tier):type==='sentence'?genSentence(tier):genCraft(tier);}
+function missionTypes(tier){
+ if(tier===1)return ['find','write','find'];
+ if(tier===2)return shuffle(['find','write','sentence']);
+ const base=shuffle(['craft','write','sentence']);
+ if(Math.random()<0.3)base[base.indexOf(pick(['craft','sentence']))]='find';
+ return base;
+}
+
+/* ---------- Texte ---------- */
+function listText(ing,order,useHtml){
+ const parts=order.map(function(w){const n=ing[w];const nm=plural(w,n);return n+' '+(useHtml&&n===1?wordHTML(w):useHtml?'<span class="wd" data-act="say" data-w="'+nm+'">'+nm+'</span>':nm);});
+ if(parts.length===1)return parts[0];
+ return parts.slice(0,-1).join(', ')+' und '+parts[parts.length-1];
+}
+function questText(m,html){
+ const w=function(x){return html?wordHTML(x):x;};
+ if(m.type==='find'){
+  if(m.tier===1)return 'Finde: '+w(m.targets[0])+'!';
+  if(m.tier===2)return 'Bring mir: '+w(m.targets[0])+' und '+w(m.targets[1])+'.';
+  return 'Hol mir: '+w(m.targets[0])+', '+w(m.targets[1])+' und '+w(m.targets[2])+'.';
+ }
+ if(m.type==='craft')return 'Baue '+m.acc+'. Du brauchst '+listText(m.ing,m.order,html)+'.';
+ if(m.type==='write')return 'Schreibe das Wort: '+m.word;
+ return m.sentence;
+}
+
+/* ---------- Engine ---------- */
+function tapFind(m,w){
+ if(m.done)return null;
+ if(m.targets.indexOf(w)>=0&&m.found.indexOf(w)<0){
+  m.found.push(w);m.wrongRun=0;grant(w,ri(1,3));addPts(1);
+  if(m.found.length===m.targets.length)m.done=true;
+  return 'ok';
+ }
+ if(m.found.indexOf(w)>=0)return null;
+ m.mistakes++;m.wrongRun++;m.shakeW=w;
+ if(m.wrongRun>=2)m.help=true;
+ return 'wrong';
+}
+function tapWrite(m,id){
+ if(m.done)return null;
+ const t=m.tiles.filter(function(x){return x.id===id;})[0];
+ if(!t||(t.used&&!m.kb))return null;
+ const exp=m.chars[m.pos];
+ if(t.c.toLowerCase()===exp.toLowerCase()){
+  if(!m.kb)t.used=true;
+  m.pos++;m.wrongRun=0;m.hintChar='';
+  if(m.pos>=m.chars.length)m.done=true;
+  return 'ok';
+ }
+ m.mistakes++;m.wrongRun++;m.shakeId=id;
+ if(m.wrongRun>=3)m.hintChar=exp.toLowerCase();
+ return 'wrong';
+}
+function tapSentence(m,id){
+ if(m.done)return null;
+ const t=m.tiles.filter(function(x){return x.id===id;})[0];
+ if(!t||t.used)return null;
+ if(t.c===m.tokens[m.pos]){
+  t.used=true;m.pos++;m.wrongRun=0;m.hintTok='';
+  if(m.pos>=m.tokens.length)m.done=true;
+  return 'ok';
+ }
+ m.mistakes++;m.wrongRun++;m.shakeId=id;
+ if(m.wrongRun>=3)m.hintTok=m.tokens[m.pos];
+ return 'wrong';
+}
+function craftAdd(m,w){if(m.done)return;m.table[w]=Math.min(9,(m.table[w]||0)+1);m.states=null;}
+function craftSub(m,w){if(m.done)return;if(m.table[w]){m.table[w]--;if(m.table[w]<=0)delete m.table[w];}m.states=null;}
+function craftCheck(m){
+ const st={};let ok=true;
+ Object.keys(m.table).concat(m.order).forEach(function(w){
+  const need=m.ing[w]||0,have=m.table[w]||0;
+  st[w]=have===need?'ok':have<need?'few':'many';
+  if(have!==need)ok=false;
+ });
+ m.states=st;
+ if(ok){m.done=true;return 'ok';}
+ m.tries++;return 'wrong';
+}
+
+/* ---------- Reise ---------- */
+function startJourney(tier){
+ const types=missionTypes(tier);
+ J={tier:tier,types:types,idx:0,cur:genMission(types[0],tier),items:{},oks:0,perfect:0,settled:false};
+ view='mission';
+}
+function settleMission(){
+ const m=J.cur;if(J.settled||!m.done)return;J.settled=true;
+ const st=S.stats[m.type];st.n++;st.ok++;J.oks++;
+ let perfect=m.mistakes===0;
+ if(m.type==='find'){
+  m.targets.forEach(function(w){const x=mast(w);if(perfect){x.m=Math.min(3,x.m+1);x.ok++;}else x.bad++;});
+ }else if(m.type==='write'){
+  const x=mast(m.word);perfect=perfect&&m.peeks===0;
+  if(perfect){x.m=Math.min(3,x.m+1);x.ok++;}else x.bad++;
+  grant(m.word,ri(2,4));addPts(2);
+ }else if(m.type==='craft'){
+  perfect=m.tries===0;
+  grant(m.result,1+ri(0,1));addPts(2);
+ }else{
+  perfect=m.mistakes===0;
+  m.tokens.forEach(function(tk){const bare=tk.replace(/[.,!?]/g,'');const hit=WORDS.filter(function(x){return x.w===bare||x.pl===bare;})[0];if(hit)grant(hit.w,1);});
+  addPts(2);
+ }
+ if(perfect)J.perfect++;
+ save();
+}
+function nextMission(){
+ if(J.idx<J.types.length-1){J.idx++;J.cur=genMission(J.types[J.idx],J.tier);J.settled=false;}
+ else finishJourney();
+}
+function finishJourney(){
+ const today=todayStr();J.dayBonus=0;
+ if(S.streak.last!==today){S.streak.days=S.streak.last===todayStr(-1)?S.streak.days+1:1;S.streak.last=today;J.dayBonus=3;addPts(3);}
+ S.journeys++;sessionJ++;save();view='ergebnis';
+}
+function chestOpen(){
+ if(S.chests<=0)return null;
+ S.chests--;
+ const maxT=recTier(),pool=WORDS.filter(function(x){return x.t<=maxT;}),items=[];
+ shuffle(pool).slice(0,3).forEach(function(x){const n=ri(1,2);S.inv[x.w]=(S.inv[x.w]||0)+n;items.push({k:x.w,n:n});});
+ let rare=null;
+ if(Math.random()<0.12){rare=pick(RARE);S.rare[rare.id]=(S.rare[rare.id]||0)+1;}
+ save();return {items:items,rare:rare};
+}
+function invCount(key){return key.indexOf('r:')===0?(S.rare[key.slice(2)]||0):(S.inv[key]||0);}
+function invAdd(key,n){if(key.indexOf('r:')===0){const id=key.slice(2);S.rare[id]=(S.rare[id]||0)+n;}else S.inv[key]=(S.inv[key]||0)+n;}
+function placeCell(i,key){
+ if(!key||invCount(key)<=0)return false;
+ if(S.world[i])invAdd(S.world[i],1);
+ S.world[i]=key;invAdd(key,-1);save();return true;
+}
+function pickUpCell(i){if(!S.world[i])return false;invAdd(S.world[i],1);S.world[i]='';save();return true;}
+
+/* ---------- Ton ---------- */
+let AC=null;
+function beep(f,d,type){
+ if(!S.settings.sound)return;
+ try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type=type||'square';o.frequency.value=f;g.gain.value=.08;o.connect(g);g.connect(AC.destination);o.start();g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+d);o.stop(AC.currentTime+d);}catch(e){}
+}
+function sfx(k){if(k==='ok'){beep(660,.12);setTimeout(function(){beep(880,.16);},90);}else if(k==='bad')beep(180,.22,'sawtooth');else if(k==='win'){[523,659,784,1047].forEach(function(f,i){setTimeout(function(){beep(f,.2);},i*110);});}}
+function speak(text){try{const u=new SpeechSynthesisUtterance(text);u.lang='de-DE';u.rate=.85;const vs=speechSynthesis.getVoices().filter(function(v){return /^de/i.test(v.lang);});if(vs.length)u.voice=vs.find(function(v){return /anna|helena|petra|marlene|vicki/i.test(v.name);})||vs[0];speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}}
+
+/* ---------- Darstellung ---------- */
+function wordHTML(w){
+ const x=BYW[w];
+ if(!x||!S.settings.syl)return '<span class="wd" data-act="say" data-w="'+w+'">'+w+'</span>';
+ return '<span class="wd" data-act="say" data-w="'+w+'">'+x.s.map(function(p,i){return '<span class="sy'+(i%2)+'">'+p+'</span>';}).join('')+'</span>';
+}
+function itemsLine(items){return Object.keys(items).map(function(k){return emojiOf(k)+'×'+items[k];}).join('  ');}
+function dots(){return '<div class="row" style="gap:6px">'+J.types.map(function(t,i){return '<span class="chip" style="background:'+(i<J.idx?'#bfe8b3':i===J.idx?'#f6c343':'#fff')+'">'+(i<J.idx?'✓':i+1)+'</span>';}).join('')+'</div>';}
+function missionHead(){
+ return '<div class="top"><button class="sm" data-act="hub">← Zurück</button>'+dots()+'<button class="sm" data-act="speakQ" aria-label="Vorlesen">🔊</button></div>';
+}
+function findBody(m){
+ const showEm=m.tier<=2||m.help;
+ return '<div class="bubble"><div class="npc">🧑‍🌾</div><div class="q">'+questText(m,true)+'</div></div>'+
+  '<div class="grid '+(m.tier===1?'g2':m.tier===2?'g3':'g3')+'">'+m.tiles.map(function(w){
+   const x=BYW[w],f=m.found.indexOf(w)>=0;
+   return '<button class="item'+(f?' done':'')+(m.shakeW===w?' shake':'')+'" data-act="tileF" data-w="'+w+'" '+(f?'disabled':'')+'>'+(showEm||f?'<span class="em">'+x.e+'</span>':'')+'<span class="lb">'+(f?'✓ ':'')+wordHTMLPlain(x)+'</span></button>';
+  }).join('')+'</div>'+(m.help&&m.tier>=3?'<div class="msg">Tipp: Die Bilder sind jetzt da. Lies das Wort und finde es.</div>':'');
+}
+function wordHTMLPlain(x){return S.settings.syl?x.s.map(function(p,i){return '<span class="sy'+(i%2)+'">'+p+'</span>';}).join(''):x.w;}
+function writeBody(m){
+ const x=BYW[m.word];
+ const vis=m.tier===1||m.reveal||(m.tier===2&&m.pos===0);
+ let h='<div class="pic">'+x.e+'</div><div class="shown">'+(vis?wordHTMLPlain(x):'<button class="sm" data-act="peek">👁 Wort zeigen</button>')+'</div>';
+ h+='<div class="slots">'+m.chars.map(function(c,i){return '<div class="slot'+(i<m.pos?' ok':i===m.pos&&!m.done?' on':'')+'">'+(i<m.pos?c:'')+'</div>';}).join('')+'</div>';
+ if(m.done)return h;
+ if(m.kb){
+  h+='<div class="kb">'+m.tiles.map(function(t){return '<button class="tile'+(m.hintChar===t.c?' hint':'')+(m.shakeId===t.id?' shake':'')+'" data-act="tileW" data-id="'+t.id+'">'+t.c+'</button>';}).join('')+'</div>';
+ }else{
+  h+='<div class="tiles">'+m.tiles.map(function(t){return '<button class="tile'+(m.hintChar===t.c&&!t.used?' hint':'')+(m.shakeId===t.id?' shake':'')+'" data-act="tileW" data-id="'+t.id+'" '+(t.used?'disabled style="display:none"':'')+'>'+t.c+'</button>';}).join('')+'</div>';
+ }
+ return h;
+}
+function sentenceBody(m){
+ let h='<div class="bubble"><div class="npc">🧑‍🌾</div><div class="q">Baue den Satz! <button class="sm" data-act="speakQ">🔊 Hören</button></div></div>';
+ h+='<div class="line">'+(m.pos?m.tokens.slice(0,m.pos).map(function(t){return '<span class="w">'+t+'</span>';}).join(''):'<span style="opacity:.4;font-weight:700">Tippe die Wörter der Reihe nach an …</span>')+'</div>';
+ if(!m.done)h+='<div class="tiles">'+m.tiles.map(function(t){return '<button class="wtile'+(m.hintTok===t.c&&!t.used?' hint':'')+(m.shakeId===t.id?' shake':'')+'" data-act="tileS" data-id="'+t.id+'" '+(t.used?'disabled style="display:none"':'')+'>'+t.c+'</button>';}).join('')+'</div>';
+ return h;
+}
+function craftBody(m){
+ const showEm=m.tier<=3;
+ let h='<div class="bubble"><div class="npc">🧑‍🌾</div><div class="q">'+questText(m,true)+'</div></div>';
+ h+='<div class="sttag" style="font-weight:800">Deine Werkbank:</div><div class="bench">'+(Object.keys(m.table).length?Object.keys(m.table).map(function(w){const s=m.states&&m.states[w];return '<button class="bch '+(s||'')+'" data-act="craftSub" data-w="'+w+'"><span>'+(BYW[w].e)+' × '+m.table[w]+'</span><small>'+w+(s==='few'?' ⬆':s==='many'?' ⬇':s==='ok'?' ✓':'')+'</small></button>';}).join(''):'<span style="opacity:.5;font-weight:700">Tippe unten die Zutaten an …</span>')+'</div>';
+ if(m.states){
+  const miss=m.order.filter(function(w){return !m.table[w];});
+  if(miss.length)h+='<div class="msg">Es fehlt noch etwas. Lies den Satz noch einmal.</div>';
+  else h+='<div class="msg">Fast! Lies die Zahlen noch einmal. ⬆ = mehr, ⬇ = weniger.</div>';
+ }
+ if(!m.done)h+='<div class="grid g3">'+m.pool.map(function(w){return '<button class="item" data-act="craftAdd" data-w="'+w+'">'+(showEm?'<span class="em">'+BYW[w].e+'</span>':'')+'<span class="lb">'+wordHTMLPlain(BYW[w])+'</span></button>';}).join('')+'</div><button class="big blue" data-act="craftGo">🔨 Bauen!</button>';
+ return h;
+}
+function missionHTML(){
+ const m=J.cur;
+ let h=missionHead();
+ h+=m.type==='find'?findBody(m):m.type==='write'?writeBody(m):m.type==='sentence'?sentenceBody(m):craftBody(m);
+ if(m.done){
+  const last=m.type==='write'?m.word:m.type==='craft'?m.result:'';
+  h+='<div class="msg good pop">🎉 Super gemacht! '+(last?BYW[last].e+' '+last:'')+'</div><button class="big" data-act="next">'+(J.idx<J.types.length-1?'Weiter ➜':'Fertig 🏁')+'</button>';
+ }
+ return h;
+}
+function hubHTML(){
+ const rec=recTier();
+ let h='<div class="top"><div class="chip">🔥 '+S.streak.days+'</div><div class="row"><button class="sm" data-act="tglSyl" title="Silben-Farben">🎨 '+(S.settings.syl?'an':'aus')+'</button><button class="sm" data-act="tglSound">'+(S.settings.sound?'🔔':'🔕')+'</button></div></div>';
+ h+='<h1>⛏️ Wort-Werkstatt</h1><p style="font-size:19px;font-weight:700">Lies, schreib und bau deine Welt!</p>';
+ if(S.chests>0)h+='<button class="big gold pop" data-act="toChest">🎁 Eine Truhe wartet'+(S.chests>1?' ('+S.chests+')':'')+'!</button>';
+ h+='<button class="big" data-act="play" data-t="'+rec+'">▶ Los geht\'s!</button>';
+ h+='<div class="card"><b>🎁 Schatztruhe</b><div class="bar" style="margin:6px 0"><i style="width:'+Math.round(S.chestProg/CHEST_AT*100)+'%"></i></div><small>Noch '+(CHEST_AT-S.chestProg)+' Schritte bis zur nächsten Truhe!</small></div>';
+ h+='<div class="biome">'+[1,2,3,4].map(function(t){
+  const u=tierUnlocked(t),T=TIERS[t],mm=tierMastered(t),n=tierSize(t);
+  return '<button class="bio'+(t===rec&&u?' rec':'')+'" style="background:'+T.c+'" data-act="play" data-t="'+t+'" '+(u?'':'disabled')+'><span>'+(u?T.i:'🔒')+'</span><b>'+T.n+'</b><small>'+(u?mm+' von '+n+' Wörtern gekonnt':'Noch '+Math.max(0,Math.ceil(tierSize(t-1)*0.5)-tierMastered(t-1))+' Wörter in '+TIERS[t-1].n+' üben')+'</small></button>';
+ }).join('')+'</div>';
+ h+='<div class="row"><button class="big blue" style="flex:1 1 220px" data-act="toWorld">🏗️ Meine Welt</button><button class="big blue" style="flex:1 1 220px" data-act="toBook">📖 Wort-Buch</button></div>';
+ h+='<div class="foot"><button class="sm" data-act="toEltern">👪 Für Erwachsene</button><span>Kein Login · alles bleibt auf diesem Gerät</span></div>';
+ return h;
+}
+function ergebnisHTML(){
+ let h='<h1 class="pop">🏁 Geschafft!</h1><div class="card"><p style="font-size:20px;font-weight:800">Du hast '+J.oks+' Aufgaben gelöst'+(J.perfect?' – '+J.perfect+' davon ohne Fehler!':'.')+'</p>';
+ h+='<p style="font-size:22px">Das hast du gesammelt:</p><div style="font-size:36px;line-height:1.4">'+(Object.keys(J.items).length?itemsLine(J.items):'–')+'</div>'+(J.dayBonus?'<p>🔥 Tages-Bonus: +'+J.dayBonus+' Truhen-Schritte</p>':'')+'</div>';
+ h+='<div class="card"><b>🎁 Schatztruhe</b><div class="bar" style="margin:6px 0"><i style="width:'+Math.round(S.chestProg/CHEST_AT*100)+'%"></i></div><small>Noch '+(CHEST_AT-S.chestProg)+' Schritte bis zur nächsten Truhe!</small></div>';
+ if(S.chests>0)h+='<button class="big gold pop" data-act="toChest">🎁 Truhe öffnen!</button>';
+ h+='<button class="big blue" data-act="toWorld">🏗️ In meiner Welt bauen</button>';
+ if(sessionJ>=SESSION_J){h+='<div class="msg">🌙 Du hast heute schon viel gelernt! Zeit für eine Pause. Deine Welt wartet auf dich.</div><button class="big" data-act="hub">🏠 Fertig für heute</button><button class="sm" data-act="again" style="width:100%">Trotzdem noch eine Runde</button>';}
+ else h+='<button class="big" data-act="again">▶ Noch eine Runde</button><button class="sm" data-act="hub" style="width:100%">🏠 Zurück</button>';
+ return h;
+}
+function chestHTML(){
+ let h='<button class="sm" data-act="hub">← Zurück</button>';
+ if(!Tr.res){h+='<h1 style="text-align:center">🎁 Schatztruhe</h1><div class="chest pop">🧰</div><button class="big gold" data-act="openChest">Tippe zum Öffnen!</button>';return h;}
+ h+='<h1 style="text-align:center" class="pop">Das ist drin!</h1><div class="card" style="text-align:center;font-size:48px">'+Tr.res.items.map(function(i){return '<div>'+emojiOf(i.k)+' <span style="font-size:26px;font-weight:800">'+i.k+' ×'+i.n+'</span></div>';}).join('')+'</div>';
+ if(Tr.res.rare)h+='<div class="card rare pop" style="text-align:center;font-size:56px">'+Tr.res.rare.e+'<div style="font-size:24px;font-weight:900">Seltener Fund: '+Tr.res.rare.n+'!</div></div>';
+ if(S.chests>0)h+='<button class="big gold" data-act="openChest">Nächste Truhe ('+S.chests+')</button>';
+ h+='<button class="big blue" data-act="toWorld">🏗️ Jetzt bauen!</button><button class="sm" data-act="hub" style="width:100%">🏠 Zurück</button>';
+ return h;
+}
+function worldHTML(){
+ const keys=Object.keys(S.inv).filter(function(k){return S.inv[k]>0;}).map(function(k){return k;}).concat(Object.keys(S.rare).filter(function(k){return S.rare[k]>0;}).map(function(k){return 'r:'+k;}));
+ let h='<div class="top"><button class="sm" data-act="hub">← Zurück</button><button class="sm'+(eraseMode?' sel':'')+'" style="'+(eraseMode?'background:#ffc6bd':'')+'" data-act="erase">🧽 Wegnehmen</button></div><h1>🏗️ Meine Welt</h1>';
+ h+='<div class="world">'+S.world.map(function(k,i){const r=Math.floor(i/8);return '<button class="cell '+(r<3?'sky':r===3?'grass':'dirt')+'" data-act="cell" data-i="'+i+'">'+(k?emojiOf(k):'')+'</button>';}).join('')+'</div>';
+ h+=keys.length?'<div class="pal">'+keys.map(function(k){return '<button class="'+(sel===k&&!eraseMode?'sel':'')+'" data-act="selItem" data-k="'+k+'">'+emojiOf(k)+'<small>×'+invCount(k)+'</small></button>';}).join('')+'</div>':'<div class="msg">Deine Truhe ist noch leer. Löse Aufgaben, dann bekommst du Sachen zum Bauen!</div>';
+ h+='<div class="msg good">👋 Zeig deine Welt jemandem!</div>';
+ return h;
+}
+function bookHTML(){
+ let h='<button class="sm" data-act="hub">← Zurück</button><h1>📖 Wort-Buch</h1>';
+ [1,2,3,4].forEach(function(t){
+  h+='<h2 style="margin-top:14px">'+TIERS[t].i+' '+TIERS[t].n+'</h2><div class="bk">'+WORDS.filter(function(x){return x.t===t;}).map(function(x){
+   const m=S.mast[x.w]?S.mast[x.w].m:0,seen=m>0||(S.inv[x.w]||0)>0;
+   return '<button class="bkc'+(seen?(m>=3?' gold':''):' lock')+'" data-act="say" data-w="'+x.w+'"><span class="em">'+(seen?x.e:'❓')+'</span><span>'+(seen?wordHTMLPlain(x):'???')+'</span><span class="st">'+stars(m)+'</span></button>';
+  }).join('')+'</div>';
+ });
+ return h;
+}
+function elternHTML(){
+ let h='<button class="sm" data-act="hub">← Zurück</button><h1>👪 Für Erwachsene</h1><div class="card"><p><b>Was wird geübt?</b> Lesen und Schreiben im Grundwortschatz, geordnet in vier Stufen nach Wortlänge und Schwierigkeit: (1) kurze, lautgetreue Wörter, (2) Wörter mit zwei Silben und Digraphen (sch, ei, ch …), (3) längere Wörter mit Doppelkonsonanten, (4) zusammengesetzte Wörter und längere Sätze.</p>';
+ h+='<p><b>Vier Aufgabenarten:</b> Wort in der Truhe finden (lesen), Wort Buchstabe für Buchstabe schreiben, Bauanleitung lesen und die richtigen Zutaten zählen (Leseverstehen), Satz aus Wörtern bauen.</p>';
+ h+='<p><b>Hilfen:</b> Silbenfarben (🎨), Vorlesen (🔊, jedes Wort in Sätzen ist antippbar), Wort ansehen (👁), blinkende Buchstaben nach 3 Fehlern. Falsche Buchstaben werden nie eingetragen, es gibt also keine Fehler im Wort.</p></div>';
+ h+='<div class="card"><b>Stufen</b><table><tr><th>Stufe</th><th>Wörter</th><th>gekonnt</th></tr>'+[1,2,3,4].map(function(t){return '<tr><td>'+TIERS[t].i+' '+TIERS[t].n+'</td><td>'+tierSize(t)+'</td><td>'+tierMastered(t)+'</td></tr>';}).join('')+'</table>';
+ const st=S.stats;h+='<p style="margin-top:8px"><small>Gelöste Aufgaben: Finden '+st.find.ok+' · Schreiben '+st.write.ok+' · Bauen '+st.craft.ok+' · Sätze '+st.sentence.ok+' · Runden '+S.journeys+'</small></p></div>';
+ const bad=WORDS.filter(function(x){return S.mast[x.w]&&S.mast[x.w].bad>0;}).sort(function(a,b){return S.mast[b.w].bad-S.mast[a.w].bad;}).slice(0,10);
+ h+='<div class="card"><b>Übungswörter (häufig schwierig)</b>'+(bad.length?'<p>'+bad.map(function(x){return x.e+' '+x.w+' ('+S.mast[x.w].bad+')';}).join(' · ')+'</p>':'<p><small>Noch nichts aufgefallen.</small></p>')+'<small>Diese Wörter kommen automatisch häufiger dran.</small></div>';
+ h+='<div class="card"><label style="display:flex;gap:10px;align-items:center;font-size:18px"><input type="checkbox" id="optUnlock" data-act="optUnlock" '+(S.settings.unlock?'checked':'')+' style="width:28px;height:28px"> Alle Stufen freischalten</label><label style="display:flex;gap:10px;align-items:center;font-size:18px;margin-top:10px"><input type="checkbox" id="optAuto" data-act="optAuto" '+(S.settings.auto?'checked':'')+' style="width:28px;height:28px"> Aufgaben automatisch vorlesen</label></div>';
+ h+='<div class="card">'+(confirmReset?'<p><b>Wirklich alles löschen?</b> Welt, Wörter und Fortschritt sind dann weg.</p><button class="sm" style="background:#ffc6bd" data-act="resetYes">Ja, löschen</button> <button class="sm" data-act="resetNo">Abbrechen</button>':'<button class="sm" data-act="resetAsk">Spielstand zurücksetzen</button>')+'</div>';
+ return h;
+}
+function render(){
+ const el=document.getElementById('app');
+ el.innerHTML=view==='hub'?hubHTML():view==='mission'?missionHTML():view==='ergebnis'?ergebnisHTML():view==='truhe'?chestHTML():view==='world'?worldHTML():view==='book'?bookHTML():elternHTML();
+ if(J&&J.cur){J.cur.shakeW='';J.cur.shakeId='';}
+}
+function go(v){view=v;confirmReset=false;render();window.scrollTo(0,0);}
+
+/* ---------- Eingaben ---------- */
+function afterTap(res,m){
+ if(res==='ok')sfx('ok');else if(res==='wrong')sfx('bad');
+ if(m.done){settleMission();sfx('win');
+  if(m.type==='write')speak(m.word);else if(m.type==='sentence')speak(m.sentence);else if(m.type==='craft')speak(m.result);}
+ render();
+}
+function speakQ(){
+ const m=J.cur;
+ if(m.type==='write')return speak(m.word);
+ if(m.type==='sentence')return speak(m.sentence);
+ speak(questText(m,false));
+}
+function autoSay(){
+ if(!S.settings.auto||!J)return;
+ const m=J.cur;
+ setTimeout(function(){if(view==='mission'&&J&&J.cur===m){if(m.type==='write')speak(m.word);else speakQ();}},350);
+}
+document.getElementById('app').addEventListener('click',function(e){
+ const b=e.target.closest('[data-act]');if(!b||b.disabled)return;
+ const a=b.getAttribute('data-act'),m=J&&J.cur;
+ if(a==='say')return speak(b.getAttribute('data-w'));
+ if(a==='tileF')return afterTap(tapFind(m,b.getAttribute('data-w')),m);
+ if(a==='tileW')return afterTap(tapWrite(m,b.getAttribute('data-id')),m);
+ if(a==='tileS')return afterTap(tapSentence(m,b.getAttribute('data-id')),m);
+ if(a==='peek'){m.peeks++;m.reveal=true;render();setTimeout(function(){if(J&&J.cur===m){m.reveal=false;if(view==='mission')render();}},2800);return;}
+ if(a==='craftAdd'){craftAdd(m,b.getAttribute('data-w'));sfx('ok');return render();}
+ if(a==='craftSub'){craftSub(m,b.getAttribute('data-w'));return render();}
+ if(a==='craftGo'){return afterTap(craftCheck(m),m);}
+ if(a==='speakQ')return speakQ();
+ if(a==='next'){nextMission();go(view);if(view==='mission')autoSay();return;}
+ if(a==='play'){startJourney(Number(b.getAttribute('data-t')));go('mission');return autoSay();}
+ if(a==='again'){startJourney(recTier());go('mission');return autoSay();}
+ if(a==='hub')return go('hub');
+ if(a==='toChest'){Tr={res:null};return go('truhe');}
+ if(a==='openChest'){Tr.res=chestOpen();sfx('win');return render();}
+ if(a==='toWorld')return go('world');
+ if(a==='toBook')return go('book');
+ if(a==='toEltern')return go('eltern');
+ if(a==='selItem'){sel=b.getAttribute('data-k');eraseMode=false;return render();}
+ if(a==='erase'){eraseMode=!eraseMode;return render();}
+ if(a==='cell'){const i=Number(b.getAttribute('data-i'));if(eraseMode||(!sel&&S.world[i]))pickUpCell(i);else if(sel){if(!placeCell(i,sel)){sel='';}else sfx('ok');}return render();}
+ if(a==='tglSyl'){S.settings.syl=!S.settings.syl;save();return render();}
+ if(a==='tglSound'){S.settings.sound=!S.settings.sound;save();return render();}
+ if(a==='resetAsk'){confirmReset=true;return render();}
+ if(a==='resetNo'){confirmReset=false;return render();}
+ if(a==='resetYes'){S=defaults();save();sessionJ=0;J=null;sel='';return go('hub');}
+});
+document.getElementById('app').addEventListener('change',function(e){
+ const id=e.target&&e.target.id;
+ if(id==='optUnlock'){S.settings.unlock=e.target.checked;save();}
+ if(id==='optAuto'){S.settings.auto=e.target.checked;save();}
+});
+render();
+</script>
+</body>
+</html>
