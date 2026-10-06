@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Lokführer-Express – Mathe Klasse 4</title>
+<style>
+:root{--sky1:#bfe6ff;--sky2:#eaf8ff;--ink:#1d2b3a;--red:#e8453c;--gold:#f6b93b;--card:#fff;--line:#d5e3ee;--ok:#2e9e5b;--bad:#e5603d;--blue:#2f80ed;--soft:#f3f8fc;--r0:#9aa5b1;--r1:#2f80ed;--r2:#9b51e0;--r3:#f2994a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;font-family:"Avenir Next Rounded","Avenir Next","Trebuchet MS",system-ui,sans-serif;color:var(--ink);background:linear-gradient(var(--sky1),var(--sky2) 55%,#d9f2c9);background-attachment:fixed;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+body{padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+#app{max-width:820px;margin:0 auto;padding:12px 14px 32px}
+h1{font-size:clamp(26px,6vw,36px);margin:10px 0 8px;line-height:1.1}
+h2{font-size:21px;margin:0}
+p{margin:4px 0}
+button{font:inherit;color:inherit;cursor:pointer;border:0;border-radius:18px;min-height:56px;padding:0 18px;background:#fff;box-shadow:0 3px 0 rgba(0,0,0,.16);touch-action:manipulation}
+button:active:not(:disabled){transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.16)}
+button:disabled{opacity:.45;cursor:default}
+.big{width:100%;min-height:92px;font-size:26px;font-weight:800;background:var(--red);color:#fff;border-radius:26px;box-shadow:0 5px 0 #a8281f;margin:10px 0 14px}
+.big.alt{background:var(--blue);box-shadow:0 5px 0 #1b56a5}
+.big.gold{background:var(--gold);color:#4a3200;box-shadow:0 5px 0 #b57f0b}
+.small{min-height:44px;font-size:15px;padding:0 14px}
+.top{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.rank{flex:1 1 230px;min-width:0}
+.rtitle{font-weight:800;font-size:18px}
+.bar{height:14px;border-radius:9px;background:rgba(255,255,255,.8);border:2px solid var(--line);overflow:hidden;margin:4px 0}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#ffd166,var(--red));border-radius:9px}
+.rsub{font-size:13px;opacity:.8}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:#fff;border-radius:14px;padding:6px 10px;font-weight:700;box-shadow:0 2px 0 rgba(0,0,0,.1)}
+.kessel{background:#fff;border-radius:20px;padding:10px 14px;box-shadow:0 3px 0 rgba(0,0,0,.1)}
+.kessel .bar{height:20px}
+.kessel .bar i{background:linear-gradient(90deg,#555,#222 60%,var(--gold))}
+.station{background:var(--card);border-radius:22px;padding:12px 14px;margin:12px 0;box-shadow:0 3px 0 rgba(0,0,0,.1)}
+.shead{display:flex;gap:12px;align-items:center;margin-bottom:8px}
+.sicon{font-size:40px}
+.shead p{font-size:14px;opacity:.75}
+.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.lvl{min-height:88px;padding:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:var(--soft);border:3px solid var(--line);position:relative}
+.lvl b{font-size:16px}
+.lvl small{font-size:12px;opacity:.75;line-height:1.15;text-align:center}
+.lvl span{font-size:20px;color:#e0a200;letter-spacing:2px}
+.lvl.rec{border-color:var(--red);background:#fff4f2}
+.lvl em{position:absolute;top:-10px;right:6px;background:var(--red);color:#fff;font-style:normal;font-size:11px;font-weight:800;padding:2px 8px;border-radius:10px}
+.train{display:flex;align-items:flex-end;gap:4px;overflow-x:auto;padding:10px 4px 8px;border-bottom:6px solid #8d6e63;min-height:96px}
+.loco{font-size:54px;line-height:1;transform:scaleX(-1);flex:none}
+.wg{flex:none;text-align:center}
+.wbox{width:64px;height:54px;border-radius:10px;border:4px solid var(--r0);background:#fff;font-size:30px;display:flex;align-items:center;justify-content:center}
+.wheels{display:flex;justify-content:space-around;padding:0 8px;margin-top:-4px}
+.wheels i{width:14px;height:14px;border-radius:50%;background:#333;display:block}
+.wg.r1 .wbox{border-color:var(--r1)}.wg.r2 .wbox{border-color:var(--r2);background:#f7efff}.wg.r3 .wbox{border-color:var(--r3);background:#fff4e2;box-shadow:0 0 12px var(--r3)}
+.wg.no .wbox{background:#eef2f5;color:#9aa5b1;font-size:24px}
+.footer{margin-top:18px;display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;font-size:13px;opacity:.85}
+.card{background:var(--card);border-radius:22px;padding:14px;margin:10px 0;box-shadow:0 3px 0 rgba(0,0,0,.1)}
+.qline{display:flex;gap:10px;align-items:flex-start}
+.qtext{font-size:clamp(19px,4.6vw,24px);line-height:1.35;font-weight:600;flex:1}
+.spk{flex:none;min-width:56px;font-size:24px;background:var(--soft)}
+.sttag{font-size:13px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;opacity:.65;margin-bottom:4px}
+.track{display:flex;align-items:center;gap:6px;margin:8px 0}
+.track .dot{flex:1;height:14px;border-radius:8px;background:rgba(255,255,255,.7);border:2px solid var(--line);position:relative}
+.track .dot.d{background:var(--ok);border-color:var(--ok)}
+.track .dot.c{background:var(--gold);border-color:#b57f0b}
+.track .dot.c::after{content:"🚂";position:absolute;right:-6px;top:-24px;font-size:26px}
+.clocks{display:flex;gap:16px;justify-content:center;margin:8px 0}
+.clock{margin:0;text-align:center;font-size:13px;font-weight:700}
+.clock svg{width:112px;height:112px;display:block;margin:0 auto 2px}
+.ansline{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;font-size:26px;font-weight:700;margin:12px 0}
+.fld{min-width:76px;height:68px;border-radius:14px;border:4px solid var(--line);background:#fff;font-size:30px;font-weight:800;box-shadow:none;padding:0 8px}
+.fld.on{border-color:var(--blue);background:#eef5ff}
+.hint{min-height:0;margin:8px 0;padding:0;font-size:17px;line-height:1.35}
+.hint.show{padding:10px 14px;background:#fff7d6;border:3px solid var(--gold);border-radius:16px}
+.hint.good{background:#e6f7ec;border-color:var(--ok)}
+.hint.bad{background:#fff0ea;border-color:var(--bad)}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:420px;margin:12px auto 0}
+.pad button{min-height:70px;font-size:30px;font-weight:800}
+.pad .ok{background:var(--ok);color:#fff;box-shadow:0 3px 0 #1b6f3f}
+.shake{animation:shake .4s}
+@keyframes shake{20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+.pop{animation:pop .45s}
+@keyframes pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+.agrid{display:grid;gap:4px;justify-content:center;align-items:center;margin:10px auto;--cw:clamp(40px,11.5vw,62px);width:max-content;max-width:100%}
+.agrid>div{width:var(--cw);height:var(--cw);display:flex;align-items:center;justify-content:center;font-size:calc(var(--cw)*.62);font-weight:800}
+.agrid .lab{height:22px;font-size:13px;font-weight:700;opacity:.55}
+.agrid .op{width:28px;font-size:30px}
+.agrid .g3{margin-left:12px}
+.agrid .cb{height:calc(var(--cw)*.7);font-size:calc(var(--cw)*.4);color:var(--red)}
+.agrid .box{border:3px solid var(--line);border-radius:12px;background:#fff}
+.agrid .box.on{border-color:var(--blue);background:#eef5ff;box-shadow:0 0 0 3px rgba(47,128,237,.25)}
+.agrid .box.done{border-color:var(--ok);background:#e6f7ec}
+.agrid .cb.box{border-radius:10px}
+.agrid .line{grid-column:1/-1;height:5px;width:100%;background:var(--ink);border-radius:3px}
+.chips2{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:12px 0}
+.opt{min-width:130px;min-height:72px;font-size:26px;font-weight:800;border:4px solid var(--line)}
+.opt.bad{background:#ffe3da;border-color:var(--bad);text-decoration:line-through}
+.opt.good{background:#e6f7ec;border-color:var(--ok)}
+.tree{text-align:center;margin:10px 0}
+.root{display:inline-block;font-size:28px;font-weight:800;background:var(--soft);border:3px solid var(--line);border-radius:14px;padding:6px 18px}
+.branches{display:flex;gap:6px;justify-content:center;align-items:flex-start;margin-top:14px;position:relative;flex-wrap:wrap}
+.branches::before{content:"";position:absolute;top:-8px;left:20%;right:20%;height:8px;border:3px solid var(--line);border-bottom:0;border-radius:10px 10px 0 0}
+.bcol{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:120px}
+.bbox{font-size:24px;font-weight:700;background:#fff;border:3px solid var(--line);border-radius:12px;padding:4px 12px}
+.plus{font-size:32px;font-weight:800;align-self:center;padding-top:4px}
+.ans{min-width:92px;height:58px;border:4px solid var(--line);border-radius:12px;background:#fff;font-size:28px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 8px}
+.ans.on{border-color:var(--blue);background:#eef5ff}
+.ans.done{border-color:var(--ok);background:#e6f7ec}
+.sumrow{display:flex;gap:10px;align-items:center;justify-content:center;font-size:26px;font-weight:700;margin-top:14px;flex-wrap:wrap}
+.stars-big{font-size:64px;color:#e0a200;letter-spacing:6px;text-align:center}
+.gains{list-style:none;padding:0;margin:8px 0;display:grid;gap:6px;font-size:19px;font-weight:700}
+.gains li{background:#fff;border-radius:14px;padding:8px 12px}
+.up{background:linear-gradient(135deg,#fff4c2,#ffe0b2);border:3px solid var(--gold);border-radius:20px;padding:12px;margin:10px 0;text-align:center;font-weight:800;font-size:20px}
+.chest{font-size:120px;text-align:center;line-height:1.1;margin:10px 0}
+.rare{display:inline-block;padding:4px 14px;border-radius:12px;color:#fff;font-weight:800}
+.coll{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:12px;margin:12px 0}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left}
+.sw{position:fixed;inset:0;pointer-events:none}
+@media (prefers-reduced-motion:reduce){.shake,.pop{animation:none}}
+</style>
+</head>
+<body>
+<div id="app"><noscript>Dieses Spiel braucht JavaScript.</noscript></div>
+<script>
+'use strict';
+const KEY='lokfuehrerMathe4_v1';
+const KESSEL=40, SESSION_MAX=3;
+const STATIONS={
+ zeit:{name:'Fahrplan-Turm',icon:'🕰️',topic:'Zeitspannen',lv:['Volle, halbe, Viertelstunden','5-Minuten-Schritte','Beliebige Minuten']},
+ add:{name:'Lade-Rampe',icon:'📦',topic:'Schriftliche Addition',lv:['Zwei Zahlen bis 999','Zwei Zahlen, 5-stellig','Drei Zahlen, 6-stellig']},
+ mul:{name:'Waggon-Werkstatt',icon:'🔧',topic:'Halbschriftliche Multiplikation',lv:['z. B. 7 · 48','z. B. 6 · 235','z. B. 12 · 34']}
+};
+const RANKS=[[0,'Bahnhofs-Azubi'],[20,'Schaffner'],[60,'Zugbegleiter'],[120,'Lokführer'],[220,'Oberlokführer'],[360,'Bahnhofsvorsteher'],[560,'Bahnchef']];
+const RARITY=[['Gewöhnlich','#9aa5b1',55],['Selten','#2f80ed',28],['Episch','#9b51e0',12],['Legendär','#f2994a',5]];
+const WAGONS=[
+ {id:'kohle',n:'Kohlewagen',e:'🪨',r:0},{id:'holz',n:'Holzwagen',e:'🪵',r:0},{id:'oel',n:'Kesselwagen',e:'🛢️',r:0},{id:'post',n:'Postwagen',e:'📮',r:0},
+ {id:'vieh',n:'Viehwagen',e:'🐄',r:0},{id:'korn',n:'Getreidewagen',e:'🌾',r:0},{id:'kiste',n:'Containerwagen',e:'📦',r:0},{id:'koffer',n:'Gepäckwagen',e:'🧳',r:0},
+ {id:'zirkus',n:'Zirkuswagen',e:'🎪',r:1},{id:'speise',n:'Speisewagen',e:'🍽️',r:1},{id:'schlaf',n:'Schlafwagen',e:'🛏️',r:1},{id:'blumen',n:'Blumenwagen',e:'🌻',r:1},
+ {id:'eis',n:'Eiswagen',e:'🍦',r:1},{id:'loesch',n:'Löschwagen',e:'🚒',r:1},
+ {id:'rakete',n:'Raketenwagen',e:'🚀',r:2},{id:'dino',n:'Dino-Wagen',e:'🦖',r:2},{id:'aqua',n:'Aquarium-Wagen',e:'🐠',r:2},{id:'schatz',n:'Schatzwagen',e:'💰',r:2},
+ {id:'drache',n:'Drachenwagen',e:'🐉',r:3},{id:'regen',n:'Regenbogenwagen',e:'🌈',r:3}
+];
+const ORTE=['Sonnental','Mühlberg','Seestadt','Bergdorf','Rosenau','Birkenfeld','Lindenhof','Wiesenau','Tannenberg','Kirschbach'];
+
+/* ---------- Helfer ---------- */
+function ri(a,b){return a+Math.floor(Math.random()*(b-a+1));}
+function pick(a){return a[ri(0,a.length-1)];}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=ri(0,i);const t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function p2(n){return (n<10?'0':'')+n;}
+function fmtNum(n){return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,' ');}
+function tstr(m){return p2(Math.floor(m/60))+':'+p2(m%60);}
+function tspeak(m){const h=Math.floor(m/60),mm=m%60;return mm===0?h+' Uhr':h+' Uhr '+mm;}
+function dstr(m){const h=Math.floor(m/60),r=m%60,p=[];if(h>0)p.push(h===1?'1 Stunde':h+' Stunden');if(r>0||h===0)p.push(r===1?'1 Minute':r+' Minuten');return p.join(' ');}
+function stars(n){return '★'.repeat(n)+'☆'.repeat(3-n);}
+function todayStr(off){const d=new Date();d.setDate(d.getDate()+(off||0));return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());}
+function twoOrte(){const a=pick(ORTE);let b=pick(ORTE);while(b===a)b=pick(ORTE);return [a,b];}
+
+/* ---------- Spielstand ---------- */
+function defaults(){return {v:1,kohle:0,kessel:0,chests:0,xp:0,wagons:[],medals:0,stars:{},skill:{zeit:1,add:1,mul:1},
+ stats:{zeit:{n:0,first:0,ok:0},add:{n:0,first:0,ok:0},mul:{n:0,first:0,ok:0}},streak:{last:'',days:0},fahrten:0,settings:{brake:true}};}
+function load(){const d=defaults();try{const raw=localStorage.getItem(KEY);if(raw){const o=JSON.parse(raw);if(o&&typeof o==='object'){for(const k in d){if(o[k]!==undefined){if(d[k]&&typeof d[k]==='object'&&!Array.isArray(d[k]))d[k]=Object.assign(d[k],o[k]);else d[k]=o[k];}}}}}catch(e){}return d;}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+let S=load();
+let view='hub', Fh=null, Tr=null, sessionFahrten=0, confirmReset=false;
+
+function rankIdx(){let i=0;for(let k=0;k<RANKS.length;k++){if(S.xp>=RANKS[k][0])i=k;}return i;}
+function rankInfo(){const i=rankIdx(),cur=RANKS[i],nx=RANKS[i+1];if(!nx)return {name:cur[1],pct:100,next:'',need:0};return {name:cur[1],pct:Math.round((S.xp-cur[0])/(nx[0]-cur[0])*100),next:nx[1],need:nx[0]-S.xp};}
+function addKohle(n){S.kohle+=n;S.kessel+=n;while(S.kessel>=KESSEL){S.kessel-=KESSEL;S.chests++;}}
+function unlocked(st,l){return l===1||(S.stars[st+(l-1)]||0)>=1||S.skill[st]>=l;}
+
+/* ---------- Aufgaben: Zeitspannen ---------- */
+function genZeit(level){
+ const kinds=level===1?['ankunft','dauer','ankunft','dauer']:level===2?['ankunft','dauer','umrechnen']:['ankunft','dauer','abfahrt','umrechnen'];
+ const kind=pick(kinds);
+ let start,dur;
+ if(level===1){start=ri(6,16)*60+pick([0,15,30,45]);dur=pick([15,30,45,60,75,90,105,120,135,150,180]);}
+ else if(level===2){start=ri(6,16)*60+ri(0,11)*5;dur=ri(4,30)*5;}
+ else{start=ri(5,17)*60+ri(0,59);dur=ri(25,235);}
+ const end=start+dur,o=twoOrte(),from=o[0],to=o[1];
+ const t={station:'zeit',level:level,kind:kind,start:start,dur:dur,end:end,clocks:[]};
+ const toFull=(60-start%60)%60;
+ if(kind==='ankunft'){
+  t.text='Der Zug fährt um '+tstr(start)+' Uhr in '+from+' ab. Die Fahrt nach '+to+' dauert '+dstr(dur)+'. Wann kommt der Zug an?';
+  t.speak='Der Zug fährt um '+tspeak(start)+' in '+from+' ab. Die Fahrt nach '+to+' dauert '+dstr(dur)+'. Wann kommt der Zug an?';
+  t.clocks=[{m:start,l:'Abfahrt'}];
+  t.layout='{0} : {1} Uhr';
+  t.fields=[{ans:Math.floor(end/60),max:2,pad:true},{ans:end%60,max:2,pad:true}];
+  const sameHour=start%60+dur<60,h=Math.floor(dur/60),m=dur%60;
+  t.hint=function(k){
+   if(sameHour)return k===1?'Tipp: Du bleibst in derselben Stunde. Rechne nur die Minuten: '+(start%60)+' + '+dur+'.':'Das sind '+(start%60+dur)+' Minuten nach '+Math.floor(start/60)+' Uhr.';
+   if(toFull>0)return k===1?'Tipp: Gehe zuerst bis zur nächsten vollen Stunde. Von '+tstr(start)+' bis '+tstr(start+toFull)+' sind es '+toFull+' Minuten.':'Dann bleiben noch '+(dur-toFull)+' Minuten. Rechne '+tstr(start+toFull)+' + '+dstr(dur-toFull)+'.';
+   return k===1?'Tipp: Rechne erst die Stunden: '+tstr(start)+' + '+h+(h===1?' Stunde':' Stunden')+' = '+tstr(start+h*60)+'.':'Dann kommen noch '+m+' Minuten dazu.';
+  };
+ }else if(kind==='dauer'){
+  t.text='Der Zug fährt um '+tstr(start)+' Uhr in '+from+' ab und kommt um '+tstr(end)+' Uhr in '+to+' an. Wie lange dauert die Fahrt?';
+  t.speak='Der Zug fährt um '+tspeak(start)+' in '+from+' ab und kommt um '+tspeak(end)+' in '+to+' an. Wie lange dauert die Fahrt?';
+  t.clocks=[{m:start,l:'Abfahrt'},{m:end,l:'Ankunft'}];
+  t.layout='{0} Std. {1} Min.';
+  t.fields=[{ans:Math.floor(dur/60),max:1},{ans:dur%60,max:2}];
+  const sameHour=Math.floor(start/60)===Math.floor(end/60),fullEnd=Math.floor(end/60)*60;
+  t.hint=function(k){
+   if(sameHour)return k===1?'Tipp: Beide Zeiten liegen in derselben Stunde. Rechne '+(end%60)+' − '+(start%60)+'.':'Zähle von '+(start%60)+' bis '+(end%60)+' Minuten weiter.';
+   if(toFull>0)return k===1?'Tipp: Springe in Schritten. Erst von '+tstr(start)+' bis zur vollen Stunde '+tstr(start+toFull)+': das sind '+toFull+' Minuten.':'Dann von '+tstr(start+toFull)+' bis '+tstr(fullEnd)+' volle Stunden, und noch '+(end%60)+' Minuten bis '+tstr(end)+'. Zähle alles zusammen.';
+   return k===1?'Tipp: Zähle erst die vollen Stunden von '+tstr(start)+' bis '+tstr(fullEnd)+'.':'Dann kommen noch '+(end%60)+' Minuten bis '+tstr(end)+' dazu.';
+  };
+ }else if(kind==='abfahrt'){
+  t.text='Der Zug kommt um '+tstr(end)+' Uhr in '+to+' an. Die Fahrt dauert '+dstr(dur)+'. Wann ist der Zug in '+from+' abgefahren?';
+  t.speak='Der Zug kommt um '+tspeak(end)+' in '+to+' an. Die Fahrt dauert '+dstr(dur)+'. Wann ist der Zug in '+from+' abgefahren?';
+  t.clocks=[{m:end,l:'Ankunft'}];
+  t.layout='{0} : {1} Uhr';
+  t.fields=[{ans:Math.floor(start/60),max:2,pad:true},{ans:start%60,max:2,pad:true}];
+  const back=end%60;
+  t.hint=function(k){
+   if(back>0&&dur>back)return k===1?'Tipp: Rechne rückwärts. Erst '+back+' Minuten zurück bis zur vollen Stunde '+tstr(end-back)+'.':'Dann musst du noch '+(dur-back)+' Minuten zurückgehen. Rechne '+tstr(end-back)+' − '+dstr(dur-back)+'.';
+   return k===1?'Tipp: Rechne rückwärts: '+tstr(end)+' minus '+dstr(dur)+'. Erst die Stunden, dann die Minuten.':'Gehe von '+tstr(end)+' erst '+Math.floor(dur/60)+' Stunde(n) zurück, dann '+(dur%60)+' Minuten.';
+  };
+ }else{
+  const dirHM=level===2?Math.random()<.7:Math.random()<.5;
+  let h,m;
+  if(level===2){h=ri(1,3);m=ri(1,11)*5;}else{h=ri(1,5);m=ri(1,59);}
+  const T=h*60+m;t.dur=T;
+  if(dirHM){
+   t.text='Die Reise dauert '+T+' Minuten. Wie viele Stunden und Minuten sind das?';
+   t.speak=t.text;t.layout='{0} Std. {1} Min.';t.fields=[{ans:h,max:1},{ans:m,max:2}];
+   t.hint=function(k){return k===1?'Tipp: 1 Stunde hat 60 Minuten. Ziehe von '+T+' so oft 60 ab, wie es geht.':'In '+T+' Minuten passen '+h+' mal 60 Minuten. Wie viele Minuten bleiben übrig?';};
+  }else{
+   t.text='Die Reise dauert '+dstr(T)+'. Wie viele Minuten sind das?';
+   t.speak=t.text;t.layout='{0} Minuten';t.fields=[{ans:T,max:3}];
+   t.hint=function(k){return k===1?'Tipp: 1 Stunde hat 60 Minuten. Rechne '+h+' · 60.':h+' · 60 = '+(h*60)+'. Dazu kommen noch '+m+' Minuten.';};
+  }
+ }
+ return t;
+}
+
+/* ---------- Aufgaben: schriftliche Addition ---------- */
+function digitsOf(n){return String(n).split('').reverse().map(Number);}
+function addColumns(nums){
+ const len=Math.max.apply(null,nums.map(function(n){return String(n).length;}));
+ const sum=nums.reduce(function(a,b){return a+b;},0),cols=[];let carry=0;
+ for(let j=0;j<len;j++){
+  const terms=nums.filter(function(n){return String(n).length>j;}).map(function(n){return digitsOf(n)[j];});
+  const tot=terms.reduce(function(a,b){return a+b;},0)+carry;
+  cols.push({terms:terms,carryIn:carry,tot:tot,digit:tot%10,carryOut:Math.floor(tot/10)});
+  carry=Math.floor(tot/10);
+ }
+ return {len:len,sum:sum,cols:cols,leading:carry};
+}
+function genAdd(level){
+ let nums,tries=0;
+ while(tries++<500){
+  if(level===1){const a=ri(100,899);nums=[a,ri(100,999-a)];}
+  else if(level===2){nums=[ri(2000,89999),ri(2000,99999)];}
+  else{nums=[ri(12000,330000),ri(12000,330000),ri(12000,330000)];}
+  const inf=addColumns(nums),c=inf.cols.filter(function(x){return x.carryOut>0;}).length;
+  if(inf.sum<(level===1?1000:1000000)&&c>=(level===1?1:level===2?2:3))break;
+ }
+ const info=addColumns(nums),n=info.len,resLen=String(info.sum).length,steps=[];
+ for(let j=0;j<resLen;j++){
+  if(j<n){
+   const c=info.cols[j];
+   const expr=c.terms.join(' + ')+(c.carryIn>0?' + '+c.carryIn+' (Übertrag)':'');
+   steps.push({id:'r'+j,kind:'digit',ans:c.digit,max:1,
+    hint:(function(c,expr){return function(k){return k===1?'Zähle die Zahlen in dieser Spalte zusammen: '+expr+'.':expr.replace(' (Übertrag)','')+' = '+c.tot+'. Unter den Strich schreibst du die '+c.digit+(c.carryOut>0?' und merkst dir '+c.carryOut+' als Übertrag.':'.');};})(c,expr)});
+   if(c.carryOut>0&&j+1<n){
+    steps.push({id:'c'+(j+1),kind:'digit',ans:c.carryOut,max:1,
+     hint:(function(c){return function(k){return k===1?'Der Übertrag ist die Zehnerstelle der Summe '+c.tot+'.':c.tot+' sind '+c.carryOut+' Zehner und '+c.digit+' Einer. Der Übertrag ist '+c.carryOut+'.';};})(c)});
+   }
+  }else{
+   steps.push({id:'r'+j,kind:'digit',ans:info.leading,max:1,hint:function(){return 'Hier steht keine Zahl mehr. Schreibe den Übertrag ganz nach vorn.';}});
+  }
+ }
+ const names={2:['Ein Güterzug lädt '+fmtNum(nums[0])+' kg Kohle und '+fmtNum(nums[1])+' kg Getreide. Wie viel kg sind das zusammen?'],
+  3:['Zwei Streckenabschnitte sind '+fmtNum(nums[0])+' m und '+fmtNum(nums[1])+' m lang. Wie lang ist die Strecke insgesamt?','Ein Zug hat an zwei Tagen '+fmtNum(nums[0])+' und '+fmtNum(nums[1])+' Fahrgäste befördert. Wie viele Fahrgäste sind das zusammen?']};
+ let text;
+ if(nums.length===3)text='Drei Güterwagen laden '+fmtNum(nums[0])+' kg, '+fmtNum(nums[1])+' kg und '+fmtNum(nums[2])+' kg. Wie viel kg sind das insgesamt?';
+ else text=pick(level===1?names[2]:names[3]);
+ return {station:'add',level:level,nums:nums,info:info,len:n,resLen:resLen,steps:steps,text:text,speak:text.replace(/ /g,'')};
+}
+
+/* ---------- Aufgaben: halbschriftliche Multiplikation ---------- */
+function splitParts(v){const s=String(v),parts=[];for(let i=0;i<s.length;i++){const d=Number(s[i]);if(d>0)parts.push(d*Math.pow(10,s.length-1-i));}return parts;}
+function genMul(level){
+ let fa,fb,splitSide;
+ if(level===1){fa=ri(3,9);do{fb=ri(13,98);}while(fb%10===0);splitSide='b';}
+ else if(level===2){fa=ri(3,9);do{fb=ri(102,498);}while(fb%100===0);splitSide='b';}
+ else{do{fa=ri(12,29);}while(fa%10===0);fb=ri(12,49);splitSide='a';}
+ const splitVal=splitSide==='b'?fb:fa,other=splitSide==='b'?fa:fb,parts=splitParts(splitVal);
+ const expr=fa+' · '+fb,prod=fa*fb;
+ const partExpr=function(p){return splitSide==='b'?fa+' · '+p:p+' · '+fb;};
+ const correct=parts.join(' + ');
+ const opts=[correct],seen={};seen[correct]=1;
+ let guard=0;
+ while(opts.length<4&&guard++<80){
+  const q=parts.slice(),i=ri(0,q.length-1),delta=pick([-3,-2,-1,1,2,3,5]);
+  if(q[i]%10===0&&Math.random()<.6){q[i]=Math.max(10,q[i]+pick([-10,10,20]));}else{q[i]=Math.max(1,q[i]+delta);}
+  const sum=q.reduce(function(a,b){return a+b;},0);
+  const s=q.join(' + ');
+  if(sum!==splitVal&&!seen[s]){seen[s]=1;opts.push(s);}
+ }
+ const order=shuffle(opts.map(function(o,i){return i;})),options=order.map(function(i){return opts[i];}),ansIdx=options.indexOf(correct);
+ const steps=[{id:'z',kind:'choice',ans:ansIdx,
+  hint:function(k){return k===1?'Zerlege die '+splitVal+' in '+(parts.length===3?'Hunderter, Zehner und Einer.':'Zehner und Einer.'):'Die richtige Zerlegung hat zusammen genau '+splitVal+' als Summe.';}}];
+ const prods=[];
+ parts.forEach(function(p,i){
+  const pr=p*other;prods.push(pr);
+  let k=0,q=p;while(q%10===0){q=q/10;k++;}
+  const base=q,mult=other;
+  steps.push({id:'p'+i,kind:'num',ans:pr,max:String(pr).length+1,
+   hint:(function(k,base,mult,p){return function(m){
+    if(k===0)return m===1?'Das ist eine Malaufgabe mit '+p+'. Tipp: Zerlege die '+(splitSide==='b'?fa:fb)+' im Kopf noch einmal, wenn es hilft.':'Rechne '+partExpr(p)+' in zwei kleinen Schritten.';
+    return m===1?'Rechne zuerst '+base+' · '+mult+'. Dann hänge '+(k===1?'eine Null':'zwei Nullen')+' an.':base+' · '+mult+' = '+(base*mult)+'. Das sind '+(base*mult)+' '+(k===1?'Zehner':'Hunderter')+'. Wie viel ist das?';
+   };})(k,base,mult,p)});
+ });
+ steps.push({id:'sum',kind:'num',ans:prod,max:String(prod).length+1,
+  hint:function(k){return k===1?'Zähle die Teilergebnisse zusammen: '+prods.join(' + ')+'.':'Rechne erst '+prods[0]+' + '+prods[1]+(prods.length>2?' und dann + '+prods[2]:'')+'.';}});
+ let text;
+ if(level===1)text='Ein Waggon hat '+fb+' Sitzplätze. Wie viele Plätze haben '+fa+' Waggons?';
+ else if(level===2)text='In einen Waggon passen '+fb+' Pakete. Wie viele Pakete passen in '+fa+' Waggons?';
+ else text='Eine Bahnstrecke wird '+fa+' Wochen lang gebaut. Jede Woche werden '+fb+' Schienen verlegt. Wie viele Schienen sind das insgesamt?';
+ return {station:'mul',level:level,fa:fa,fb:fb,expr:expr,prod:prod,parts:parts,prods:prods,partExpr:partExpr,options:options,splitVal:splitVal,steps:steps,text:text,speak:text};
+}
+function genTask(station,level){return station==='zeit'?genZeit(level):station==='add'?genAdd(level):genMul(level);}
+function genUnique(station,level,tasks){let t,i=0;do{t=genTask(station,level);i++;}while(i<12&&tasks.some(function(x){return x.text===t.text;}));return t;}
+
+/* ---------- Engine (ohne DOM) ---------- */
+function mkCur(task){
+ if(task.station==='zeit')return {mode:'fields',vals:task.fields.map(function(){return '';}),active:0,mistakes:0,hint:'',status:'open',helped:false,shake:false};
+ return {mode:'steps',si:0,typed:'',filled:{},mistakes:0,stepMist:0,hint:'',status:'open',helped:false,wrongChoices:[],shake:false};
+}
+function zeitKey(cur,task,k){
+ if(cur.status!=='open')return null;
+ if(k==='ok')return zeitOk(cur,task);
+ if(k==='back'){cur.vals[cur.active]=cur.vals[cur.active].slice(0,-1);return null;}
+ const f=task.fields[cur.active];
+ if(cur.vals[cur.active].length<f.max){
+  cur.vals[cur.active]+=k;
+  if(cur.vals[cur.active].length===f.max&&cur.active<task.fields.length-1)cur.active++;
+ }
+ return null;
+}
+function zeitOk(cur,task){
+ const empty=cur.vals.findIndex(function(v){return v==='';});
+ if(empty>=0){cur.active=empty;return 'next';}
+ const ok=task.fields.every(function(f,i){return parseInt(cur.vals[i],10)===f.ans;});
+ if(ok){cur.status=cur.helped?'revealed':'solved';cur.hint='';return 'ok';}
+ cur.mistakes++;cur.shake=true;
+ if(cur.mistakes>=3){cur.vals=task.fields.map(function(f){return f.pad?p2(f.ans):String(f.ans);});cur.helped=true;cur.status='revealed';cur.hint='Hier siehst du die Lösung. Schau dir den Weg noch einmal an!';return 'reveal';}
+ cur.hint=task.hint(cur.mistakes);
+ cur.vals=cur.vals.map(function(v,i){return parseInt(v,10)===task.fields[i].ans?v:'';});
+ const first=cur.vals.findIndex(function(v){return v==='';});cur.active=first<0?0:first;
+ return 'wrong';
+}
+function stepAdvance(cur,task){
+ cur.si++;cur.typed='';cur.stepMist=0;cur.hint='';
+ if(cur.si>=task.steps.length)cur.status=cur.helped?'revealed':'solved';
+}
+function stepEval(cur,task,val){
+ const st=task.steps[cur.si];
+ if(val===st.ans){cur.filled[st.id]=val;stepAdvance(cur,task);return 'ok';}
+ cur.mistakes++;cur.stepMist++;cur.typed='';cur.shake=true;
+ if(st.kind==='choice')cur.wrongChoices.push(val);
+ if(cur.stepMist>=3){
+  cur.filled[st.id]=st.ans;cur.helped=true;stepAdvance(cur,task);
+  cur.hint='Das war schwierig. Hier siehst du die richtige Lösung für diesen Schritt.';return 'reveal';
+ }
+ cur.hint=st.hint(cur.stepMist);return 'wrong';
+}
+function stepKey(cur,task,k){
+ if(cur.status!=='open')return null;
+ const st=task.steps[cur.si];
+ if(!st||st.kind==='choice')return null;
+ if(k==='back'){cur.typed=cur.typed.slice(0,-1);return null;}
+ if(k==='ok'){if(st.kind==='num'&&cur.typed!=='')return stepEval(cur,task,parseInt(cur.typed,10));return null;}
+ if(cur.typed.length<st.max)cur.typed+=k;
+ if(st.kind==='digit')return stepEval(cur,task,parseInt(cur.typed,10));
+ return null;
+}
+function stepChoose(cur,task,idx){
+ if(cur.status!=='open')return null;
+ const st=task.steps[cur.si];
+ if(!st||st.kind!=='choice')return null;
+ return stepEval(cur,task,idx);
+}
+
+/* ---------- Fahrt-Ablauf ---------- */
+function startFahrt(station,level){
+ const tasks=[];
+ const order=station==='mix'?['zeit','add','mul','zeit','add','mul']:[station,station,station,station,station,station];
+ order.forEach(function(s){tasks.push(genUnique(s,station==='mix'?S.skill[s]:level,tasks));});
+ Fh={station:station,level:level,tasks:tasks,idx:0,firstTry:0,coal:0,xpGain:0,extra:0,stat:{zeit:{n:0,first:0,helped:0},add:{n:0,first:0,helped:0},mul:{n:0,first:0,helped:0}},settled:false,rankBefore:rankIdx(),cur:mkCur(tasks[0])};
+ view='fahrt';
+}
+function curTask(){return Fh.tasks[Fh.idx];}
+function settleTask(){
+ const F=Fh,t=curTask(),cur=F.cur;
+ if(F.settled)return;F.settled=true;
+ const st=S.stats[t.station],fs=F.stat[t.station];
+ st.n++;fs.n++;
+ if(cur.status==='solved'){
+  st.ok++;
+  const perfect=cur.mistakes===0;
+  if(perfect){st.first++;fs.first++;F.firstTry++;}
+  let k=pick([1,2,2,3,4])+(perfect?1:0),krit=false;
+  if(perfect&&Math.random()<0.1){k+=8;krit=true;}
+  cur.reward={kohle:k,krit:krit};F.coal+=k;addKohle(k);
+  const x=perfect?3:1;S.xp+=x;F.xpGain+=x;
+ }else{
+  fs.helped++;cur.reward={kohle:0,krit:false};
+  if(F.extra<2){F.extra++;F.tasks.push(genUnique(t.station,t.level,F.tasks));}
+ }
+ save();
+}
+function adaptSkill(F){
+ ['zeit','add','mul'].forEach(function(s){
+  const fs=F.stat[s];if(fs.n===0)return;
+  if(F.station==='mix'){
+   if(fs.first===fs.n&&fs.n>=2)S.skill[s]=Math.min(3,S.skill[s]+1);
+   else if(fs.helped>=1&&fs.first===0)S.skill[s]=Math.max(1,S.skill[s]-1);
+  }else{
+   if(fs.first===fs.n&&F.level>=S.skill[s])S.skill[s]=Math.min(3,F.level+1);
+   else if(fs.helped>=2)S.skill[s]=Math.max(1,F.level-1);
+  }
+ });
+}
+function finishFahrt(){
+ const F=Fh,miss=F.tasks.length-F.firstTry;
+ F.stars=miss===0?3:miss<=2?2:1;
+ const key=F.station==='mix'?'mix':F.station+F.level;
+ S.stars[key]=Math.max(S.stars[key]||0,F.stars);
+ F.bonus=F.stars*ri(2,4);addKohle(F.bonus);
+ const xb=F.stars*2;S.xp+=xb;F.xpGain+=xb;
+ const today=todayStr();F.dayBonus=0;
+ if(S.streak.last!==today){S.streak.days=S.streak.last===todayStr(-1)?S.streak.days+1:1;S.streak.last=today;F.dayBonus=Math.min(S.streak.days,5)*2;addKohle(F.dayBonus);}
+ adaptSkill(F);S.fahrten++;sessionFahrten++;F.rankAfter=rankIdx();
+ save();view='ergebnis';
+}
+function nextTask(){
+ const F=Fh;
+ if(F.idx<F.tasks.length-1){F.idx++;F.cur=mkCur(curTask());F.settled=false;}
+ else finishFahrt();
+}
+function pickWagon(){
+ const own=S.wagons;
+ const avail=RARITY.map(function(r,i){return WAGONS.filter(function(w){return w.r===i&&own.indexOf(w.id)<0;});});
+ if(avail.every(function(a){return a.length===0;}))return null;
+ let tot=0;RARITY.forEach(function(r,i){if(avail[i].length)tot+=r[2];});
+ let x=Math.random()*tot,ri2=0;
+ for(let i=0;i<RARITY.length;i++){if(!avail[i].length)continue;if(x<RARITY[i][2]){ri2=i;break;}x-=RARITY[i][2];ri2=i;}
+ return pick(avail[ri2]);
+}
+function openChest(){
+ if(S.chests<=0)return null;
+ S.chests--;
+ const w=pickWagon();
+ if(w)S.wagons.push(w.id);else S.medals++;
+ save();return w;
+}
+
+/* ---------- Darstellung ---------- */
+function wagonHTML(w,owned){return '<div class="wg r'+w.r+(owned?'':' no')+'"><div class="wbox">'+(owned?w.e:'?')+'</div><div class="wheels"><i></i><i></i></div></div>';}
+function trainHTML(){
+ const own=WAGONS.filter(function(w){return S.wagons.indexOf(w.id)>=0;});
+ return '<div class="train"><div class="loco">🚂</div>'+(own.length?own.map(function(w){return wagonHTML(w,true);}).join(''):'<div style="align-self:center;opacity:.7;padding-left:8px">Noch keine Waggons – sammle Kohle für deine erste Truhe!</div>')+'</div>';
+}
+function clockSVG(min,label){
+ const h=Math.floor(min/60)%12,m=min%60,ha=(h+m/60)*30*Math.PI/180,ma=m*6*Math.PI/180;
+ let ticks='';
+ for(let i=0;i<12;i++){const a=i*30*Math.PI/180,l=i%3===0?32:36;ticks+='<line x1="'+(50+Math.sin(a)*41).toFixed(1)+'" y1="'+(50-Math.cos(a)*41).toFixed(1)+'" x2="'+(50+Math.sin(a)*l).toFixed(1)+'" y2="'+(50-Math.cos(a)*l).toFixed(1)+'" stroke="#1d2b3a" stroke-width="'+(i%3===0?3:1.5)+'"/>';}
+ return '<figure class="clock"><svg viewBox="0 0 100 100" role="img" aria-label="Uhr '+tstr(min)+'"><circle cx="50" cy="50" r="47" fill="#fff" stroke="#1d2b3a" stroke-width="3"/>'+ticks+
+  '<text x="50" y="27" font-size="10" text-anchor="middle" fill="#1d2b3a">12</text><text x="78" y="54" font-size="10" text-anchor="middle" fill="#1d2b3a">3</text><text x="50" y="82" font-size="10" text-anchor="middle" fill="#1d2b3a">6</text><text x="22" y="54" font-size="10" text-anchor="middle" fill="#1d2b3a">9</text>'+
+  '<line x1="50" y1="50" x2="'+(50+Math.sin(ha)*22).toFixed(1)+'" y2="'+(50-Math.cos(ha)*22).toFixed(1)+'" stroke="#e8453c" stroke-width="5" stroke-linecap="round"/>'+
+  '<line x1="50" y1="50" x2="'+(50+Math.sin(ma)*34).toFixed(1)+'" y2="'+(50-Math.cos(ma)*34).toFixed(1)+'" stroke="#1d2b3a" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="3" fill="#1d2b3a"/></svg><figcaption>'+label+'</figcaption></figure>';
+}
+function padHTML(cur,task){
+ let hide=false,auto=false;
+ if(cur.mode==='steps'){const st=task.steps[cur.si];if(!st||st.kind==='choice')hide=true;else if(st.kind==='digit')auto=true;}
+ if(cur.status!=='open')hide=true;
+ if(hide)return '';
+ const k=function(n){return '<button data-act="key" data-k="'+n+'">'+n+'</button>';};
+ return '<div class="pad">'+k(7)+k(8)+k(9)+k(4)+k(5)+k(6)+k(1)+k(2)+k(3)+
+  '<button data-act="key" data-k="back" '+(auto?'disabled':'')+'>⌫</button>'+k(0)+'<button class="ok" data-act="key" data-k="ok" '+(auto?'disabled':'')+'>✓</button></div>';
+}
+function zeitBody(task,cur){
+ const clocks=task.clocks.length?'<div class="clocks">'+task.clocks.map(function(c){return clockSVG(c.m,c.l);}).join('')+'</div>':'';
+ let line=task.layout.replace(/\{(\d)\}/g,function(x,i){i=Number(i);return '<button class="fld'+(cur.active===i&&cur.status==='open'?' on':'')+'" data-act="fld" data-i="'+i+'">'+(cur.vals[i]===''?'&nbsp;':cur.vals[i])+'</button>';});
+ return clocks+'<div class="ansline">'+line+'</div>';
+}
+const LAB=['E','Z','H','T','ZT','HT'];
+function addBody(task,cur){
+ const C=task.resLen,n=task.len,active=task.steps[cur.si],act=active?active.id:'';
+ let h='<div class="agrid" style="grid-template-columns:28px repeat('+C+',var(--cw))">';
+ h+='<div class="lab"></div>';
+ for(let i=0;i<C;i++){const j=C-1-i;h+='<div class="lab'+(j>0&&j%3===0?' g3':'')+'">'+(LAB[j]||'')+'</div>';}
+ h+='<div class="cb"></div>';
+ for(let i=0;i<C;i++){
+  const j=C-1-i,id='c'+j,has=task.steps.some(function(s){return s.id===id;}),v=cur.filled[id];
+  const cls='cb'+(j>0&&j%3===0?' g3':'');
+  if(has&&(v!==undefined||act===id)){h+='<div class="'+cls+' box '+(v!==undefined?'done':'on')+'">'+(v!==undefined?v:'')+'</div>';}else h+='<div class="'+cls+'"></div>';
+ }
+ task.nums.forEach(function(num,r){
+  h+='<div class="op">'+(r===task.nums.length-1?'+':'')+'</div>';
+  const ds=digitsOf(num);
+  for(let i=0;i<C;i++){const j=C-1-i;h+='<div class="'+(j>0&&j%3===0?'g3':'')+'">'+(j<ds.length?ds[j]:'')+'</div>';}
+ });
+ h+='<div class="line"></div><div class="op">=</div>';
+ for(let i=0;i<C;i++){
+  const j=C-1-i,id='r'+j,v=cur.filled[id],on=act===id;
+  h+='<div class="box '+(v!==undefined?'done':on?'on':'')+(j>0&&j%3===0?' g3':'')+'">'+(v!==undefined?v:'')+'</div>';
+ }
+ return h+'</div>';
+}
+function mulBody(task,cur){
+ const st=task.steps[cur.si];
+ if(st&&st.id==='z'){
+  return '<p style="text-align:center;font-weight:700;font-size:20px">Zerlege die '+task.splitVal+' in ihre Stellenwerte:</p><div class="chips2">'+
+   task.options.map(function(o,i){const bad=cur.wrongChoices.indexOf(i)>=0;return '<button class="opt'+(bad?' bad':'')+'" data-act="choice" data-i="'+i+'" '+(bad?'disabled':'')+'>'+o+'</button>';}).join('')+'</div>';
+ }
+ const act=st?st.id:'';
+ const box=function(id){const v=cur.filled[id],on=act===id;return '<div class="ans '+(v!==undefined?'done':on?'on':'')+'">'+(v!==undefined?v:on?cur.typed:'')+'</div>';};
+ return '<div class="tree"><div class="root">'+task.expr+'</div><div class="branches">'+
+  task.parts.map(function(p,i){return '<div class="bcol"><div class="bbox">'+task.partExpr(p)+'</div><div>=</div>'+box('p'+i)+'</div>';}).join('<div class="plus">+</div>')+
+  '</div><div class="sumrow">'+task.parts.map(function(p,i){return cur.filled['p'+i]!==undefined?'<b>'+cur.filled['p'+i]+'</b>':'<span style="opacity:.4">…</span>';}).join(' + ')+' = '+box('sum')+'</div></div>';
+}
+function fahrtHTML(){
+ const F=Fh,t=curTask(),cur=F.cur,S0=STATIONS[t.station];
+ let h='<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><button class="small" data-act="quit">← Bahnhof</button><span class="chip">🪨 +'+F.coal+'</span></div>';
+ h+='<div class="track">'+F.tasks.map(function(x,i){return '<div class="dot'+(i<F.idx?' d':i===F.idx?' c':'')+'"></div>';}).join('')+'</div>';
+ h+='<div class="card'+(cur.shake?' shake':'')+'"><div class="sttag">'+S0.icon+' '+S0.name+' · '+S0.topic+' · Stufe '+t.level+'</div><div class="qline"><div class="qtext">'+t.text+'</div><button class="spk" data-act="speak" aria-label="Vorlesen">🔊</button></div>';
+ h+=t.station==='zeit'?zeitBody(t,cur):t.station==='add'?addBody(t,cur):mulBody(t,cur);
+ const done=cur.status!=='open';
+ let hint=cur.hint,cls='hint'+(hint?' show':'');
+ if(cur.status==='solved'){cls='hint show good';hint=(cur.reward.krit?'✨ Goldkohle! ':'✅ Richtig! ')+'+'+cur.reward.kohle+' 🪨'+(cur.mistakes===0?' – gleich beim ersten Mal!':'');}
+ else if(cur.status==='revealed'){cls='hint show bad';hint=(cur.hint||'')+' Kein Problem – gleich kommt eine ähnliche Aufgabe zum Üben.';}
+ h+='<div class="'+cls+'">'+hint+'</div></div>';
+ cur.shake=false;
+ h+=done?'<button class="big alt" data-act="next">'+(F.idx<F.tasks.length-1?'Weiter ➜':'Ankommen 🏁')+'</button>':padHTML(cur,t);
+ return h;
+}
+function hubHTML(){
+ const r=rankInfo();
+ let h='<div class="top"><div class="rank"><div class="rtitle">🎖️ '+r.name+'</div><div class="bar"><i style="width:'+r.pct+'%"></i></div><div class="rsub">'+(r.next?'Noch '+r.need+' XP bis '+r.next:'Höchster Rang erreicht! 🎉')+'</div></div>'+
+  '<div class="chips"><span class="chip">🔥 '+S.streak.days+' Tag'+(S.streak.days===1?'':'e')+'</span><span class="chip">🚃 '+S.wagons.length+'/'+WAGONS.length+'</span></div></div>';
+ h+='<h1>🚂 Lokführer-Express</h1>';
+ if(S.chests>0)h+='<button class="big gold pop" data-act="toChest">🎁 Eine Waggon-Truhe wartet'+(S.chests>1?' ('+S.chests+')':'')+'!</button>';
+ h+='<button class="big" data-act="startMix">🚂 Losfahren!</button>';
+ h+='<div class="kessel"><b>🔥 Kessel: '+S.kessel+' / '+KESSEL+' Kohle</b><div class="bar"><i style="width:'+Math.round(S.kessel/KESSEL*100)+'%"></i></div><div class="rsub">Noch '+(KESSEL-S.kessel)+' Kohle bis zur nächsten Waggon-Truhe!</div></div>';
+ Object.keys(STATIONS).forEach(function(id){
+  const st=STATIONS[id];
+  h+='<section class="station"><div class="shead"><span class="sicon">'+st.icon+'</span><div><h2>'+st.name+'</h2><p>'+st.topic+'</p></div></div><div class="levels">';
+  [1,2,3].forEach(function(l){
+   const u=unlocked(id,l),s=S.stars[id+l]||0,rec=u&&S.skill[id]===l;
+   h+='<button class="lvl'+(rec?' rec':'')+'" data-act="start" data-st="'+id+'" data-lv="'+l+'" '+(u?'':'disabled')+'><b>Stufe '+l+'</b><span>'+(u?stars(s):'🔒')+'</span><small>'+st.lv[l-1]+'</small>'+(rec?'<em>empfohlen</em>':'')+'</button>';
+  });
+  h+='</div></section>';
+ });
+ h+='<div class="card"><b>Mein Zug</b>'+trainHTML()+'<button class="small" style="margin-top:8px" data-act="toZug">Zug ansehen &amp; zeigen</button></div>';
+ h+='<div class="footer"><button class="small" data-act="toEltern">👪 Für Erwachsene</button><span>Kein Login · alles bleibt auf diesem Gerät</span></div>';
+ return h;
+}
+function ergebnisHTML(){
+ const F=Fh,up=F.rankAfter>F.rankBefore;
+ let h='<h1>🏁 Angekommen!</h1><div class="stars-big pop">'+stars(F.stars)+'</div><p style="text-align:center;font-size:19px">'+F.firstTry+' von '+F.tasks.length+' Aufgaben gleich richtig gelöst.</p>';
+ h+='<ul class="gains"><li>🪨 +'+(F.coal+F.bonus+F.dayBonus)+' Kohle <small>(Fahrt-Bonus +'+F.bonus+(F.dayBonus?', Tages-Bonus +'+F.dayBonus:'')+')</small></li><li>⭐ +'+F.xpGain+' XP</li>'+(F.dayBonus?'<li>🔥 '+S.streak.days+' Tag'+(S.streak.days===1?'':'e')+' in Folge gefahren!</li>':'')+'</ul>';
+ if(up)h+='<div class="up pop">🎖️ Neuer Rang: '+RANKS[F.rankAfter][1]+'!<br><small>Zeig es jemandem!</small></div>';
+ h+='<div class="kessel"><b>🔥 Kessel: '+S.kessel+' / '+KESSEL+'</b><div class="bar"><i style="width:'+Math.round(S.kessel/KESSEL*100)+'%"></i></div><div class="rsub">Noch '+(KESSEL-S.kessel)+' Kohle bis zur nächsten Truhe!</div></div>';
+ if(S.chests>0)h+='<button class="big gold pop" data-act="toChest">🎁 Waggon-Truhe öffnen!</button>';
+ const brake=S.settings.brake&&sessionFahrten>=SESSION_MAX;
+ if(brake){
+  h+='<div class="card" style="text-align:center"><b style="font-size:20px">🌙 Super für heute!</b><p>Du bist '+sessionFahrten+' Fahrten gefahren. Dein Zug wartet morgen im Bahnhof. Zeit für eine Pause!</p></div>';
+  h+='<button class="big alt" data-act="hub">🏠 Zum Bahnhof</button><button class="small" style="width:100%" data-act="again">Trotzdem noch eine Fahrt</button>';
+ }else{
+  h+='<button class="big" data-act="again">🚂 Nächste Fahrt</button><button class="big alt" style="min-height:64px;font-size:20px" data-act="hub">🏠 Zum Bahnhof</button>';
+ }
+ return h;
+}
+function chestHTML(){
+ let h='<button class="small" data-act="hub">← Bahnhof</button>';
+ if(!Tr.opened){
+  h+='<h1 style="text-align:center">🎁 Waggon-Truhe</h1><div class="chest pop">🧰</div><p style="text-align:center;font-size:20px">Was ist wohl drin?</p><button class="big gold" data-act="open">Tippe zum Öffnen!</button>';
+ }else if(Tr.wagon){
+  const w=Tr.wagon,r=RARITY[w.r];
+  h+='<h1 style="text-align:center">Neuer Waggon!</h1><div style="display:flex;justify-content:center;transform:scale(1.8);margin:50px 0 40px" class="pop">'+wagonHTML(w,true)+'</div><p style="text-align:center;font-size:24px;font-weight:800">'+w.e+' '+w.n+'</p><p style="text-align:center"><span class="rare" style="background:'+r[1]+'">'+r[0]+(w.r===3?' ✨':'')+'</span></p><p style="text-align:center">Du hast '+S.wagons.length+' von '+WAGONS.length+' Waggons.</p>';
+ }else{
+  h+='<h1 style="text-align:center">Alle Waggons gesammelt!</h1><div class="chest pop">🏅</div><p style="text-align:center;font-size:20px">Du bekommst eine Lokführer-Medaille. Du hast '+S.medals+'.</p>';
+ }
+ if(Tr.opened){h+=S.chests>0?'<button class="big gold" data-act="toChest">Nächste Truhe öffnen ('+S.chests+')</button>':'';h+='<button class="big alt" data-act="toZug">🚃 Meinen Zug ansehen</button>';}
+ return h;
+}
+function zugHTML(){
+ const r=rankInfo();
+ let h='<button class="small" data-act="hub">← Bahnhof</button><h1>🚃 Mein Zug</h1><p style="font-weight:700;font-size:19px">'+r.name+' · '+S.wagons.length+' von '+WAGONS.length+' Waggons'+(S.medals?' · 🏅 '+S.medals:'')+'</p>'+trainHTML();
+ h+='<div class="card"><b>Sammlung</b><div class="coll">'+WAGONS.map(function(w){const o=S.wagons.indexOf(w.id)>=0;return '<div style="text-align:center">'+wagonHTML(w,o)+'<small>'+(o?w.n:RARITY[w.r][0])+'</small></div>';}).join('')+'</div></div>';
+ h+='<div class="up">👋 Zeig deinen Zug jemandem!<br><small>Deiner Lehrerin, deinen Eltern oder deinen Freunden.</small></div>';
+ return h;
+}
+function elternHTML(){
+ let h='<button class="small" data-act="hub">← Bahnhof</button><h1>👪 Für Erwachsene</h1><div class="card"><p><b>Was wird geübt?</b> Mathematik Klasse 4: Zeitspannen (Std./Min., vorwärts und rückwärts rechnen, umrechnen), schriftliche Addition (Spalte für Spalte mit Übertrag, bis 1 Million) und halbschriftliche Multiplikation (Zerlegen, Teilaufgaben, Zusammenfassen).</p>';
+ h+='<p><b>Fortschritt auf diesem Gerät:</b></p><table><tr><th>Bereich</th><th>Aufgaben</th><th>gleich richtig</th><th>gelöst</th><th>Sterne</th></tr>';
+ Object.keys(STATIONS).forEach(function(id){
+  const st=S.stats[id],q=st.n?Math.round(st.first/st.n*100)+' %':'–';
+  h+='<tr><td>'+STATIONS[id].name+'<br><small>'+STATIONS[id].topic+'</small></td><td>'+st.n+'</td><td>'+q+'</td><td>'+st.ok+'</td><td>'+stars(S.stars[id+1]||0)+' '+stars(S.stars[id+2]||0)+' '+stars(S.stars[id+3]||0)+'</td></tr>';
+ });
+ h+='</table><p><small>Belohnungen gibt es nur für gelöste Aufgaben. Fehler kosten nichts – nur die Tages-Serie kann abreißen. Nach '+SESSION_MAX+' Fahrten kommt ein Pause-Hinweis. Es werden keine Daten gesendet; der Spielstand liegt nur im Browser dieses Geräts.</small></p></div>';
+ h+='<div class="card"><label style="display:flex;gap:10px;align-items:center;font-size:17px"><input type="checkbox" id="brake" data-act="brake" '+(S.settings.brake?'checked':'')+' style="width:26px;height:26px"> Pause-Hinweis nach '+SESSION_MAX+' Fahrten</label></div>';
+ h+='<div class="card">'+(confirmReset?'<p><b>Wirklich alles löschen?</b> Sterne, Waggons und Rang sind dann weg.</p><button class="small" style="background:#ffe3da" data-act="resetYes">Ja, löschen</button> <button class="small" data-act="resetNo">Abbrechen</button>':'<button class="small" data-act="resetAsk">Spielstand zurücksetzen</button>')+'</div>';
+ return h;
+}
+function render(){
+ const el=document.getElementById('app');
+ el.innerHTML=view==='hub'?hubHTML():view==='fahrt'?fahrtHTML():view==='ergebnis'?ergebnisHTML():view==='truhe'?chestHTML():view==='zug'?zugHTML():elternHTML();
+}
+
+/* ---------- Eingaben ---------- */
+function speak(text){try{const u=new SpeechSynthesisUtterance(text);u.lang='de-DE';u.rate=.9;const vs=speechSynthesis.getVoices().filter(function(v){return /^de/i.test(v.language||v.lang);});if(vs.length)u.voice=vs.find(function(v){return /anna|helena|petra|marlene|vicki/i.test(v.name);})||vs[0];speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}}
+function press(k){
+ if(view!=='fahrt')return;
+ const t=curTask(),cur=Fh.cur;
+ if(cur.mode==='fields')zeitKey(cur,t,k);else stepKey(cur,t,k);
+ if(cur.status!=='open')settleTask();
+ render();
+}
+function go(v){view=v;confirmReset=false;render();window.scrollTo(0,0);}
+document.getElementById('app').addEventListener('click',function(e){
+ const b=e.target.closest('[data-act]');if(!b||b.disabled)return;
+ const a=b.getAttribute('data-act');
+ if(a==='key')return press(b.getAttribute('data-k'));
+ if(a==='fld'){const c=Fh.cur;if(c.status==='open'){c.active=Number(b.getAttribute('data-i'));c.vals[c.active]='';render();}return;}
+ if(a==='choice'){const c=Fh.cur;stepChoose(c,curTask(),Number(b.getAttribute('data-i')));if(c.status!=='open')settleTask();return render();}
+ if(a==='speak')return speak(curTask().speak);
+ if(a==='next'){nextTask();return go(view);}
+ if(a==='start'){startFahrt(b.getAttribute('data-st'),Number(b.getAttribute('data-lv')));return go('fahrt');}
+ if(a==='startMix'){startFahrt('mix',0);return go('fahrt');}
+ if(a==='again'){if(Fh.station==='mix')startFahrt('mix',0);else startFahrt(Fh.station,S.skill[Fh.station]);return go('fahrt');}
+ if(a==='quit')return go('hub');
+ if(a==='hub')return go('hub');
+ if(a==='toChest'){Tr={opened:false,wagon:null};return go('truhe');}
+ if(a==='open'){Tr.wagon=openChest();Tr.opened=true;return render();}
+ if(a==='toZug')return go('zug');
+ if(a==='toEltern')return go('eltern');
+ if(a==='resetAsk'){confirmReset=true;return render();}
+ if(a==='resetNo'){confirmReset=false;return render();}
+ if(a==='resetYes'){S=defaults();save();sessionFahrten=0;return go('hub');}
+});
+document.getElementById('app').addEventListener('change',function(e){
+ if(e.target&&e.target.id==='brake'){S.settings.brake=e.target.checked;save();}
+});
+window.addEventListener('keydown',function(e){
+ if(view!=='fahrt')return;
+ if(/^[0-9]$/.test(e.key))press(e.key);else if(e.key==='Backspace')press('back');else if(e.key==='Enter')press('ok');
+});
+render();
+</script>
+</body>
+</html>

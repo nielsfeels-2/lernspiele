@@ -8,6 +8,7 @@ Sammel-Repo für gamifizierte, browserbasierte Lernspiele für den Schulunterric
 
 | Ordner | Spiel | Thema |
 |---|---|---|
+| [`mathe4-lokfuehrer/`](mathe4-lokfuehrer/) | 🚂 Lokführer-Express | Zeitspannen, schriftliche Addition, halbschriftliche Multiplikation, Mathe Klasse 4 |
 | [`verb-ninja/`](verb-ninja/) | 🥷 Verb Ninja | Simple Present, Englisch Jg. 7 |
 | [`city-builder-progressive/`](city-builder-progressive/) | 🏗️ City Builder | Present Progressive, Englisch Jg. 7 |
 
