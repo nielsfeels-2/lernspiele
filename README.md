@@ -9,6 +9,7 @@ Sammel-Repo für gamifizierte, browserbasierte Lernspiele für den Schulunterric
 | Ordner | Spiel | Thema |
 |---|---|---|
 | [`wort-werkstatt/`](wort-werkstatt/) | ⛏️ Wort-Werkstatt | Lesen und Schreiben, Deutsch Klasse 2 |
+| [`kaengu-jahrmarkt-e4/`](kaengu-jahrmarkt-e4/) | 🦘 Kängu-Jahrmarkt | Numbers and time, Zahlen & Uhrzeiten, Englisch Klasse 4 |
 | [`mathe4-lokfuehrer/`](mathe4-lokfuehrer/) | 🚂 Lokführer-Express | Zeitspannen, schriftliche Addition, halbschriftliche Multiplikation, Mathe Klasse 4 |
 | [`verb-ninja/`](verb-ninja/) | 🥷 Verb Ninja | Simple Present, Englisch Jg. 7 |
 | [`city-builder-progressive/`](city-builder-progressive/) | 🏗️ City Builder | Present Progressive, Englisch Jg. 7 |

@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Kängu-Jahrmarkt – Numbers and time</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🦘%3C/text%3E%3C/svg%3E">
+<style>
+:root{--bg1:#2a1a5e;--bg2:#5b2d8e;--cream:#fff8ea;--ink:#2b1f4a;--red:#ff5a5f;--yel:#ffc933;--teal:#19c3b1;--pur:#7c4dff;--ok:#2fbf71;--bad:#ef476f;--mut:#8a7fa8}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+html,body{margin:0;min-height:100%}
+body{font-family:ui-rounded,"Avenir Next","Trebuchet MS",system-ui,sans-serif;font-size:20px;color:var(--ink);background:linear-gradient(160deg,var(--bg1),var(--bg2)) fixed;padding-bottom:40px;overflow-x:hidden}
+#app{max-width:860px;margin:0 auto;padding:0 14px}
+button{font:inherit;color:inherit;border:0;cursor:pointer}
+button:disabled{cursor:default}
+.awning{height:34px;margin:0 -14px;background:repeating-linear-gradient(90deg,var(--red) 0 38px,#fff 38px 76px);border-radius:0 0 22px 22px;box-shadow:0 6px 0 rgba(0,0,0,.18)}
+h1{color:#fff;margin:14px 0 2px;font-size:30px;text-shadow:0 3px 0 rgba(0,0,0,.25)}
+.sub{color:#e6dcff;margin:0 0 12px;font-size:17px}
+.card{background:var(--cream);border-radius:22px;padding:14px;margin:12px 0;box-shadow:0 5px 0 rgba(0,0,0,.2)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.sp{flex:1}
+.pill{background:#ffffff22;color:#fff;border-radius:99px;padding:6px 14px;font-weight:700}
+.btn{min-height:80px;min-width:80px;border-radius:20px;background:#fff;box-shadow:0 5px 0 rgba(0,0,0,.2);font-weight:800;padding:8px 14px;font-size:24px}
+.btn:active:not(:disabled){transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.2)}
+.btn.main{background:var(--yel)}.btn.go{background:var(--teal);color:#fff}.btn.red{background:var(--red);color:#fff}
+.btn.sm{min-height:56px;font-size:18px;padding:6px 14px}
+.btn.ghost{background:#ffffff26;color:#fff;box-shadow:none}
+.tour{width:100%;font-size:28px;min-height:96px;background:linear-gradient(90deg,var(--yel),#ff9f1c)}
+.bar{height:16px;border-radius:99px;background:#0002;overflow:hidden}
+.bar>i{display:block;height:100%;border-radius:99px;background:var(--teal)}
+.bar.fit>i.lo{background:#ff9f1c}.bar.fit>i.mid{background:var(--yel)}.bar.fit>i.hi{background:var(--ok)}
+.small{font-size:15px;color:#5e5280}
+.st h3{margin:0;font-size:24px}
+.lv{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.lv button{min-height:84px;border-radius:16px;background:#fff;border:3px solid #e2d8f5;font-size:16px;font-weight:700;line-height:1.2;padding:6px}
+.lv button b{display:block;font-size:19px}
+.lv button.rec{border-color:var(--red);animation:pulse 1.4s infinite}
+.lv button:disabled{background:#eee;color:#aaa}
+@keyframes pulse{50%{box-shadow:0 0 0 6px #ff5a5f44}}
+.top{display:flex;align-items:center;gap:8px;margin:10px 0}
+.dots{display:flex;gap:6px}.dots i{width:16px;height:16px;border-radius:50%;background:#ffffff44}.dots i.d{background:var(--ok)}.dots i.c{background:var(--yel)}
+.prompt{font-size:24px;font-weight:800;text-align:center;margin:6px 0 12px}
+.word{font-size:34px;font-weight:900;text-align:center;color:var(--pur);margin:6px 0}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opts .btn{font-size:38px;min-height:96px}
+.opts.w1{grid-template-columns:1fr}.opts.w1 .btn{font-size:26px;min-height:84px}
+.opts.c3{grid-template-columns:1fr 1fr 1fr}
+.btn.ok{background:var(--ok)!important;color:#fff}.btn.no{background:#ddd!important;color:#999}
+.speak{background:var(--pur);color:#fff;border-radius:50%;width:84px;height:84px;font-size:38px;box-shadow:0 5px 0 rgba(0,0,0,.25)}
+.bubble{background:#fff;border:3px solid var(--ink);border-radius:20px;padding:10px 16px;font-size:26px;font-weight:800;text-align:center;margin:8px 0}
+.led{display:inline-block;background:#1b1b1b;color:#ff7a59;font-family:ui-monospace,Menlo,monospace;font-weight:800;border-radius:12px;padding:6px 18px;border:4px solid #555;font-size:46px;letter-spacing:2px}
+.led.s{font-size:36px;padding:4px 12px}
+.center{text-align:center}
+.bingo{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:520px;margin:10px auto}
+.bingo .btn{font-size:40px;min-height:96px;background:#fff}
+.bingo .btn.m{background:var(--yel);position:relative}.bingo .btn.m:after{content:"⭐";position:absolute;right:6px;top:2px;font-size:22px}
+.keys{display:grid;grid-template-columns:repeat(3,90px);gap:10px;justify-content:center;margin:12px 0}
+.keys .btn{min-height:84px;min-width:0;font-size:34px;padding:0}
+.disp{background:#fff;border:4px solid var(--ink);border-radius:16px;min-height:80px;font-size:48px;font-weight:900;letter-spacing:6px;text-align:center;padding:8px;max-width:420px;margin:8px auto;color:var(--ink)}
+.tiles{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:12px 0}
+.tiles .btn{width:82px;min-width:0;min-height:86px;font-size:40px;padding:0;background:#fff;text-transform:lowercase}
+.tiles .btn.used{visibility:hidden}.tiles .btn.hint{background:var(--yel);animation:pulse 1s infinite}
+.slots{font-size:44px;font-weight:900;text-align:center;letter-spacing:4px;min-height:60px;margin:8px 0;word-break:break-all}
+.slots u{text-decoration:none;color:#c9bfe3}
+.cans{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cans .btn{width:100%;min-height:82px;font-size:21px;line-height:1.15}
+.cans .can{background:#d7ecff}.cans .ball{background:#ffe1d6}
+.cans .btn.sel{outline:5px solid var(--pur)}.cans .btn.done{visibility:hidden}.cans .btn.hint{animation:pulse 1s infinite;background:var(--yel)}
+.fb{position:fixed;left:50%;top:70px;transform:translateX(-50%);background:var(--yel);color:var(--ink);font-size:34px;font-weight:900;border-radius:99px;padding:10px 28px;box-shadow:0 6px 0 rgba(0,0,0,.25);z-index:5;animation:pop .5s;white-space:nowrap}
+.fb.gold{background:linear-gradient(90deg,#ffd700,#ff9f1c)}.fb.rev{background:#fff;font-size:22px;white-space:normal;text-align:center;max-width:90vw}
+@keyframes pop{0%{transform:translateX(-50%) scale(.4)}70%{transform:translateX(-50%) scale(1.15)}}
+.shake{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.stepper{display:flex;flex-direction:column;align-items:center;gap:6px}
+.stepper .btn{min-height:70px;min-width:100px}
+.overlay{position:fixed;inset:0;background:#120a30dd;z-index:20;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff;text-align:center;padding:20px}
+.big{font-size:130px;line-height:1.1}.wob{animation:wob .6s infinite}
+@keyframes wob{25%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}}
+.shelf{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.slot{background:#fff;border-radius:16px;border:4px solid #ddd;text-align:center;padding:8px 2px;font-size:44px;min-height:100px;position:relative}
+.slot small{display:block;font-size:13px;color:#5e5280}
+.slot.r1{border-color:#4da3ff}.slot.r2{border-color:#a855f7}.slot.r3{border-color:#ff9f1c;background:#fff4d6}
+.slot.no{filter:grayscale(1) brightness(.2);opacity:.45}
+.slot b{position:absolute;right:6px;top:2px;font-size:14px;background:var(--ink);color:#fff;border-radius:99px;padding:0 7px}
+table{border-collapse:collapse;width:100%}td,th{padding:6px;text-align:left;border-bottom:1px solid #e2d8f5;font-size:17px}
+.tog{display:flex;justify-content:space-between;align-items:center;padding:8px 0}
+.stars{letter-spacing:2px}
+@media(max-width:600px){body{font-size:18px}.shelf{grid-template-columns:repeat(3,1fr)}.cans .btn{font-size:18px}}
+</style>
+</head>
+<body>
+<div class="awning"></div>
+<div id="app"></div>
+<script>
+(function(){
+'use strict';
+/* ================= Helfer ================= */
+const $=s=>document.querySelector(s);
+const rnd=n=>Math.floor(Math.random()*n);
+const pick=a=>a[rnd(a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]]}return a};
+const range=(a,b)=>Array.from({length:b-a+1},(_,i)=>a+i);
+const pad=n=>String(n).padStart(2,'0');
+const disp=s=>s.replace(/'/g,'’');
+const ymd=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const today=()=>ymd(new Date());
+const yesterday=()=>{const d=new Date();d.setDate(d.getDate()-1);return ymd(d)};
+const TEST_DATE=new Date(2026,10,11);
+const CHEST=30;
+
+/* ================= Zahlen & Uhrzeiten ================= */
+const ONES=['','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+const TENS=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+function parts(n){
+  if(n===1000)return{p:['one','thousand'],sep:' '};
+  if(n===100)return{p:['one','hundred'],sep:' '};
+  if(n<20)return{p:[ONES[n]],sep:''};
+  const t=Math.floor(n/10),o=n%10;
+  return o?{p:[TENS[t],ONES[o]],sep:'-'}:{p:[TENS[t]],sep:''};
+}
+const words=n=>{const q=parts(n);return q.p.join(q.sep)};
+const dig=(h,m)=>pad(h)+':'+pad(m);
+const sent=(h,m)=>m===0?`It's ${ONES[h]} o'clock.`:`It's ${ONES[h]} ${words(m)}.`;
+const POOL={1:range(1,20),2:[13,14,15,16,17,18,19,20,30,40,50,60,70,80,90,100],3:range(21,99).filter(x=>x%10)};
+const POOLX=POOL[3].concat([100,100,1000,1000]);
+const TILEPOOL={1:range(1,12),2:[13,14,15,16,17,18,19,20,30,40,50,60,70,80,90,100],3:POOL[3].concat([1000,1000])};
+const CM={1:[0],2:[15,30,45],3:[10,20,25,35,40,50,55,40,50]};
+
+/* ================= Stationen ================= */
+const ST={
+ hear:{ico:'🎰',name:'Bingo-Bude',desc:'Hör zu und tippe die Zahl auf deiner Bingo-Karte.',lv:['Zahlen 1–20','13 oder 30? Teens & Zehner','Zahlen bis 100']},
+ write:{ico:'📞',name:'Zahlen-Telefon',desc:'Zahl auf Englisch → als Ziffern aufschreiben.',lv:['Wort lesen → Ziffern','Nur hören → Ziffern','Große Zahlen & Telefonnummern']},
+ spell:{ico:'🔤',name:'Buchstaben-Zelt',desc:'Ziffer sehen → Zahlwort aus Buchstaben bauen.',lv:['one – twelve','thirteen – one hundred','twenty-two, seventy-eight …']},
+ clock:{ico:'🕐',name:'Uhren-Karussell',desc:'Uhrzeiten lesen, hören und stellen.',lv:["o'clock","fifteen · thirty · forty-five",'alle 5-Minuten-Zeiten']},
+ vocab:{ico:'🥫',name:'Dosenwerfen',desc:'Wirf den englischen Ball auf die passende Dose.',lv:['Hello, Thanks, What time …','School, police, mobile …','Zahlen ↔ Zahlwörter']}
+};
+const SKILLS=Object.keys(ST);
+const VOC={
+ 1:[['Hello.','Hallo.'],['Bye.','Tschüss.'],['Goodbye.','Auf Wiedersehen.'],['Thanks.','Danke.'],['Thank you.','Vielen Dank.'],['What time is it?','Wie spät ist es?'],["It's … o'clock.",'Es ist … Uhr.']],
+ 2:[['telephone number','die Telefonnummer'],['important','wichtig'],['police','die Polizei'],['school','die Schule'],['mobile','das Handy'],["What's your telephone number?",'Wie ist deine Telefonnummer?'],['My telephone number is …','Meine Telefonnummer ist …']]
+};
+const PRIZES=[
+ ['🎈','Luftballon',0],['🍭','Lolli',0],['🎯','Dartscheibe',0],['🍿','Popcorn',0],['🎺','Tröte',0],['🧁','Muffin',0],['🍦','Eis',0],['🎨','Farbkasten',0],['⚽','Fußball',0],['🧩','Puzzle',0],
+ ['🧸','Teddy',1],['🚀','Rakete',1],['🎸','Gitarre',1],['🦄','Einhorn',1],['🐬','Delfin',1],['🎠','Karussell-Pferd',1],
+ ['🐉','Drache',2],['🛸','UFO',2],['🏰','Schloss',2],['👑','Jahrmarkts-Krone',3]
+].map((p,i)=>({id:i,e:p[0],n:p[1],r:p[2]}));
+const RN=['Gewöhnlich ⚪','Selten 🔵','Episch 🟣','Legendär 🟠'];
+const RANKS=[{x:0,n:'Schnupper-Gast',e:'🎟️'},{x:40,n:'Bingo-Hüpfer',e:'🦘'},{x:120,n:'Zahlen-Zauberer',e:'🎩'},{x:260,n:'Uhren-Meister',e:'🕰️'},{x:450,n:'Jahrmarkts-König',e:'👑'}];
+
+/* ================= Speicher ================= */
+const KEY='kaenguJahrmarktE4_v1';
+function defaults(){return{xp:0,bar:0,prizes:{},stars:{hear:[0,0,0],write:[0,0,0],spell:[0,0,0],clock:[0,0,0],vocab:[0,0,0]},hist:{hear:[],write:[],spell:[],clock:[],vocab:[]},streak:0,lastDay:'',famDay:'',opts:{brake:true,speech:true}}}
+let mem=null;
+function load(){
+  const d=defaults();
+  try{const r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);
+    ['xp','bar','streak','lastDay','famDay'].forEach(k=>{if(o[k]!==undefined)d[k]=o[k]});
+    if(o.prizes)d.prizes=o.prizes;
+    if(o.opts)Object.assign(d.opts,o.opts);
+    SKILLS.forEach(k=>{if(o.stars&&o.stars[k])d.stars[k]=o.stars[k];if(o.hist&&o.hist[k])d.hist[k]=o.hist[k]});}}catch(e){}
+  return d;
+}
+let S=load();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+
+/* ================= Sprachausgabe ================= */
+let voice=null;
+const speechOK=('speechSynthesis' in window)&&('SpeechSynthesisUtterance' in window);
+function findVoice(){
+  try{const vs=speechSynthesis.getVoices();if(!vs.length)return;
+    voice=vs.find(v=>/en[-_]GB/i.test(v.lang)&&/(Daniel|Serena|Kate|Martha|Arthur|Google UK)/i.test(v.name))||vs.find(v=>/en[-_]GB/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang))||null;}catch(e){}
+}
+if(speechOK){findVoice();try{speechSynthesis.addEventListener('voiceschanged',()=>{findVoice();if(R&&!R.ended)render()})}catch(e){}}
+const canHear=()=>speechOK&&S.opts.speech&&!!voice;
+function say(t){
+  if(!canHear())return;
+  try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang=voice.lang;u.voice=voice;u.rate=.8;u.pitch=1.05;speechSynthesis.speak(u);}catch(e){}
+}
+let unlocked=false;
+function unlock(){if(unlocked||!speechOK)return;unlocked=true;try{const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u);}catch(e){}}
+
+/* ================= Zustand ================= */
+const ui={screen:'hub',chest:null,adult:'main'};
+let R=null,sess=0;
+const cur=()=>R&&R.items[R.i];
+const unlockedLv=(sk,l)=>l===1||S.stars[sk][l-2]>=1;
+const recLv=sk=>{const s=S.stars[sk];for(let i=0;i<3;i++)if(s[i]<3)return i+1;return 3};
+const fitOf=sk=>{const h=S.hist[sk];return h.length?Math.round(100*h.reduce((a,b)=>a+b,0)/h.length):null};
+const rankOf=x=>{let r=RANKS[0];RANKS.forEach(k=>{if(x>=k.x)r=k});return r};
+const base=()=>({errs:0,helped:false,done:false,revealed:false,spoken:false,wrong:[]});
+
+/* ================= Aufgaben-Generatoren ================= */
+function confus(n){
+  const P=[],O=[];const add=(a,x)=>{if(x!==n&&x>=1&&x<=100&&!P.includes(x)&&!O.includes(x))a.push(x)};
+  if(n>=13&&n<=19)add(P,(n-10)*10);
+  if(n>=30&&n<=90&&n%10===0)add(P,n/10+10);
+  if(n>=21&&n<=99&&n%10)add(P,(n%10)*10+Math.floor(n/10));
+  [n+1,n-1,n+2,n-2,n+10,n-10].forEach(x=>add(O,x));
+  return P.slice(0,2).concat(shuffle(O)).slice(0,3);
+}
+const optsFor=n=>shuffle([n].concat(confus(n)));
+function mkHear(l){const n=pick(POOL[l]);return Object.assign(base(),{skill:'hear',type:'hearPick',n,opts:optsFor(n)})}
+function mkWrite(l,idx){
+  if(l===3&&idx%3===2){const d=range(1,5).map(()=>1+rnd(9));return Object.assign(base(),{skill:'write',type:'keypad',phone:true,ans:d.join(''),digits:d})}
+  const n=pick(l===1?POOL[1]:l===2?POOL[2]:POOLX);
+  return Object.assign(base(),{skill:'write',type:'keypad',n,ans:String(n),showWord:l===1,inp:''});
+}
+function mkPool(w){let t=shuffle(w.split(''));for(let k=0;k<8&&t.join('')===w&&w.length>1;k++)t=shuffle(w.split(''));return t.map(c=>({c,used:false}))}
+function mkSpell(l){
+  const n=pick(TILEPOOL[l]);const q=parts(n);
+  return Object.assign(base(),{skill:'spell',type:'tiles',n,parts:q.p,sep:q.sep,p:0,typed:[],doneParts:[],pool:mkPool(q.p[0])});
+}
+function clockOpts(h,m,l,k){
+  const mins=Array.from(new Set(CM[l].concat([0,15,30,45])));
+  const seen=new Set([h+':'+m]),out=[];let tries=0;
+  while(out.length<k-1&&tries++<200){
+    const r=rnd(3);let a=h,b=m;
+    if(r===0&&l>1)b=pick(mins);else if(r===1)a=1+rnd(12);else a=((h+(rnd(2)?0:10))%12)+1;
+    const key=a+':'+b;if(!seen.has(key)){seen.add(key);out.push([a,b])}
+  }
+  return shuffle(out.concat([[h,m]]));
+}
+function mkClock(l,fmt){
+  const h=1+rnd(12),m=pick(CM[l]);
+  const it=Object.assign(base(),{skill:'clock',type:fmt,h,m,l});
+  if(fmt==='clockPick')it.opts=clockOpts(h,m,l,l===1?3:4);
+  if(fmt==='clockHear')it.opts=clockOpts(h,m,l,3);
+  if(fmt==='clockSet'){let a,b;do{a=1+rnd(12);b=l===1?0:pick([0,15,30,45])}while(a===h&&b===m);it.ch=a;it.cm=b}
+  return it;
+}
+const mkClockAny=l=>mkClock(l,pick(['clockPick','clockSet','clockHear']));
+function buildBingo(l){
+  let nums;
+  if(l===1)nums=shuffle(POOL[1]).slice(0,9);
+  else if(l===2){
+    const b=pick(range(13,19)),t=(b-10)*10;
+    const teens=shuffle(range(13,19).filter(x=>x!==b)).slice(0,2);
+    const tens=shuffle([20,30,40,50,60,70,80,90,100].filter(x=>x!==t)).slice(0,5);
+    nums=[b,t].concat(teens,tens);
+  }else{
+    const a=2+rnd(8);let b;do{b=2+rnd(8)}while(b===a);
+    const x=a*10+b,y=b*10+a;
+    const rest=shuffle(POOL[3].filter(v=>v!==x&&v!==y)).slice(0,7);
+    nums=[x,y].concat(rest);if(Math.random()<.5)nums[2]=100;
+  }
+  const card=shuffle(nums);
+  const lines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  const line=pick(lines).map(i=>card[i]);
+  const others=shuffle(card.filter(n=>!line.includes(n))).slice(0,3);
+  R.card=card;R.lines=lines;R.marked={};
+  return shuffle(line.concat(others)).map(n=>Object.assign(base(),{skill:'hear',type:'bingo',n}));
+}
+function buildCans(l){
+  let pairs;
+  if(l<3)pairs=shuffle(VOC[l]).slice(0,6).map(p=>({en:p[0],de:p[1]}));
+  else{
+    const b=pick(range(13,19));
+    const ns=[b,(b-10)*10].concat(shuffle(POOL[3].concat([100])).slice(0,4));
+    pairs=ns.map(n=>({en:words(n),de:String(n)}));
+  }
+  return pairs.map((p,i)=>Object.assign(base(),{skill:'vocab',type:'can',id:i,en:p.en,de:p.de}));
+}
+function tourItems(){
+  const sk=['hear','write','spell','clock'];
+  const order=shuffle(sk.concat([pick(sk),pick(sk)]));
+  return order.map((s,i)=>{const l=recLv(s);
+    return s==='hear'?mkHear(l):s==='write'?mkWrite(l,i):s==='spell'?mkSpell(l):mkClockAny(l)});
+}
+
+/* ================= Runden-Ablauf ================= */
+function startRound(station,level){
+  unlock();
+  R={station,level,kind:station==='tour'?'tour':station,items:[],i:0,firstTry:0,tickets:0,fb:null,ended:false,timer:null,sel:null,bonus:0};
+  if(station==='tour')R.items=tourItems();
+  else if(station==='hear')R.items=buildBingo(level);
+  else if(station==='write')R.items=range(0,5).map(i=>mkWrite(level,i));
+  else if(station==='spell')R.items=range(0,5).map(()=>mkSpell(level));
+  else if(station==='clock'){const f=shuffle(['clockPick','clockPick','clockSet','clockSet','clockHear','clockHear']);R.items=f.map(x=>mkClock(level,x))}
+  else R.items=buildCans(level);
+  ui.screen='round';render();enter();
+}
+function audioFor(it){
+  if(it.type==='hearPick'||it.type==='bingo')return words(it.n);
+  if(it.type==='keypad')return it.phone?`My telephone number is ${it.digits.map(d=>ONES[d]).join(', ')}.`:words(it.n);
+  if(it.type==='tiles')return words(it.n);
+  if(it.type==='clockHear')return sent(it.h,it.m);
+  if(it.type==='clockSet')return sent(it.h,it.m);
+  return null;
+}
+function enter(){
+  const it=cur();if(!it||R.kind==='vocab'||it.spoken)return;
+  it.spoken=true;const a=audioFor(it);if(a)say(a);
+}
+function showWord(it){return it.helped||!canHear()}
+function solve(it,revealed){
+  if(it.done||R.ended)return;
+  it.done=true;it.revealed=!!revealed;
+  const clean=!revealed&&it.errs===0&&!it.helped;
+  const h=S.hist[it.skill];h.push(clean?1:0);if(h.length>12)h.shift();
+  let t=0,gold=false;
+  if(!revealed){
+    if(clean){const r=Math.random();t=r<.4?1:r<.75?2:3;if(Math.random()<.08){gold=true;t+=6}}
+    else t=1;
+  }
+  if(clean)R.firstTry++;
+  R.tickets+=t;S.xp+=t;S.bar+=t;
+  R.fb={t,gold,revealed:!!revealed};
+  if(it.type==='bingo'){
+    R.marked[it.n]=true;
+    if(!R.bingo&&R.lines.some(l=>l.every(i=>R.marked[R.card[i]]))){R.bingo=true;R.bonus+=2;S.xp+=2;S.bar+=2;R.fb.bingo=true}
+  }
+  if(!revealed&&(it.type==='clockPick'||it.type==='clockSet'))say(sent(it.h,it.m));
+  save();render();
+  clearTimeout(R.timer);
+  if(revealed&&R.kind!=='vocab')return;
+  R.timer=setTimeout(advance,gold||R.fb.bingo?1800:1100);
+}
+function advance(){
+  if(!R||R.ended)return;
+  clearTimeout(R.timer);R.fb=null;
+  if(R.kind==='vocab'){if(R.items.every(x=>x.done))return endRound();render();return}
+  R.i++;
+  if(R.i>=R.items.length)return endRound();
+  render();enter();
+}
+function wrong(it,sel,max){
+  if(it.done||R.ended)return;
+  it.errs++;
+  if(it.errs>=(max||3)){solve(it,true);return}
+  if(it.errs>=2)it.helped=true;
+  render();shake(sel);
+}
+function shake(sel){const el=document.querySelector(sel);if(el){el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake')}}
+function endRound(){
+  if(R.ended)return;R.ended=true;clearTimeout(R.timer);
+  let stars=R.firstTry>=5?3:R.firstTry>=3?2:R.firstTry>=1?1:0;
+  R.stars=stars;
+  if(R.station!=='tour'){const a=S.stars[R.station];a[R.level-1]=Math.max(a[R.level-1],stars)}
+  if(stars>=1&&S.lastDay!==today()){
+    S.streak=(S.lastDay===yesterday())?S.streak+1:1;S.lastDay=today();
+    R.daily=3;S.xp+=3;S.bar+=3;
+  }
+  sess++;R.sess=sess;save();ui.screen='result';render();
+}
+
+/* ================= Truhe ================= */
+function openChest(){
+  if(S.bar<CHEST)return;
+  const w=Math.random()*100;const r=w<55?0:w<83?1:w<95?2:3;
+  const cand=PRIZES.filter(p=>p.r===r);
+  const fresh=cand.filter(p=>!S.prizes[p.id]);
+  const p=pick(fresh.length?fresh:cand);
+  S.bar-=CHEST;S.prizes[p.id]=(S.prizes[p.id]||0)+1;save();
+  ui.chest={phase:'shake',p,isNew:S.prizes[p.id]===1};render();
+}
+
+/* ================= Ansichten ================= */
+function fitBar(sk){
+  const f=fitOf(sk);
+  return f===null?`<div class="bar fit"><i style="width:0"></i></div>`:`<div class="bar fit"><i class="${f<50?'lo':f<80?'mid':'hi'}" style="width:${f}%"></i></div>`;
+}
+const starStr=n=>'★'.repeat(n)+'☆'.repeat(3-n);
+function testLine(){
+  const d=Math.round((TEST_DATE-new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate()))/864e5);
+  if(d>1)return `📅 Englischtest am Mittwoch, 11.11. – noch ${d} Tage`;
+  if(d===1)return '📅 Englischtest ist morgen – du schaffst das! 💪';
+  if(d===0)return '📅 Heute ist der Test – du bist gut vorbereitet! 🍀';
+  return '';
+}
+function ready(){return SKILLS.every(k=>S.hist[k].length>=8&&fitOf(k)>=80)}
+function hubView(){
+  const rk=rankOf(S.xp),nx=RANKS[RANKS.indexOf(rk)+1];
+  const fits=SKILLS.map(fitOf).filter(x=>x!==null);
+  const all=fits.length?Math.round(fits.reduce((a,b)=>a+b,0)/fits.length):null;
+  let h=`<h1>🦘 Kängu-Jahrmarkt</h1><p class="sub">Numbers and time – Englisch Klasse 4</p>`;
+  const tl=testLine();if(tl)h+=`<div class="pill" style="display:block;margin-bottom:10px">${tl}</div>`;
+  h+=`<div class="row" style="margin-bottom:6px"><span class="pill">${rk.e} ${rk.n}</span><span class="pill">🔥 ${S.streak} ${S.streak===1?'Tag':'Tage'}</span><span class="pill">🧸 ${Object.keys(S.prizes).length}/20</span></div>`;
+  if(nx)h+=`<div class="small" style="color:#e6dcff;margin:4px 4px 10px">Noch ${nx.x-S.xp} 🎟️ bis „${nx.n}“</div>`;
+  h+=`<div class="card"><div class="row"><b>🎁 Glückskugel</b><span class="sp"></span><span class="small">${Math.min(S.bar,CHEST)} / ${CHEST} 🎟️</span></div><div class="bar" style="margin-top:8px"><i style="width:${Math.min(100,S.bar/CHEST*100)}%;background:var(--yel)"></i></div>`;
+  if(S.bar>=CHEST)h+=`<button class="btn red" data-a="chest" style="width:100%;margin-top:10px">🎁 Glückskugel aufmachen!</button>`;
+  else h+=`<div class="small" style="margin-top:6px">Noch ${CHEST-S.bar} Tickets – richtige Antworten bringen Tickets!</div>`;
+  h+=`</div>`;
+  h+=`<button class="btn tour" data-a="tour">🎪 Jahrmarkts-Tour – los geht’s!</button>`;
+  h+=`<div class="card"><div class="row"><b>Test-Fit</b><span class="sp"></span><b>${all===null?'–':all+' %'}</b></div><div class="small">${ready()?'🏁 Du bist bereit für den Test!':'Alle fünf Balken grün (80 %) = bereit für den Test.'}</div></div>`;
+  SKILLS.forEach(k=>{
+    const s=ST[k],st=S.stars[k],rec=recLv(k);
+    h+=`<div class="card st"><div class="row"><span style="font-size:40px">${s.ico}</span><div class="sp"><h3>${s.name}</h3><div class="small">${s.desc}</div></div></div>${fitBar(k)}<div class="lv">`;
+    for(let l=1;l<=3;l++){
+      const un=unlockedLv(k,l);
+      h+=`<button data-a="lv" data-k="${k}" data-v="${l}" class="${un&&l===rec?'rec':''}" ${un?'':'disabled'}><b>${un?'Stufe '+l:'🔒 Stufe '+l}</b>${s.lv[l-1]}<br><span class="stars" style="color:#e6a700">${starStr(st[l-1])}</span></button>`;
+    }
+    h+=`</div></div>`;
+  });
+  h+=`<div class="row" style="margin-top:14px"><button class="btn main sp" data-a="shelf">🧸 Mein Preisregal</button><button class="btn ghost sp" data-a="adult">👨‍👩‍👧 Für Erwachsene</button></div>`;
+  return h;
+}
+function dots(){return `<div class="dots">${R.items.map((x,i)=>`<i class="${x.done?'d':(R.kind!=='vocab'&&i===R.i?'c':'')}"></i>`).join('')}</div>`}
+function fbView(){
+  if(!R.fb)return '';
+  const f=R.fb;
+  if(f.revealed)return `<div class="fb rev">Diesmal kein Ticket – aber jetzt weißt du’s! 💪</div>`;
+  return `<div class="fb ${f.gold?'gold':''}">${f.bingo?'🎉 BINGO! +2 ':''}${f.gold?'🌟 GOLD-TICKET! ':''}+${f.t} 🎟️</div>`;
+}
+function speakBtn(){return canHear()?`<button class="speak" data-a="say">🔊</button>`:''}
+function helpBtn(it){return (!it.done&&!showWord(it))?`<div class="center" style="margin-top:12px"><button class="btn sm ghost" data-a="help">👁 Wort zeigen</button></div>`:''}
+function noSound(){return canHear()?'':`<div class="small center" style="color:#e6dcff">🔇 Kein Ton – darum siehst du das Wort.</div>`}
+function nextBtn(it){return (it.done&&it.revealed&&R.kind!=='vocab')?`<div class="center" style="margin-top:14px"><button class="btn go" data-a="next">Weiter ➜</button></div>`:''}
+
+function bodyHear(it){
+  let h=`<div class="center"><div class="prompt">Welche Zahl hörst du?</div>${speakBtn()}`;
+  if(showWord(it))h+=`<div class="word">${words(it.n)}</div>`;
+  h+=`</div><div class="opts" style="margin-top:12px">`;
+  it.opts.forEach(o=>{
+    const cls=it.done&&o===it.n?'ok':it.wrong.includes(o)?'no':'';
+    h+=`<button class="btn ${cls}" data-a="opt" data-v="${o}" ${it.done?'disabled':''}>${o}</button>`;
+  });
+  return h+`</div>`+helpBtn(it)+nextBtn(it);
+}
+function bodyBingo(it){
+  let h=`<div class="center"><div class="prompt">Bingo! Welche Zahl wird gerufen?</div>${speakBtn()}`;
+  if(showWord(it))h+=`<div class="word">${words(it.n)}</div>`;
+  h+=`</div><div class="bingo">`;
+  R.card.forEach(n=>{
+    const m=R.marked[n];
+    h+=`<button class="btn ${m?'m':''} ${it.wrong.includes(n)&&!m?'no':''}" data-a="bing" data-v="${n}" ${it.done?'disabled':''}>${n}</button>`;
+  });
+  return h+`</div>`+helpBtn(it)+nextBtn(it);
+}
+function bodyKeypad(it){
+  let h=`<div class="center">`;
+  if(it.phone){
+    h+=`<div class="bubble">📞 What’s your telephone number?</div><div class="small">Höre die Ziffern und tippe sie ein.</div>${speakBtn()}`;
+    if(showWord(it))h+=`<div class="word" style="font-size:26px">${it.digits.map(d=>ONES[d]).join(' – ')}</div>`;
+  }else{
+    h+=`<div class="prompt">Schreibe die Zahl als Ziffern.</div>${speakBtn()}`;
+    if(it.showWord||showWord(it))h+=`<div class="word">${words(it.n)}</div>`;
+  }
+  h+=`</div><div class="disp" id="disp">${it.done&&it.revealed?it.ans:(it.inp||'…')}</div>`;
+  if(!it.done){
+    h+=`<div class="keys">`;
+    [1,2,3,4,5,6,7,8,9].forEach(k=>h+=`<button class="btn" data-a="key" data-v="${k}">${k}</button>`);
+    h+=`<button class="btn" data-a="key" data-v="back">⌫</button><button class="btn" data-a="key" data-v="0" ${it.phone?'disabled':''}>0</button><button class="btn go" data-a="key" data-v="ok">✓</button></div>`;
+    if(!it.showWord&&!showWord(it))h+=helpBtn(it);
+  }
+  return h+nextBtn(it);
+}
+function bodyTiles(it){
+  let h=`<div class="center"><div class="prompt">Baue das Zahlwort.</div><div class="led">${it.n}</div> ${speakBtn()}</div>`;
+  const shown=[];
+  const lastDone=it.done;
+  it.parts.forEach((p,i)=>{
+    if(i<it.p||lastDone)shown.push(p);
+    else if(i===it.p){shown.push(it.typed.join('')+'<u>'+'_'.repeat(p.length-it.typed.length)+'</u>')}
+    else shown.push('<u>'+'_'.repeat(p.length)+'</u>');
+  });
+  h+=`<div class="slots" id="disp">${shown.join(it.sep===' '?' ':'-')}</div>`;
+  if(!it.done){
+    const exp=it.parts[it.p][it.typed.length];
+    let hinted=false;
+    h+=`<div class="tiles">`;
+    it.pool.forEach((t,i)=>{
+      const hint=it.errs>=2&&!hinted&&!t.used&&t.c===exp;if(hint)hinted=true;
+      h+=`<button class="btn ${t.used?'used':''} ${hint?'hint':''}" data-a="tile" data-v="${i}">${t.c}</button>`;
+    });
+    h+=`</div>`;
+  }
+  return h+nextBtn(it);
+}
+function clockBox(h,m,sm){return `<span class="led ${sm?'s':''}">${dig(h,m)}</span>`}
+function bodyClock(it){
+  let h='';
+  if(it.type==='clockPick'){
+    h+=`<div class="center"><div class="bubble">What time is it?</div>${clockBox(it.h,it.m)}</div><div class="opts w1" style="margin-top:14px">`;
+    it.opts.forEach(([a,b])=>{
+      const k=a+':'+b,ok=a===it.h&&b===it.m;
+      h+=`<button class="btn ${it.done&&ok?'ok':it.wrong.includes(k)?'no':''}" data-a="copt" data-v="${k}" ${it.done?'disabled':''}>${disp(sent(a,b))}</button>`;
+    });
+    h+=`</div>`;
+  }else if(it.type==='clockHear'){
+    h+=`<div class="center"><div class="prompt">Welche Uhr passt?</div>${speakBtn()}`;
+    if(showWord(it))h+=`<div class="word" style="font-size:28px">${disp(sent(it.h,it.m))}</div>`;
+    h+=`</div><div class="opts c3" style="margin-top:14px">`;
+    it.opts.forEach(([a,b])=>{
+      const k=a+':'+b,ok=a===it.h&&b===it.m;
+      h+=`<button class="btn ${it.done&&ok?'ok':it.wrong.includes(k)?'no':''}" data-a="copt" data-v="${k}" style="font-size:24px;padding:4px" ${it.done?'disabled':''}>${dig(a,b)}</button>`;
+    });
+    h+=`</div>`+helpBtn(it);
+  }else{
+    h+=`<div class="center"><div class="prompt">Stelle die Uhr.</div><div class="bubble">${disp(sent(it.h,it.m))}</div>${speakBtn()}</div>`;
+    const a=it.done?it.h:it.ch,b=it.done?it.m:it.cm;
+    h+=`<div class="row" style="justify-content:center;gap:22px;margin:12px 0"><div class="stepper"><button class="btn" data-a="cs" data-v="h+" ${it.done?'disabled':''}>▲</button><button class="btn" data-a="cs" data-v="h-" ${it.done?'disabled':''}>▼</button><span class="small">Stunde</span></div><span id="disp">${clockBox(a,b)}</span><div class="stepper"><button class="btn" data-a="cs" data-v="m+" ${it.done||it.l===1?'disabled':''}>▲</button><button class="btn" data-a="cs" data-v="m-" ${it.done||it.l===1?'disabled':''}>▼</button><span class="small">Minuten</span></div></div>`;
+    if(it.msg&&!it.done)h+=`<div class="center small" style="font-size:19px">${it.msg}</div>`;
+    if(!it.done)h+=`<div class="center"><button class="btn go" data-a="cs" data-v="ok">✓ Prüfen</button></div>`;
+  }
+  return h+nextBtn(it);
+}
+function bodyCans(){
+  const L=shuffleStable(R.items,'L'),Rr=shuffleStable(R.items,'R');
+  let h=`<div class="prompt">${R.level===3?'Verbinde Zahl und Zahlwort.':'Tippe einen Ball und die passende Dose.'}</div><div class="cans"><div>`;
+  const hintId=R.items.find(x=>!x.done&&x.errs>=2);
+  L.forEach(x=>{h+=`<button class="btn can ${x.done?'done':''} ${R.sel&&R.sel.side==='L'&&R.sel.id===x.id?'sel':''} ${hintId&&hintId.id===x.id?'hint':''}" data-a="can" data-side="L" data-v="${x.id}" style="margin-bottom:10px">${x.de}</button>`});
+  h+=`</div><div>`;
+  Rr.forEach(x=>{h+=`<button class="btn ball ${x.done?'done':''} ${R.sel&&R.sel.side==='R'&&R.sel.id===x.id?'sel':''}" data-a="can" data-side="R" data-v="${x.id}" style="margin-bottom:10px">⚾ ${disp(x.en)}</button>`});
+  return h+`</div></div><div class="small center" style="color:#e6dcff">Tipp: Ein Ball spricht, wenn du ihn antippst.</div>`;
+}
+const orders={};
+function shuffleStable(items,side){
+  const k=side;if(!orders[k]||orders[k].r!==R){orders[k]={r:R,o:shuffle(items.map(x=>x.id))}}
+  return orders[k].o.map(id=>items.find(x=>x.id===id));
+}
+function roundView(){
+  const it=cur();
+  let h=`<div class="top"><button class="btn sm ghost" data-a="home">✖</button><span class="pill">${R.station==='tour'?'🎪 Tour':ST[R.station].ico+' '+ST[R.station].name+' · Stufe '+R.level}</span><span class="sp"></span>${dots()}</div><div class="card">`;
+  if(R.kind==='vocab')h+=bodyCans();
+  else if(it.type==='hearPick')h+=bodyHear(it);
+  else if(it.type==='bingo')h+=bodyBingo(it);
+  else if(it.type==='keypad')h+=bodyKeypad(it);
+  else if(it.type==='tiles')h+=bodyTiles(it);
+  else h+=bodyClock(it);
+  h+=`</div>`;
+  if(!it||['hearPick','bingo','keypad','clockHear'].includes(it&&it.type))h+=noSound();
+  return fbView()+h;
+}
+function resultView(){
+  const st=R.stars,tour=R.station==='tour';
+  let h=`<h1>${st===3?'🌟 Fantastisch!':st>=1?'👏 Geschafft!':'💪 Weiter üben!'}</h1>`;
+  h+=`<div class="card center"><div style="font-size:60px" class="stars">${tour?'🎪':starStr(st).replace(/★/g,'⭐').replace(/☆/g,'▫️')}</div><p><b>${R.firstTry} von 6</b> gleich beim ersten Mal richtig.</p><p>🎟️ <b>+${R.tickets+R.bonus+(R.daily||0)}</b> Tickets${R.bingo?' (inkl. Bingo-Bonus)':''}${R.daily?' · Tages-Bonus +3, 🔥 '+S.streak+' '+(S.streak===1?'Tag':'Tage'):''}</p>`;
+  if(st===0)h+=`<p>Noch nicht ganz – beim nächsten Mal klappt’s besser!</p>`;
+  if(!tour&&st>=1&&R.level<3&&S.stars[R.station][R.level-1]>=1&&st>=1)h+=`<p>🔓 Stufe ${R.level+1} ist offen!</p>`;
+  if(S.bar>=CHEST)h+=`<button class="btn red" data-a="chest" style="width:100%">🎁 Glückskugel aufmachen!</button>`;
+  else h+=`<div class="bar"><i style="width:${S.bar/CHEST*100}%;background:var(--yel)"></i></div><p class="small">Noch ${CHEST-S.bar} 🎟️ bis zur nächsten Glückskugel – das schaffst du in ${Math.max(1,Math.ceil((CHEST-S.bar)/12))} Runde${CHEST-S.bar>12?'n':''}!</p>`;
+  h+=`</div>`;
+  const brake=S.opts.brake&&R.sess%3===0;
+  if(brake)h+=`<div class="card center">🌙 <b>Super für heute!</b><br>Du hast 3 Runden geschafft. Mach jetzt eine Pause – morgen wartet dein Preisregal auf dich.</div>`;
+  h+=`<div class="row">`;
+  if(brake){h+=`<button class="btn main sp" data-a="home">✔ Fertig für heute</button><button class="btn ghost sp" data-a="again">Noch eine Runde</button>`}
+  else h+=`<button class="btn main sp" data-a="again">Nochmal ▶</button><button class="btn ghost sp" data-a="home">Jahrmarkt-Karte</button>`;
+  return h+`</div>`;
+}
+function shelfView(){
+  const n=Object.keys(S.prizes).length;
+  let h=`<div class="top"><button class="btn sm ghost" data-a="home">◀ Zurück</button></div><h1>🧸 Mein Preisregal</h1><p class="sub">${n} von 20 Preisen · ${rankOf(S.xp).e} ${rankOf(S.xp).n} · 🔥 ${S.streak}</p><div class="card"><div class="shelf">`;
+  PRIZES.forEach(p=>{const c=S.prizes[p.id];h+=`<div class="slot r${p.r} ${c?'':'no'}">${c?p.e:'❔'}<small>${c?p.n:'???'}</small>${c>1?`<b>×${c}</b>`:''}</div>`});
+  h+=`</div></div><div class="card center"><b>👨‍👩‍👧 Zeig dein Regal jemandem!</b><p class="small">Lass dich von Mama oder Papa abfragen – im Bereich „Für Erwachsene“ gibt’s ein Zahlen-Diktat.</p><button class="btn main" data-a="adult">Zum Diktat</button></div>`;
+  return h;
+}
+/* ---- Erwachsene ---- */
+let D={mode:'n1',cur:null,show:false,ok:0,count:0,fin:null};
+function dNew(){
+  if(D.mode==='time'){const h=1+rnd(12),m=pick([0,15,30,45,40,10,20]);D.cur={say:sent(h,m),sol:dig(h,m)}}
+  else{const n=D.mode==='n1'?pick(POOL[1]):D.mode==='n2'?pick(POOL[2].concat(POOL[3])):pick([100,1000,pick(POOL[3]),pick(POOL[3])]);D.cur={say:words(n),sol:String(n)}}
+  D.show=false;
+}
+function adultView(){
+  let h=`<div class="top"><button class="btn sm ghost" data-a="home">◀ Zurück</button></div><h1>👨‍👩‍👧 Für Erwachsene</h1>`;
+  h+=`<div class="card"><b>Worum geht’s?</b><p class="small" style="font-size:16px">Vorbereitung auf den Englischtest (Unit „Numbers and time“): Zahlen 1–100 und 1000 hören, lesen, als Ziffern und als Wort schreiben · Uhrzeiten („It’s nine thirty.“, „It’s four o’clock.“) · Redemittel (Hello, Bye, Goodbye, Thanks, Thank you, What time is it?, What’s your telephone number?) · Wörter (telephone number, important, police, school, mobile). Die Aufgaben sind selbst erzeugt, nicht aus dem Buch kopiert.</p></div>`;
+  h+=`<div class="card"><b>Test-Fit</b> <span class="small">(letzte 12 Antworten je Bereich, gleich beim ersten Versuch richtig)</span><table>`;
+  SKILLS.forEach(k=>{const f=fitOf(k);h+=`<tr><td>${ST[k].ico} ${ST[k].name}</td><td>${f===null?'noch nicht geübt':f+' %'}</td></tr>`});
+  h+=`</table></div>`;
+  h+=`<div class="card"><b>🗣️ Zahlen-Diktat (wie im Elternbrief)</b><p class="small" style="font-size:16px">Sie sagen die Zahl auf Englisch, Ihr Kind schreibt sie als Ziffern auf Papier. Antwort erst nach dem Aufschreiben aufdecken.</p><div class="row" style="gap:8px">`;
+  [['n1','1–20'],['n2','bis 100'],['n3','100 & 1000'],['time','Uhrzeiten']].forEach(([m,t])=>h+=`<button class="btn sm ${D.mode===m?'main':''}" data-a="dmode" data-v="${m}">${t}</button>`);
+  h+=`</div>`;
+  if(D.fin!==null)h+=`<p class="center"><b>${D.fin.ok} von 5 geschafft!</b>${D.fin.bonus?` 🎟️ +${D.fin.bonus} Familien-Bonus`:''}</p><div class="center"><button class="btn main" data-a="dreset">Neue Runde</button></div>`;
+  else if(!D.cur)h+=`<div class="center" style="margin-top:12px"><button class="btn go" data-a="dnew">Aufgabe 1 ▶</button></div>`;
+  else{
+    h+=`<div class="center" style="margin-top:12px"><div class="small">Aufgabe ${D.count+1} von 5 · bitte vorlesen:</div><div class="word">${disp(D.cur.say)}</div>`;
+    if(canHear())h+=`<button class="speak" data-a="dsay">🔊</button>`;
+    if(!D.show)h+=`<div><button class="btn sm" data-a="dshow" style="margin-top:10px">Lösung zeigen</button></div>`;
+    else h+=`<div class="led" style="margin:10px 0">${D.cur.sol}</div><div class="row" style="justify-content:center"><button class="btn ok" data-a="dres" data-v="1">✅ richtig</button><button class="btn" data-a="dres" data-v="0">❌ noch nicht</button></div>`;
+    h+=`</div>`;
+  }
+  h+=`</div>`;
+  h+=`<div class="card"><div class="tog"><span>🔊 Sprachausgabe</span><button class="btn sm ${S.opts.speech?'go':''}" data-a="topt" data-v="speech">${S.opts.speech?'an':'aus'}</button></div><div class="tog"><span>🌙 Pausen-Hinweis nach 3 Runden</span><button class="btn sm ${S.opts.brake?'go':''}" data-a="topt" data-v="brake">${S.opts.brake?'an':'aus'}</button></div><div class="tog"><span>Spielstand löschen</span><button class="btn sm red" data-a="reset">löschen</button></div></div>`;
+  h+=`<p class="small" style="color:#e6dcff">Datenschutz: keine Anmeldung, kein Tracking, keine Internetverbindung nötig. Der Spielstand liegt nur in diesem Browser. Fehler kosten nie Besitz; Tickets gibt es nur für richtige Antworten.</p>`;
+  return h;
+}
+function chestView(){
+  const c=ui.chest;
+  if(c.phase==='shake')return `<div class="overlay"><div class="big wob">🎁</div><h2>Tippe zum Öffnen!</h2><button class="btn main" data-a="reveal">🎁 Aufmachen</button></div>`;
+  return `<div class="overlay"><div class="small" style="color:#e6dcff">${RN[c.p.r]}</div><div class="big">${c.p.e}</div><h2>${c.isNew?'NEU! ':''}${c.p.n}</h2>${c.isNew?'':'<p>Hast du schon – doppelt gewonnen!</p>'}<button class="btn main" data-a="chestclose">Super!</button></div>`;
+}
+function render(){
+  let h;
+  if(ui.screen==='hub')h=hubView();
+  else if(ui.screen==='round')h=roundView();
+  else if(ui.screen==='result')h=resultView();
+  else if(ui.screen==='shelf')h=shelfView();
+  else h=adultView();
+  if(ui.chest)h+=chestView();
+  $('#app').innerHTML=h;
+}
+
+/* ================= Aktionen ================= */
+const A={
+ tour(){startRound('tour',0)},
+ lv(v,el){startRound(el.dataset.k,+v)},
+ home(){if(R){clearTimeout(R.timer);R.ended=true}ui.screen='hub';render()},
+ again(){startRound(R.station,R.level)},
+ say(){const it=cur();if(it){const a=audioFor(it);if(a)say(a)}},
+ help(){const it=cur();if(it&&!it.done){it.helped=true;render()}},
+ next(){advance()},
+ opt(v){const it=cur();if(!it||it.done)return;v=+v;if(v===it.n)solve(it);else{it.wrong.push(v);wrong(it,'[data-v="'+v+'"]')}},
+ bing(v){const it=cur();if(!it||it.done)return;v=+v;if(R.marked[v])return;if(v===it.n)solve(it);else{it.wrong.push(v);wrong(it,'[data-v="'+v+'"]')}},
+ key(v){
+  const it=cur();if(!it||it.done)return;
+  if(it.inp===undefined)it.inp='';
+  if(v==='back'){it.inp=it.inp.slice(0,-1);render();return}
+  if(v==='ok'){
+    if(!it.inp)return;
+    if(it.inp===it.ans){solve(it)}else{it.inp='';wrong(it,'#disp')}
+    return;
+  }
+  if(it.inp.length<it.ans.length)it.inp+=v;
+  render();
+ },
+ tile(v){
+  const it=cur();if(!it||it.done)return;
+  const t=it.pool[+v];if(!t||t.used)return;
+  const part=it.parts[it.p];
+  if(t.c===part[it.typed.length]){
+    t.used=true;it.typed.push(t.c);
+    if(it.typed.length===part.length){
+      if(it.p<it.parts.length-1){it.p++;it.typed=[];it.pool=mkPool(it.parts[it.p]);render()}
+      else solve(it);
+    }else render();
+  }else wrong(it,'[data-a="tile"][data-v="'+v+'"]',4);
+ },
+ copt(v){
+  const it=cur();if(!it||it.done)return;
+  if(v===it.h+':'+it.m)solve(it);else{it.wrong.push(v);wrong(it,'[data-v="'+v+'"]')}
+ },
+ cs(v){
+  const it=cur();if(!it||it.done)return;
+  if(v==='h+')it.ch=it.ch%12+1;
+  else if(v==='h-')it.ch=(it.ch+10)%12+1;
+  else if(v==='m+')it.cm=(it.cm+5)%60;
+  else if(v==='m-')it.cm=(it.cm+55)%60;
+  else if(v==='ok'){
+    if(it.ch===it.h&&it.cm===it.m){solve(it);return}
+    it.errs++;
+    if(it.errs>=3){solve(it,true);return}
+    it.msg=it.ch!==it.h&&it.cm!==it.m?'Schau noch mal genau hin.':it.ch!==it.h?'Die Minuten stimmen – die Stunde noch nicht.':'Die Stunde stimmt – die Minuten noch nicht.';
+    if(it.errs<2)it.msg='Nicht ganz – versuch’s noch mal!';
+    render();shake('#disp');return;
+  }
+  render();
+ },
+ can(v,el){
+  if(!R||R.ended)return;
+  const side=el.dataset.side,id=+v,it=R.items.find(x=>x.id===id);
+  if(it.done)return;
+  if(side==='R')say(it.en.replace('…','').replace(/\s+/g,' '));
+  if(!R.sel||R.sel.side===side){R.sel={side,id};render();return}
+  const L=side==='L'?id:R.sel.id,B=side==='R'?id:R.sel.id;
+  R.sel=null;
+  const ball=R.items.find(x=>x.id===B);
+  if(L===B){solve(ball)}
+  else{ball.errs++;if(ball.errs>=3){solve(ball,true)}else{render();shake('[data-side="'+side+'"][data-v="'+id+'"]')}}
+ },
+ chest(){openChest()},
+ reveal(){ui.chest.phase='open';render()},
+ chestclose(){ui.chest=null;render()},
+ shelf(){ui.screen='shelf';render()},
+ adult(){ui.screen='adult';render()},
+ dmode(v){D.mode=v;D.cur=null;D.ok=0;D.count=0;D.fin=null;render()},
+ dnew(){dNew();render()},
+ dshow(){D.show=true;render()},
+ dsay(){say(D.cur.say)},
+ dres(v){
+  D.ok+=+v;D.count++;
+  if(D.count>=5){
+    let bonus=0;
+    if(S.famDay!==today()&&D.ok>0){bonus=D.ok;S.famDay=today();S.xp+=bonus;S.bar+=bonus;save()}
+    D.fin={ok:D.ok,bonus};D.cur=null;
+  }else dNew();
+  render();
+ },
+ dreset(){D.cur=null;D.ok=0;D.count=0;D.fin=null;render()},
+ topt(v){S.opts[v]=!S.opts[v];save();render()},
+ reset(){if(confirm('Spielstand wirklich komplett löschen?')){S=defaults();save();render()}}
+};
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-a]');
+  if(!t||t.disabled)return;
+  unlock();
+  const f=A[t.dataset.a];if(f)f(t.dataset.v,t);
+});
+render();
+})();
+</script>
+</body>
+</html>
