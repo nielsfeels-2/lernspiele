@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Vokabeltest – Word bank: analysing a relationship</title>
+<style>
+  :root {
+    --bg1: #0b1a14; --bg2: #142a1f; --accent: #ffb238; --accent2: #4ce07a;
+    --card: rgba(255,255,255,0.06); --card-border: rgba(255,255,255,0.14); --bad: #ff8b8b;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: radial-gradient(1100px 700px at 50% -10%, #1d3a2a 0%, var(--bg1) 55%, var(--bg2) 100%);
+    color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    overscroll-behavior: none; touch-action: manipulation;
+  }
+  #app { min-height: 100%; display: flex; flex-direction: column; align-items: center; padding: env(safe-area-inset-top, 16px) 16px 24px; user-select: none; }
+
+  .locks-row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 640px; margin: 6px 0 4px; }
+  .locks-row span { font-size: 20px; opacity: .5; }
+  .locks-row span.correct { opacity: 1; }
+  .locks-row span.half { opacity: 1; filter: grayscale(.6); }
+  .locks-row span.wrong { opacity: 1; }
+  .locks-row span.current { opacity: 1; filter: drop-shadow(0 0 6px var(--accent)); }
+
+  .card {
+    width: 100%; max-width: 640px; background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 22px; padding: 28px 22px; margin-top: 12px; text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,.4);
+  }
+  .room-emoji { font-size: 48px; margin-bottom: 8px; }
+  .qtype { font-size: 13px; opacity: .7; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .question { font-size: 24px; font-weight: 800; line-height: 1.4; margin: 6px 0 22px; min-height: 70px; display: flex; align-items: center; justify-content: center; }
+
+  .answer-form { display: flex; flex-direction: column; gap: 12px; }
+  .answer-input {
+    width: 100%; min-height: 60px; border-radius: 16px; border: 2px solid rgba(255,255,255,.25);
+    font-size: 22px; font-weight: 700; text-align: center; padding: 10px 16px; color: #0d1f16;
+    background: linear-gradient(180deg, #fff, #e4f5ea); font-family: inherit;
+  }
+  .answer-input:focus { outline: none; border-color: var(--accent); }
+  .answer-input.correct { background: linear-gradient(180deg, #b8ffcf, #59e087); }
+  .answer-input.wrong { background: linear-gradient(180deg, #ffc2c2, #ff8b8b); }
+  .submit-btn {
+    min-height: 60px; border-radius: 16px; border: none; font-size: 19px; font-weight: 800; color: #241800;
+    cursor: pointer; background: linear-gradient(180deg, var(--accent), #c8860a);
+    box-shadow: 0 6px 0 rgba(0,0,0,.25), 0 10px 18px rgba(0,0,0,.25); padding: 10px 16px;
+  }
+  .submit-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.25); }
+  .submit-btn:disabled { opacity: .5; }
+
+  .feedback { min-height: 30px; font-size: 16px; font-weight: 700; margin-top: 16px; }
+  .feedback.good { color: var(--accent2); }
+  .feedback.bad { color: var(--bad); }
+
+  .start-screen, .result-screen { width: 100%; max-width: 640px; text-align: center; margin-top: 30px; }
+  .start-screen h1 { font-size: 32px; margin-bottom: 8px; }
+  .start-screen p { opacity: .85; font-size: 16px; line-height: 1.55; }
+  .big-btn {
+    margin-top: 22px; padding: 18px 34px; font-size: 20px; font-weight: 800; border: none; border-radius: 18px;
+    background: linear-gradient(180deg, var(--accent), #c8860a); color: #241800; cursor: pointer;
+    box-shadow: 0 6px 0 rgba(0,0,0,.3), 0 10px 24px rgba(0,0,0,.3); min-height: 80px; min-width: 220px;
+  }
+  .big-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.3); }
+  .big-btn.secondary { background: linear-gradient(180deg, #eee, #ccc); color: #222; }
+
+  .result-card {
+    background: linear-gradient(160deg, #16321f, #0c1c12); border: 2px solid var(--accent); border-radius: 22px;
+    padding: 26px 20px; margin: 18px auto;
+  }
+  .grade-big { font-size: 84px; font-weight: 900; line-height: 1; margin: 4px 0; }
+  .grade-label { font-size: 15px; opacity: .8; letter-spacing: 1px; text-transform: uppercase; }
+  .points-row { font-size: 20px; font-weight: 700; margin-top: 10px; }
+  .percent-row { font-size: 15px; opacity: .8; margin-top: 4px; }
+
+  .footer-note { margin-top: 26px; font-size: 12px; opacity: .55; max-width: 480px; text-align: center; }
+  .hidden { display: none !important; }
+
+  @keyframes shake { 10%,90% { transform: translateX(-2px);} 20%,80% { transform: translateX(4px);} 30%,50%,70% { transform: translateX(-8px);} 40%,60% { transform: translateX(8px);} }
+  .shake { animation: shake .5s; }
+  @keyframes pop { 0% { transform: scale(0);} 60% { transform: scale(1.15);} 100% { transform: scale(1);} }
+  .pop { animation: pop .5s ease; }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ============================================================
+       VOKABELTEST-INHALT – HIER FÜR JEDEN NEUEN TEST ANPASSEN
+       POOL enthält ALLE Vokabeln des Testabschnitts (nicht nur die Testgröße!).
+       Jedes Mal, wenn der Test gestartet wird, werden TEST_SIZE zufällige
+       Items in zufälliger Reihenfolge gezogen - jede Person (und jeder neue
+       Versuch) bekommt eine andere Auswahl. Das verhindert Abschreiben und
+       gibt gleichzeitig eine "zweite Chance" mit anderen Wörtern.
+       Jedes Item: { type: "de-en"|"en-de"|"sentence", q: Frage/Satz mit ___,
+                     correct: ["akzeptierte Schreibweise 1", "..."] }
+       WICHTIG: Freitext-Eingabe, KEIN Multiple-Choice - die SuS sollen das
+       Wort wirklich schreiben (siehe leistungsbewertung_standard.md).
+       Vergleich ist case-insensitive (Groß-/Kleinschreibung egal), aber
+       Tippfehler zählen als falsch - Rechtschreibung ist Testgegenstand.
+       Notenschlüssel weiter unten im Script anpassbar.
+     ============================================================ -->
+
+  <!-- START -->
+  <div class="start-screen" id="startScreen">
+    <div style="font-size:60px;">🔐</div>
+    <h1>Vokabeltest: Escape Room</h1>
+    <p style="opacity:.75; font-size:15px; margin-top:-6px;">EF Englisch · UV EF1-2 „Challenges in Teenage Life" · Test am Wednesday, 25 November</p>
+    <p>Unit 1 – Looking back – Check-in + Station 1 (simple past)<br>
+    Du bist im Klassenzimmer eingeschlossen. Jede richtig <b>geschriebene</b> Antwort öffnet ein Schloss.
+    Am Ende gibt's deine Note – zeig sie deiner Lehrkraft!</p>
+    <p style="font-size:13px; opacity:.7;" id="poolInfo">15 Fragen aus der Word bank (AB 7) · du tippst die Antwort selbst · 2 Punkte je Wort, 1 Punkt bei einem Schreibfehler</p>
+    <p style="font-size:12px; opacity:.6;">🎲 Bei jedem Versuch eine andere Auswahl aus dem gesamten Wortschatz - lohnt sich, wirklich alles zu lernen!</p>
+    <button class="big-btn" id="startBtn">🔓 Test starten</button>
+  </div>
+
+  <!-- GAME -->
+  <div class="hidden" id="gameWrap" style="width:100%; max-width:640px;">
+    <div class="locks-row" id="locksRow"></div>
+    <div class="card">
+      <div class="room-emoji" id="roomEmoji">🚪</div>
+      <div class="qtype" id="qType">Deutsch → Englisch</div>
+      <div class="question" id="questionEl"></div>
+      <form class="answer-form" id="answerForm" autocomplete="off">
+        <input class="answer-input" id="answerInput" type="text" autocomplete="off" autocapitalize="off"
+               autocorrect="off" spellcheck="false" placeholder="Antwort eingeben …">
+        <button class="submit-btn" id="submitBtn" type="submit">Prüfen</button>
+      </form>
+      <div class="feedback" id="feedbackEl"></div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="result-screen hidden" id="resultScreen">
+    <div class="room-emoji pop">🎉</div>
+    <h1 style="font-size:26px;">Entkommen!</h1>
+    <div class="result-card">
+      <div class="grade-label">Note</div>
+      <div class="grade-big" id="gradeBig">2</div>
+      <div class="points-row" id="pointsRow">24 / 24 Punkte</div>
+      <div class="percent-row" id="percentRow">85 %</div>
+    </div>
+    <p style="opacity:.85; font-size:16px;">👆 Zeig dieses Ergebnis direkt deiner Lehrkraft.</p>
+    <button class="big-btn secondary" id="restartBtn">Neuer Versuch (nächste Person)</button>
+  </div>
+
+  <div class="footer-note">Kein Login, keine Daten verlassen dieses Gerät. Kein Speichern von Ergebnissen – nach dem Zeigen einfach für die nächste Person neu starten.</div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- Vokabeltest-Inhalt: EF Englisch · UV EF1-2 „Challenges in Teenage Life" · Test am Wednesday, 25 November ----------
+  // Alle 28 Eintraege der Buchseite (Check in p. 9 + Station 1 p. 10-11), keine erfundenen Woerter.
+  // POOL = ALLE Vokabeln dieses Testabschnitts. TEST_SIZE = wie viele davon
+  // pro Durchlauf zufällig abgefragt werden.
+  var POOL = [
+    { key: "The excerpt deals with …", type: "de-en", q: "Der Auszug handelt von …", correct: ["the excerpt deals with"] },
+    { key: "It becomes clear that …", type: "de-en", q: "Es wird deutlich, dass …", correct: ["it becomes clear that"] },
+    { key: "This shows that …", type: "de-en", q: "Das zeigt, dass …", correct: ["this shows that"] },
+    { key: "All in all, …", type: "de-en", q: "Alles in allem …", correct: ["all in all"] },
+    { key: "To sum up, …", type: "de-en", q: "Zusammenfassend …", correct: ["to sum up", "in summary"] },
+    { key: "In conclusion, …", type: "de-en", q: "Abschließend …", correct: ["in conclusion"] },
+    { key: "Overall, the relationship is marked by …", type: "de-en", q: "Insgesamt ist die Beziehung geprägt von …", correct: ["is marked by", "marked by"] },
+    { key: "to look up to sb.", type: "de-en", q: "zu jdm. aufschauen", correct: ["to look up to", "look up to"] },
+    { key: "to rely on sb.", type: "de-en", q: "sich auf jdn. verlassen", correct: ["to rely on", "rely on", "to depend on", "depend on"] },
+    { key: "one-sided", type: "de-en", q: "einseitig", correct: ["one-sided", "one sided"] },
+    { key: "mutual", type: "de-en", q: "gegenseitig", correct: ["mutual"] },
+    { key: "an imbalance", type: "de-en", q: "ein Ungleichgewicht", correct: ["imbalance", "an imbalance"] },
+    { key: "to hide sth. from sb.", type: "de-en", q: "etw. vor jdm. verbergen", correct: ["to hide", "hide"] },
+    { key: "to be jealous (of sb.)", type: "de-en", q: "eifersüchtig sein (auf jdn.)", correct: ["to be jealous", "jealous", "be jealous"] },
+    { key: "to keep one's distance", type: "de-en", q: "Abstand halten", correct: ["to keep one's distance", "keep one's distance", "to keep your distance", "keep your distance", "keep his distance", "keep her distance"] },
+    { key: "the first-person narrator", type: "de-en", q: "der Ich-Erzähler", correct: ["first-person narrator", "the first-person narrator", "first person narrator"] },
+    { key: "a naive narrator", type: "de-en", q: "ein naiver Erzähler", correct: ["naive narrator", "a naive narrator"] },
+    { key: "the reader realises more than Charlie", type: "de-en", q: "der Leser erkennt mehr als Charlie", correct: ["the reader realises more", "reader realises more"] },
+    { key: "to suggest", type: "de-en", q: "nahelegen, andeuten", correct: ["to suggest", "suggest"] },
+    { key: "to reveal", type: "de-en", q: "zeigen, offenbaren", correct: ["to reveal", "reveal"] },
+    { key: "to emphasise / to highlight", type: "de-en", q: "hervorheben, betonen", correct: ["to emphasise", "emphasise", "to emphasize", "emphasize", "to highlight", "highlight", "to stress", "stress"] },
+    { key: "although", type: "de-en", q: "obwohl", correct: ["although", "though", "even though"] },
+    { key: "whereas", type: "de-en", q: "während, wohingegen", correct: ["whereas", "while"] },
+    { key: "however", type: "de-en", q: "jedoch", correct: ["however"] },
+    { key: "therefore", type: "de-en", q: "deshalb", correct: ["therefore", "that's why", "thus"] },
+    { key: "in addition", type: "de-en", q: "außerdem", correct: ["in addition", "additionally", "furthermore", "moreover"] },
+    { key: "gap:Charlie ___ ___ ___ Sam: ", type: "gap", q: "Charlie ___ ___ ___ Sam: he admires her. (zu jdm. aufschauen)", correct: ["looks up to"] },
+    { key: "gap:Mary Elizabeth talks, Cha", type: "gap", q: "Mary Elizabeth talks, Charlie listens – the conversation is ___. (einseitig)", correct: ["one-sided", "one sided"] },
+    { key: "gap:She talks a lot, ___ he h", type: "gap", q: "She talks a lot, ___ he hardly says anything. (wohingegen)", correct: ["whereas", "while"] },
+    { key: "gap:___ he likes her, he does", type: "gap", q: "___ he likes her, he does not tell her the truth. (obwohl)", correct: ["although", "even though", "though"] },
+    { key: "gap:___ ___ ___, the relation", type: "gap", q: "___ ___ ___, the relationship is unequal. (alles in allem)", correct: ["all in all"] },
+    { key: "gap:The list of her favourite", type: "gap", q: "The list of her favourite things ___ how little he knows her. (offenbart)", correct: ["reveals", "shows"] },
+    { key: "gap:The story is told by a __", type: "gap", q: "The story is told by a ___-___ narrator. (Ich-)", correct: ["first-person", "first person"] },
+    { key: "gap:She calls him sensitive, ", type: "gap", q: "She calls him sensitive, ___ surprises him. (was)", correct: ["which"] }
+  ];
+  var TEST_SIZE = Math.min(15, POOL.length);
+
+  var TYPE_LABELS = { "de-en": "Deutsch → Englisch", "en-de": "Englisch → Deutsch", "sentence": "Lückensatz", };
+
+  // ---------- Notenschlüssel (Prozent-Schwellen) – falls nötig an die Vorgabe der Fachschaft angleichen ----------
+  var GRADE_THRESHOLDS = [
+    { min: 0.92, grade: "1" },
+    { min: 0.81, grade: "2" },
+    { min: 0.67, grade: "3" },
+    { min: 0.50, grade: "4" },
+    { min: 0.30, grade: "5" },
+    { min: 0, grade: "6" }
+  ];
+
+  function gradeFor(percent) {
+    for (var i = 0; i < GRADE_THRESHOLDS.length; i++) {
+      if (percent >= GRADE_THRESHOLDS[i].min) return GRADE_THRESHOLDS[i].grade;
+    }
+    return "6";
+  }
+
+  function normalize(str) {
+    return String(str || "").trim().replace(/\s+/g, " ").toLowerCase();
+  }
+
+  // ---------- Bewertung (Nutzerregeln 15.09.2026) ----------
+  // Zwei Punkte, wenn das Wort stimmt. Ein Punkt, wenn es erkennbar dasselbe
+  // Wort ist, aber falsch geschrieben. Artikel und Gross-/Kleinschreibung
+  // zaehlen nicht mit - "das Souvenir" und "Souvenir" sind dieselbe Antwort.
+  var ARTIKEL = /^(der|die|das|den|dem|ein|eine|the|a|an)\s+/;
+
+  function ohneArtikel(str) {
+    return normalize(str).replace(ARTIKEL, "");
+  }
+
+  function abstand(a, b) {
+    var m = a.length, n = b.length, i, j, vor = [], jetzt = [];
+    for (j = 0; j <= n; j++) vor[j] = j;
+    for (i = 1; i <= m; i++) {
+      jetzt = [i];
+      for (j = 1; j <= n; j++) {
+        jetzt[j] = Math.min(vor[j] + 1, jetzt[j - 1] + 1,
+                            vor[j - 1] + (a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1));
+      }
+      vor = jetzt;
+    }
+    return vor[n];
+  }
+
+  // Wie weit darf danebengeschrieben sein? Kurze Woerter gar nicht - sonst
+  // wuerde aus "sad" ein akzeptiertes "bad".
+  function toleranz(wort) {
+    if (wort.length < 4) return 0;
+    if (wort.length < 8) return 1;
+    return 2;
+  }
+
+  // Ein Synonym genuegt (Nutzerregel 15.09.2026). Aus "der Turnschuh; der
+  // Trainer / die Trainerin" werden Turnschuh, Trainer, Trainerin - jede
+  // einzelne Antwort zaehlt voll. Klammern werden beidseitig aufgeloest:
+  // "Frau (Anrede)" -> Frau, "wuerde(n)" -> wuerde und wuerden.
+  function varianten(str) {
+    var roh = String(str || ""), kandidaten = [roh], raus = [], i, j, teile;
+    if (roh.indexOf("(") !== -1) {
+      kandidaten.push(roh.replace(/\s*\([^)]*\)/g, ""));   // Klammer weg
+      kandidaten.push(roh.replace(/[()]/g, ""));             // Klammer aufloesen
+      kandidaten.push(roh.replace(/^[^(]*\(([^)]*)\).*$/, "$1"));  // nur der Klammerinhalt
+    }
+    for (i = 0; i < kandidaten.length; i++) {
+      teile = kandidaten[i].split(/[;\/,]/);
+      for (j = 0; j < teile.length; j++) {
+        var n = normalize(teile[j]), a = ohneArtikel(teile[j]);
+        if (n && raus.indexOf(n) === -1) raus.push(n);
+        if (a && raus.indexOf(a) === -1) raus.push(a);
+      }
+    }
+    return raus;
+  }
+
+  function alleVarianten(correctList) {
+    var raus = [], i, j, v;
+    for (i = 0; i < correctList.length; i++) {
+      v = varianten(correctList[i]);
+      for (j = 0; j < v.length; j++) if (raus.indexOf(v[j]) === -1) raus.push(v[j]);
+    }
+    return raus;
+  }
+
+  function punkteFuer(given, correctList) {
+    var g = normalize(given), gA = ohneArtikel(given);
+    if (!g) return 0;
+    var moeglich = alleVarianten(correctList), i, c;
+    for (i = 0; i < moeglich.length; i++) {
+      if (g === moeglich[i] || gA === moeglich[i]) return 2;
+    }
+    for (i = 0; i < moeglich.length; i++) {
+      c = moeglich[i];
+      if (!c.length || gA.charAt(0) !== c.charAt(0)) continue;
+      if (abstand(gA, c) <= toleranz(c)) return 1;
+    }
+    return 0;
+  }
+
+  // Schluessel je Vokabel, damit dasselbe Wort nicht zweimal drankommt.
+  function vokabelSchluessel(item) {
+    // Bevorzugt der ausdrueckliche key aus der Wortliste. Ohne ihn wuerden
+    // gebeugte Formen auseinanderfallen ("has got" gegen "have got") und
+    // dieselbe Vokabel zweimal drankommen.
+    if (item.key) return item.key;
+    return item.type === "en-de" ? ohneArtikel(item.q) : ohneArtikel(item.correct[0]);
+  }
+
+  var ITEMS = [];
+  var idx = 0;
+  var correctCount = 0;
+  var punkteGesamt = 0;
+  var answered = false;
+  var results = []; // "correct" | "wrong" per item
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function pickItems() {
+    var gemischt = shuffle(POOL), gesehen = {}, raus = [], i, k;
+    for (i = 0; i < gemischt.length && raus.length < TEST_SIZE; i++) {
+      k = vokabelSchluessel(gemischt[i]);
+      if (gesehen[k]) continue;
+      gesehen[k] = true;
+      raus.push(gemischt[i]);
+    }
+    return raus;
+  }
+
+  function show(id) {
+    ["startScreen", "gameWrap", "resultScreen"].forEach(function (s) {
+      document.getElementById(s).classList.toggle("hidden", s !== id);
+    });
+  }
+
+  function renderLocksRow() {
+    var row = document.getElementById("locksRow");
+    row.innerHTML = "";
+    ITEMS.forEach(function (_, i) {
+      var span = document.createElement("span");
+      if (results[i] === "correct") { span.textContent = "🔓"; span.className = "correct"; }
+      else if (results[i] === "half") { span.textContent = "🔓"; span.className = "half"; }
+      else if (results[i] === "wrong") { span.textContent = "🔒"; span.className = "wrong"; }
+      else if (i === idx) { span.textContent = "🔒"; span.className = "current"; }
+      else { span.textContent = "🔒"; }
+      row.appendChild(span);
+    });
+  }
+
+  function startTest() {
+    ITEMS = pickItems();
+    idx = 0;
+    correctCount = 0;
+    punkteGesamt = 0;
+    results = [];
+    show("gameWrap");
+    nextQuestion();
+  }
+
+  function nextQuestion() {
+    if (idx >= ITEMS.length) {
+      finishTest();
+      return;
+    }
+    answered = false;
+    renderLocksRow();
+    var item = ITEMS[idx];
+    document.getElementById("qType").textContent = TYPE_LABELS[item.type] || "";
+    document.getElementById("questionEl").textContent = item.q;
+    document.getElementById("feedbackEl").textContent = "";
+    document.getElementById("feedbackEl").className = "feedback";
+    document.getElementById("roomEmoji").textContent = "🚪";
+
+    var input = document.getElementById("answerInput");
+    input.value = "";
+    input.className = "answer-input";
+    input.disabled = false;
+    document.getElementById("submitBtn").disabled = false;
+    setTimeout(function () { input.focus(); }, 50);
+  }
+
+  function onAnswer(item) {
+    if (answered) return;
+    answered = true;
+    var input = document.getElementById("answerInput");
+    var punkte = punkteFuer(input.value, item.correct);
+    var correct = punkte === 2;
+
+    input.disabled = true;
+    document.getElementById("submitBtn").disabled = true;
+
+    var fb = document.getElementById("feedbackEl");
+    var card = document.querySelector(".card");
+    punkteGesamt += punkte;
+    if (correct) {
+      correctCount++;
+      results[idx] = "correct";
+      input.className = "answer-input correct";
+      document.getElementById("roomEmoji").textContent = "🔓";
+      fb.textContent = "Schloss geöffnet!  2 Punkte";
+      fb.className = "feedback good";
+    } else if (punkte === 1) {
+      results[idx] = "half";
+      input.className = "answer-input correct";
+      document.getElementById("roomEmoji").textContent = "🔓";
+      fb.textContent = "Fast! Richtig ist: " + item.correct[0] + "  —  1 Punkt für den Schreibfehler";
+      fb.className = "feedback good";
+    } else {
+      results[idx] = "wrong";
+      input.className = "answer-input wrong";
+      document.getElementById("roomEmoji").textContent = "🔒";
+      fb.textContent = "Schloss bleibt zu. Richtig wäre: " + item.correct[0];
+      fb.className = "feedback bad";
+      card.classList.add("shake");
+      setTimeout(function () { card.classList.remove("shake"); }, 500);
+    }
+    renderLocksRow();
+    setTimeout(function () { idx++; nextQuestion(); }, punkte === 2 ? 1100 : 2200);
+  }
+
+  function finishTest() {
+    var maximum = ITEMS.length * 2;
+    var percent = punkteGesamt / maximum;
+    var grade = gradeFor(percent);
+    document.getElementById("gradeBig").textContent = grade;
+    document.getElementById("pointsRow").textContent = punkteGesamt + " / " + maximum + " Punkte";
+    document.getElementById("percentRow").textContent = Math.round(percent * 100) + " %";
+    show("resultScreen");
+  }
+
+  document.getElementById("startBtn").onclick = startTest;
+  document.getElementById("restartBtn").onclick = function () { show("startScreen"); };
+  document.getElementById("answerForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    onAnswer(ITEMS[idx]);
+  });
+
+  show("startScreen");
+})();
+</script>
+</body>
+</html>
